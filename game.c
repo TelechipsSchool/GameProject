@@ -52,11 +52,8 @@ void start_game() {
         else if (isDragging) {
             isDragging = false;
             Vector2 dragVec = Vector2_Sub(dragEnd, dragStart);
-            printf("debug 1: ");
-            printf("%.lf\n", Vector2_Length(dragVec));
 
             if (Vector2_Length(dragVec) > dragThreshold) {
-                printf("debug 2\n");
                 Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -0.2f), maxForce);
                 planet.velocity = force;
                 planet.position = shootStart;
@@ -65,7 +62,7 @@ void start_game() {
         }
 
         if (planet.isFlying) {
-            CalcGravity(&planet, gravityCenter, gravityScale, centerCoefficient, deltaTime);
+            CalcGravity(&planet, gravityCenter, centerCoefficient, deltaTime);
             planet.position = Vector2_Add(planet.position, Vector2_Scale(planet.velocity, deltaTime));
         }
 
@@ -95,20 +92,6 @@ void start_game() {
     al_destroy_event_queue(game_event_queue);
 }
 
-
-Planet create_planet(float x, float y, float speed, float angle, int width, int height, const char* image_path) {
-    Planet planet;
-    planet.x = x;
-    planet.y = y;
-    planet.speed = speed;
-    planet.angle = angle;
-    planet.width = width;
-    planet.height = height;
-    planet.image = load_bitmap_resized(image_path, width, height);
-
-    return planet;
-}
-
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
     // 두 원의 중심 간 거리 계산
     int dx = x2 - x1;
@@ -125,9 +108,9 @@ bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
 }
 
 // 핵심 중력 + 회전 보정 함수
-void CalcGravity(Rigidbody2D* rb, Vector2 center, float gravityScale, float centerCoefficient, float deltaTime) {
+void CalcGravity(Rigidbody2D* rb, Vector2 center, float centerCoefficient, float deltaTime) {
     Vector2 gravityDir = Vector2_Normalize(Vector2_Sub(center, rb->position));
-    Vector2 gravity = Vector2_Scale(gravityDir, gravityScale * 9.8f);
+    Vector2 gravity = Vector2_Scale(gravityDir, GRAVITY);
 
     Vector2 vel = rb->velocity;
     Vector2 nextPos = Vector2_Add(rb->position, vel);
