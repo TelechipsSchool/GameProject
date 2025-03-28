@@ -15,8 +15,10 @@ float line_length = 0.8f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수
-double GRAVITY = 9.8f;  // 중력
+double GRAVITY = 0.01f;  // 중력
 double RESTITUTION = 0.5f;      // 탄성 계수
+double dragForce = 500.0f;      // 당기는 힘
+double maxForce = 500.0f;      // 최대 당기는 힘
 
 // 최대 행성 개수
 #define MAX_PLANET 100

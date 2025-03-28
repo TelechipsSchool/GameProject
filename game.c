@@ -35,13 +35,12 @@ void start_game() {
     Vector2 gravityCenter = { center_x, center_y };
     ALLEGRO_BITMAP* center = load_bitmap_resized("images/center.png", 30, 30);
     ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
-    ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 500, 500);
+    ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 700, 700);
 
     Vector2 dragStart, dragEnd;
-    float maxForce = 70.0f;
     float dragThreshold = 30.0f;
     float gravityScale = 1.0f;
-    float centerCoefficient = 0.03f;
+    float centerCoefficient = 0.003f;
     float deltaTime = 1.0f / FPS;
     float last_shot_time = 0.0f;
 
@@ -79,9 +78,9 @@ void start_game() {
             isDragging = false;
             Vector2 dragVec = Vector2_Sub(dragEnd, dragStart);
 
-            // 유도선 길이만큼 행성한테 힘을 가함
+            // 유도선 길이만큼 행성한테 힘을 가함 (-인 이유는 드래그 반대방향이므로)
             if (Vector2_Length(dragVec) > dragThreshold) {
-                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -1), maxForce);
+                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -dragForce), maxForce);
                 planet[planet_num].velocity = force;
                 planet[planet_num].position = shootStart;
                 planet[planet_num].isFlying = true;
@@ -94,10 +93,12 @@ void start_game() {
         // 행성이 날라가는 도중 계산
         for (int i = 0; i <= planet_num; ++i) {
             if (planet[i].isFlying) {
-                // 중앙 원과 충돌 시 반발
+                // 중앙 원과 충돌 시
                 if (collision_check(planet[i].position.x, planet[i].position.y, planet[i].radius, center_x, center_y, 15)) {
                     Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, gravityCenter));
-                    planet[i].velocity = Vector2_Sub(planet[i].velocity, Vector2_Scale(Vector2_Project(planet[i].velocity, normal), (1 + RESTITUTION)));
+                    Vector2 new_vel  = Vector2_Sub(planet[i].velocity,
+                        Vector2_Scale(Vector2_Project(planet[i].velocity, normal), (1 + RESTITUTION)));
+                    planet[i].velocity = new_vel;
                 }
                 // 행성끼리 충돌 시
                 for (int j = 0; j <= planet_num; ++j) {
@@ -108,7 +109,7 @@ void start_game() {
                         planet[j].position.x, planet[j].position.y, planet[j].radius)) {
 
                         // 충돌 방향 벡터 (i에서 j로 향하는 방향)
-                        Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[j].position, planet[i].position));
+                        Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, planet[j].position));
 
                         // i와 j의 속도 투영값 계산
                         Vector2 vel_i_proj = Vector2_Project(planet[i].velocity, normal);
@@ -132,6 +133,7 @@ void start_game() {
             }
         }
 
+        // 발사하고 5초 뒤에 생성
         if (al_get_time() - last_shot_time > 5.0 && isFired) {
             ++planet_num;
             isFired = false;
@@ -141,6 +143,7 @@ void start_game() {
         if (redraw) {
             al_clear_to_color(al_map_rgb(20, 20, 20));
 
+            // 행성 그리기
             for (int i = 0; i <= planet_num; ++i) {
                 ALLEGRO_BITMAP* planet_img;
                 switch (planet[i].type) {
@@ -157,16 +160,19 @@ void start_game() {
                     planet[i].position.y - planet[i].radius, 0);
             }
 
+            // 중심, 스타트, 중력필드 그리기
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
-            al_draw_bitmap(gravityfield, center_x - 250, center_y - 250, 0);
+            al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
 
+            // 드래그 하는 동안, 유도선 그리기
             if (isDragging) {
                 Vector2 forceVec = Vector2_Clamp(Vector2_Scale(Vector2_Sub(dragEnd, dragStart), -line_length), maxForce);
                 Vector2 endPoint = Vector2_Add(shootStart, forceVec);
                 al_draw_line(shootStart.x, shootStart.y, endPoint.x, endPoint.y, al_map_rgb(255, 255, 0), 2);
             }
 
+            // 화면 갱신
             al_flip_display();
         }
     }
@@ -179,6 +185,7 @@ void start_game() {
     al_destroy_event_queue(game_event_queue);
 }
 
+// 충돌 체크 함수
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
     int dx = x2 - x1;
     int dy = y2 - y1;
