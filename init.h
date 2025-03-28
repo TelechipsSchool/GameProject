@@ -12,6 +12,6 @@
 
 #define SCREEN_W 1600
 #define SCREEN_H 900
-#define FPS 60
+#define FPS 120
 
 void init();

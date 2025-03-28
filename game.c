@@ -1,8 +1,7 @@
 ﻿#include "game.h"
-#include <math.h>
+
 
 void start_game() {
-
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);
     ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();
     al_register_event_source(game_event_queue, al_get_mouse_event_source());
@@ -49,12 +48,13 @@ void start_game() {
             dragEnd.x = mouse.x;
             dragEnd.y = mouse.y;
         }
+
         else if (isDragging) {
             isDragging = false;
             Vector2 dragVec = Vector2_Sub(dragEnd, dragStart);
 
             if (Vector2_Length(dragVec) > dragThreshold) {
-                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -0.2f), maxForce);
+                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -1), maxForce);
                 planet.velocity = force;
                 planet.position = shootStart;
                 planet.isFlying = true;
@@ -62,8 +62,15 @@ void start_game() {
         }
 
         if (planet.isFlying) {
+            // 중력 계산
             CalcGravity(&planet, gravityCenter, centerCoefficient, deltaTime);
             planet.position = Vector2_Add(planet.position, Vector2_Scale(planet.velocity, deltaTime));
+
+            // 중앙 원과 충돌 시 반발
+            if (collision_check(planet.position.x, planet.position.y, 30, center_x, center_y, 30)) {
+                Vector2 normal = Vector2_Normalize(Vector2_Sub(planet.position, gravityCenter));
+                planet.velocity = Vector2_Sub(planet.velocity, Vector2_Scale(Vector2_Project(planet.velocity, normal), (1 + RESTITUTION)));
+            }
         }
 
         if (redraw) {
@@ -81,8 +88,6 @@ void start_game() {
 
             al_flip_display();
         }
-        //printf("isDragging: %d\n", isDragging);
-        //printf("isFlying: %d\n", planet.isFlying);
     }    
 
     al_destroy_bitmap(planet_img);
@@ -93,18 +98,10 @@ void start_game() {
 }
 
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
-    // 두 원의 중심 간 거리 계산
     int dx = x2 - x1;
     int dy = y2 - y1;
     float distance = sqrt(dx * dx + dy * dy);
-
-    // 두 원의 반지름 합이 두 원의 중심 간 거리보다 크거나 같으면 충돌
-    if (distance < (size1 + size2) / 2) {
-        return true; // 충돌
-    }
-    else {
-        return false; // 충돌하지 않음
-    }
+    return distance < (size1 + size2) / 2;
 }
 
 // 핵심 중력 + 회전 보정 함수

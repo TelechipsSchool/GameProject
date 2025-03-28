@@ -16,7 +16,7 @@
 
 // 물리 계수
 float GRAVITY = 9.8f;  // 중력
-float restitution = 1;      // 탄성 계수
+float RESTITUTION = 0.5;      // 탄성 계수
 
 void start_game();
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
