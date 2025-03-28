@@ -11,4 +11,7 @@ void init() {
 	// 입력 장치 활성화
 	al_install_mouse();
 	al_install_keyboard();
+
+	// 난수 생성기를 초기화
+	srand(time(NULL));
 }

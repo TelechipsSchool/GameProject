@@ -6,12 +6,6 @@ typedef struct {
     float x, y;
 } Vector2;
 
-typedef struct {
-    Vector2 position;
-    Vector2 velocity;
-    bool isFlying;
-} Rigidbody2D;
-
 Vector2 Vector2_Add(Vector2 a, Vector2 b);
 Vector2 Vector2_Sub(Vector2 a, Vector2 b);
 Vector2 Vector2_Scale(Vector2 v, float s);

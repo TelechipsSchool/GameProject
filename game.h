@@ -15,13 +15,21 @@ float line_length = 0.8f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수
-double GRAVITY = 9.8f;  // 중력
+double GRAVITY = 9.8f * 100;  // 중력
 double RESTITUTION = 0.5f;      // 탄성 계수
 
 // 최대 행성 개수
 #define MAX_PLANET 100
 
+typedef struct {
+    Vector2 position;
+    Vector2 velocity;
+    bool isFlying;
+    int type;
+    int radius;
+} Planet;
+
 void start_game();
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
 // 핵심 중력 + 회전 보정 함수
-void CalcGravity(Rigidbody2D* rb, Vector2 center, float centerCoefficient, float deltaTime);
+void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float deltaTime);

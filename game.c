@@ -7,16 +7,28 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
 
-    ALLEGRO_BITMAP* planet_img = load_bitmap_resized("images/planet_1.png", 30, 30);
-    Vector2 shootStart = { init_x, init_y };
-    //Rigidbody2D planet = { shootStart, {0, 0}, 0 };
+    ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
+    ALLEGRO_BITMAP* planet_img2 = load_bitmap_resized("images/planet_2.png", 50, 50);
+    ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 70, 70);
+    ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 100, 100);
+    ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 140, 140);
 
-    Rigidbody2D planet[MAX_PLANET];
+    Vector2 shootStart = { init_x, init_y };
+
+    Planet planet[MAX_PLANET];
     for (int i = 0; i < MAX_PLANET; ++i) {
         planet[i].position = shootStart;
         planet[i].velocity.x = 0;
         planet[i].velocity.y = 0;
         planet[i].isFlying = 0;
+        planet[i].type = rand() % 5 + 1;;
+        switch (planet[i].type) {
+        case 1: planet[i].radius = 15; break;
+        case 2: planet[i].radius = 25; break;
+        case 3: planet[i].radius = 35; break;
+        case 4: planet[i].radius = 50; break;
+        case 5: planet[i].radius = 70; break;
+        }
     }
     int planet_num = 0;
 
@@ -83,17 +95,17 @@ void start_game() {
         for (int i = 0; i <= planet_num; ++i) {
             if (planet[i].isFlying) {
                 // 중앙 원과 충돌 시 반발
-                if (collision_check(planet[i].position.x, planet[i].position.y, 30, center_x, center_y, 30)) {
+                if (collision_check(planet[i].position.x, planet[i].position.y, planet[i].radius, center_x, center_y, 15)) {
                     Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, gravityCenter));
                     planet[i].velocity = Vector2_Sub(planet[i].velocity, Vector2_Scale(Vector2_Project(planet[i].velocity, normal), (1 + RESTITUTION)));
                 }
-                // 행성끼리 충돌
+                // 행성끼리 충돌 시
                 for (int j = 0; j <= planet_num; ++j) {
                     if (i == j) continue; // 자기 자신과의 충돌 무시
 
                     // 다른 행성과의 충돌
-                    if (collision_check(planet[i].position.x, planet[i].position.y, 30,
-                        planet[j].position.x, planet[j].position.y, 30)) {
+                    if (collision_check(planet[i].position.x, planet[i].position.y, planet[i].radius,
+                        planet[j].position.x, planet[j].position.y, planet[j].radius)) {
 
                         // 충돌 방향 벡터 (i에서 j로 향하는 방향)
                         Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[j].position, planet[i].position));
@@ -130,7 +142,19 @@ void start_game() {
             al_clear_to_color(al_map_rgb(20, 20, 20));
 
             for (int i = 0; i <= planet_num; ++i) {
-                al_draw_bitmap(planet_img, planet[i].position.x - 15, planet[i].position.y - 15, 0);
+                ALLEGRO_BITMAP* planet_img;
+                switch (planet[i].type) {
+                case 1: planet_img = planet_img1; break;
+                case 2: planet_img = planet_img2; break;
+                case 3: planet_img = planet_img3; break;
+                case 4: planet_img = planet_img4; break;
+                case 5: planet_img = planet_img5; break;
+                default: planet_img = planet_img1; break;
+                }
+
+                // position에서 빼기하는 이유는, 중심 좌표에서 시작하면 그림이 밀림
+                al_draw_bitmap(planet_img, planet[i].position.x - planet[i].radius, 
+                    planet[i].position.y - planet[i].radius, 0);
             }
 
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
@@ -148,7 +172,7 @@ void start_game() {
     }
 
     // 해제
-    al_destroy_bitmap(planet_img);
+    al_destroy_bitmap(planet_img1);
     al_destroy_bitmap(center);
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
@@ -159,11 +183,11 @@ bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
     int dx = x2 - x1;
     int dy = y2 - y1;
     float distance = sqrt(dx * dx + dy * dy);
-    return distance < (size1 + size2) / 2;
+    return distance < size1 + size2;
 }
 
 // 핵심 중력 + 회전 보정 함수
-void CalcGravity(Rigidbody2D* rb, Vector2 center, float centerCoefficient, float deltaTime) {
+void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float deltaTime) {
     Vector2 gravityDir = Vector2_Normalize(Vector2_Sub(center, rb->position));
     Vector2 gravity = Vector2_Scale(gravityDir, GRAVITY);
 
