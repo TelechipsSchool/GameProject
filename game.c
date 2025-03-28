@@ -7,14 +7,17 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
 
+    // 행성 이미지
     ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
     ALLEGRO_BITMAP* planet_img2 = load_bitmap_resized("images/planet_2.png", 50, 50);
     ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 70, 70);
     ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 100, 100);
     ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 140, 140);
 
+    // 발사 지점
     Vector2 shootStart = { init_x, init_y };
 
+    // 행성 무작위 생성
     Planet planet[MAX_PLANET];
     for (int i = 0; i < MAX_PLANET; ++i) {
         planet[i].position = shootStart;
@@ -30,13 +33,16 @@ void start_game() {
         case 5: planet[i].radius = 70; break;
         }
     }
+    // 행성 갯수
     int planet_num = 0;
 
+    // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
     ALLEGRO_BITMAP* center = load_bitmap_resized("images/center.png", 30, 30);
     ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
     ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 700, 700);
 
+    // 변수 선언
     Vector2 dragStart, dragEnd;
     float dragThreshold = 30.0f;
     float gravityScale = 1.0f;
@@ -44,7 +50,6 @@ void start_game() {
     float deltaTime = 1.0f / FPS;
     float last_shot_time = 0.0f;
 
-    float angle = 0.0;
     bool isFired = false, redraw = true, playing = true, isDragging = false;
 
     while (playing) {
