@@ -4,7 +4,7 @@
 #include "vector.h"
 
 // 유도선 설정
-#define line_length 100
+float line_length = 0.8f;
 
 // 행성 발사 위치
 #define init_x 300
@@ -15,8 +15,11 @@
 #define center_y SCREEN_H / 2
 
 // 물리 계수
-float GRAVITY = 9.8f;  // 중력
-float RESTITUTION = 0.5;      // 탄성 계수
+double GRAVITY = 9.8f;  // 중력
+double RESTITUTION = 0.5f;      // 탄성 계수
+
+// 최대 행성 개수
+#define MAX_PLANET 100
 
 void start_game();
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
