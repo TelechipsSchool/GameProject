@@ -15,7 +15,7 @@ float line_length = 0.8f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수
-double GRAVITY = 9.8f * 100;  // 중력
+double GRAVITY = 9.8f;  // 중력
 double RESTITUTION = 0.5f;      // 탄성 계수
 
 // 최대 행성 개수
