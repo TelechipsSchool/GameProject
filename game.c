@@ -10,7 +10,9 @@ void start_game() {
 
     // 행성과 목표 생성
     Planet planet = create_planet(init_x, init_y, 0, 0, 30, 30, "images/planet_1.png");
-    ALLEGRO_BITMAP* goal = load_bitmap_resized("images/goal.png", 100, 100);
+    ALLEGRO_BITMAP* goal = load_bitmap_resized("images/center.png", 30, 30);
+    ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
+    ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 300, 300);
 
     float angle = 0.;
 
@@ -34,25 +36,30 @@ void start_game() {
                     planet.speed = 0.1;
                 }
             }
+        }       
+
+        // 가운데 점과 충돌했을 때
+        if (collision_check(planet.x, planet.y, 30, goal_x, goal_y, 30)) {
+            // 구현못함..
+        }
+
+        // 중력 필드에 들어왔을 때
+        if (collision_check(planet.x, planet.y, 30, goal_x, goal_y, 300)) {
+            // 구현못함..
         }
 
         // 발사된 행성 위치 업데이트 (각도에 따라)
         planet.x += planet.speed * cos(planet.angle * ALLEGRO_PI / 180.0f);
         planet.y -= planet.speed * sin(planet.angle * ALLEGRO_PI / 180.0f);
 
-        if (collision_check(planet.x, planet.y, 30, goal_x, goal_y, 100)) {
-            printf("collision\n");
-            planet.speed = 0;
-        }
-
         // 화면 초기화 (회색)
-        al_clear_to_color(al_map_rgb(200, 200, 200));
+        al_clear_to_color(al_map_rgb(20, 20, 20));
 
-        // 행성 그리기
+        // 그리기
         al_draw_bitmap(planet.image, planet.x - planet.width / 2, planet.y - planet.height / 2, 0);
-
-        // 목표 그리기
-        al_draw_bitmap(goal, goal_x - 50, goal_y - 50, 0);
+        al_draw_bitmap(goal, goal_x - 15, goal_y - 15, 0);
+        al_draw_bitmap(gravityfield, goal_x - 150, goal_y - 150, 0);
+        al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
 
         // 유도선 그리기: 발사 각도 방향으로 선 그리기
         int x1 = init_x;
@@ -89,10 +96,8 @@ bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
     int dy = y2 - y1;
     float distance = sqrt(dx * dx + dy * dy);
 
-    printf("distance: %.2f\n", distance);
-
     // 두 원의 반지름 합이 두 원의 중심 간 거리보다 크거나 같으면 충돌
-    if (distance <= (size1 + size2) / 2) {
+    if (distance < (size1 + size2) / 2) {
         return true; // 충돌
     }
     else {

@@ -10,8 +10,12 @@
 #define init_y SCREEN_H / 2
 
 // 목표 행성 위치
-#define goal_x SCREEN_W - 100
+#define goal_x SCREEN_W - 200
 #define goal_y SCREEN_H / 2
+
+// 물리 계수
+float gravity_strength  = 0.05;  // 중력
+float restitution = 1;      // 탄성 계수
 
 typedef struct {
     float x, y;
