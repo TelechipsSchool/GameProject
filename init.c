@@ -9,5 +9,6 @@ void init() {
 	al_init_primitives_addon();
 
 	// 입력 장치 활성화
+	al_install_mouse();
 	al_install_keyboard();
 }
