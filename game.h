@@ -31,6 +31,7 @@ typedef struct {
     int radius;
 } Planet;
 
+int get_radius(int type);
 void start_game();
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
 // 핵심 중력 + 회전 보정 함수

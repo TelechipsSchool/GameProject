@@ -1,8 +1,28 @@
 ﻿#include "game.h"
 
+int get_radius(int type) {
+    switch (type) {
+    case 1: return 15; break;
+    case 2: return 25; break;
+    case 3: return 35; break;
+    case 4: return 50; break;
+    case 5: return 70; break;
+    }
+}
+
+void merge_planets(Planet* a, Planet* b) {
+    a->type += 1;
+    a->radius = get_radius(a->type);
+    a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
+    b->isFlying = false;
+    b->type = 0;
+    b->velocity = (Vector2){ 0,0 };
+}
+
 void start_game() {
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);
-    ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);//0.00025초마다 이벤트 ->매초 4000번. 
+    //새 타이머를 가리키는 포인터 반환. or NULL반환
+    ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();//선입선출
     al_register_event_source(game_event_queue, al_get_mouse_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
@@ -17,7 +37,7 @@ void start_game() {
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
 
-    // 행성 무작위 생성
+    // 행성 무작위 생성. 행성 배열 초기화. 
     Planet planet[MAX_PLANET];
     for (int i = 0; i < MAX_PLANET; ++i) {
         planet[i].position = shootStart;
@@ -25,16 +45,10 @@ void start_game() {
         planet[i].velocity.y = 0;
         planet[i].isFlying = 0;
         planet[i].type = rand() % 5 + 1;;
-        switch (planet[i].type) {
-        case 1: planet[i].radius = 15; break;
-        case 2: planet[i].radius = 25; break;
-        case 3: planet[i].radius = 35; break;
-        case 4: planet[i].radius = 50; break;
-        case 5: planet[i].radius = 70; break;
-        }
+        planet[i].radius = get_radius(planet[i].type);
     }
     // 행성 갯수
-    int planet_num = 0;
+    int planet_num = 0;//첫번째 행성 0부터시작.
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -77,7 +91,8 @@ void start_game() {
             dragEnd.x = mouse.x;
             dragEnd.y = mouse.y;
         }
-
+        //마우스를 드래그 놓은 위치 선언.
+        
         // 마우스 뗏을 때
         else if (isDragging && !isFired) {
             isDragging = false;
@@ -97,21 +112,28 @@ void start_game() {
 
         // 행성이 날라가는 도중 계산
         for (int i = 0; i <= planet_num; ++i) {
-            if (planet[i].isFlying) {
+            if (!planet[i].isFlying || planet[i].type == 0) { continue; }
+            else{
                 // 중앙 원과 충돌 시
                 if (collision_check(planet[i].position.x, planet[i].position.y, planet[i].radius, center_x, center_y, 15)) {
-                    Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, gravityCenter));
+                    Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, gravityCenter));//중심에서 반대 0벡터
                     Vector2 new_vel  = Vector2_Sub(planet[i].velocity,
                         Vector2_Scale(Vector2_Project(planet[i].velocity, normal), (1 + RESTITUTION)));
-                    planet[i].velocity = new_vel;
+                    planet[i].velocity = new_vel;//탄성 추가
                 }
                 // 행성끼리 충돌 시
                 for (int j = 0; j <= planet_num; ++j) {
-                    if (i == j) continue; // 자기 자신과의 충돌 무시
+                    if (i==j || !planet[j].isFlying) continue; // 자기 자신과의 충돌 무시+비활성화행성인지체크
 
+                
                     // 다른 행성과의 충돌
                     if (collision_check(planet[i].position.x, planet[i].position.y, planet[i].radius,
                         planet[j].position.x, planet[j].position.y, planet[j].radius)) {
+                       
+                        if ((planet[i].type == planet[j].type)&&planet[j].isFlying) {
+                            merge_planets(planet + i, planet + j);
+                            continue;
+                        }
 
                         // 충돌 방향 벡터 (i에서 j로 향하는 방향)
                         Vector2 normal = Vector2_Normalize(Vector2_Sub(planet[i].position, planet[j].position));
@@ -150,16 +172,17 @@ void start_game() {
 
             // 행성 그리기
             for (int i = 0; i <= planet_num; ++i) {
-                ALLEGRO_BITMAP* planet_img;
+                ALLEGRO_BITMAP* planet_img = NULL;
                 switch (planet[i].type) {
                 case 1: planet_img = planet_img1; break;
                 case 2: planet_img = planet_img2; break;
                 case 3: planet_img = planet_img3; break;
                 case 4: planet_img = planet_img4; break;
                 case 5: planet_img = planet_img5; break;
-                default: planet_img = planet_img1; break;
+               // default: planet_img = planet_img1; break;
                 }
 
+                if (planet_img == NULL) continue;
                 // position에서 빼기하는 이유는, 중심 좌표에서 시작하면 그림이 밀림
                 al_draw_bitmap(planet_img, planet[i].position.x - planet[i].radius, 
                     planet[i].position.y - planet[i].radius, 0);
