@@ -14,4 +14,8 @@
 #define SCREEN_H 900
 #define FPS 4000
 
+#define GRID_SIZE 100
+#define GRID_WIDTH (SCREEN_W / GRID_SIZE + 1)
+#define GRID_HEIGHT (SCREEN_H / GRID_SIZE + 1)
+
 void init();
