@@ -114,7 +114,7 @@ void start_game() {
 
 
             // 행성끼리 충돌 시
-            for (int j = 0; j <= planet_num; ++j) {
+            for (int j = 0; j < planet_num; ++j) {
                 Planet* q = planet_list[j];
                 if (q == NULL || q == p || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화행성인지체크
                 // 다른 행성과의 충돌
