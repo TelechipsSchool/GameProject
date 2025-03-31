@@ -23,7 +23,7 @@ void start_game() {
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     
-    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %5 +1);
+    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %3 +1);        // 발사 행성은 type 3 까지만 나옴
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -31,7 +31,6 @@ void start_game() {
     ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
     ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 700, 700);
 
-    if (!planet_img1) printf("planet_1.png 로딩 실패\n");
     if (!startpoint) printf("출발지점 이미지 로딩 실패\n");
 
 
@@ -74,7 +73,9 @@ void start_game() {
                 // 리소스 정리 후 메뉴로 복귀
                 for (int i = 0; i < planet_num; ++i) {
                     if (planet_list[i]) free(planet_list[i]);
+                    
                 }
+
                 al_destroy_bitmap(planet_img1);
                 al_destroy_bitmap(planet_img2);
                 al_destroy_bitmap(planet_img3);
@@ -141,6 +142,15 @@ void start_game() {
             // 중앙 원과 충돌 시
             if (collision_check(p->position.x, p->position.y, p->radius, center_x, center_y, 15)) {
                 Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, gravityCenter));//중심에서 반대 0벡터
+                // 1. 위치 보정 (겹침 해소)
+                float distance = Vector2_Distance(p->position, (Vector2) { center_x, center_y });
+                float penetrationDepth = (p->radius + 15) - distance; // 겹친 거리 계산
+
+                if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
+                    Vector2 correction = Vector2_Scale(normal, penetrationDepth);
+                    p->position = Vector2_Add(p->position, correction);
+                }
+
                 p->velocity = Vector2_Sub(p->velocity,
                     Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION * 0.5)));      // 탄성 계수 줄임.
             }
@@ -161,6 +171,15 @@ void start_game() {
 
                     // 충돌 방향 벡터 (a에서 q로 향하는 방향)
                     Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, q->position));
+
+                    // 위치 보정 (겹침 해소)
+                    float distance = Vector2_Distance(p->position, q->position);
+                    float penetrationDepth = (p->radius + q->radius) - distance; // 겹친 거리 계산
+
+                    if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
+                        Vector2 correction = Vector2_Scale(normal, penetrationDepth * 1.05f);
+                        q->position = Vector2_Sub(q->position, correction);
+                    }
 
                     // 속도 업데이트 (탄성 충돌 반영)
                     p->velocity = Vector2_Sub(p->velocity, Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION)));
@@ -199,18 +218,23 @@ void start_game() {
                 if (!p) continue;
 
                 ALLEGRO_BITMAP* planet_img = NULL;
-                switch (p->type) {
-                case 1: planet_img = planet_img1; break;
-                case 2: planet_img = planet_img2; break;
-                case 3: planet_img = planet_img3; break;
-                case 4: planet_img = planet_img4; break;
-                case 5: planet_img = planet_img5; break;
+                if (al_get_time() < p->explode_time) {
+                    planet_img = load_bitmap_resized("images/explode.png", p->radius * 2, p->radius * 2);;
+                }
+                else {
+                    switch (p->type) {
+                    case 1: planet_img = planet_img1; break;
+                    case 2: planet_img = planet_img2; break;
+                    case 3: planet_img = planet_img3; break;
+                    case 4: planet_img = planet_img4; break;
+                    case 5: planet_img = planet_img5; break;
+                    }
                 }
 
                 if (planet_img == NULL) continue;
                 // position에서 빼기하는 이유는, 중심 좌표에서 시작하면 그림이 밀림
                 al_draw_bitmap(planet_img, p->position.x - p->radius,
-                   p->position.y - p->radius, 0);
+                    p->position.y - p->radius, 0);
             }
 
 
@@ -285,6 +309,7 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     p->radius = get_radius(type);
     p->isFlying = false;
     return p;
+    p->explode_time = 0.;
 }
 
 void Destroy_Planet(Planet** planet_list, int* count, int index) {
@@ -310,49 +335,15 @@ int get_radius(int type) {
 
 void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
+    if (a->type > PLANET_TYPES) {
+        printf("win!!")
+    }
     a->radius = get_radius(a->type);
     //a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
+
+    a->explode_time = al_get_time() + 0.5;      // 폭발 유지 2초
+
     b->isFlying = false;
     b->type = 0;
     b->velocity = (Vector2){ 0,0 };
-
-    // 중앙 원과 충돌 시
-    if (collision_check(a->position.x, a->position.y, a->radius, center_x, center_y, 15)) {
-        Vector2 normal = Vector2_Normalize(Vector2_Sub(a->position, (Vector2){center_x, center_y}));//중심에서 반대 0벡터
-        // 1. 위치 보정 (겹침 해소)
-        float distance = Vector2_Distance(a->position, (Vector2) { center_x, center_y });
-        float penetrationDepth = (a->radius + 15) - distance; // 겹친 거리 계산
-
-        if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
-            Vector2 correction = Vector2_Scale(normal, penetrationDepth);
-            a->position = Vector2_Add(a->position, correction);
-        }
-        a->velocity = Vector2_Sub(a->velocity,
-            Vector2_Scale(Vector2_Project(a->velocity, normal), (1 + RESTITUTION * 0.5)));      // 탄성 계수 반으로 줄임.
-    }
-
-    for (int j = 0; j < planet_num; ++j) {
-        Planet* q = planet_list[j];
-        if (q == NULL || q == a || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화 행성 체크
-
-        if (collision_check(a->position.x, a->position.y, a->radius,
-            q->position.x, q->position.y, q->radius)) {
-
-            // 충돌 방향 벡터 (a에서 q로 향하는 방향)
-            Vector2 normal = Vector2_Normalize(Vector2_Sub(a->position, q->position));
-
-            // 1. 위치 보정 (겹침 해소)
-            float distance = Vector2_Distance(a->position, q->position);
-            float penetrationDepth = (a->radius + q->radius) - distance; // 겹친 거리 계산
-
-            if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
-                Vector2 correction = Vector2_Scale(normal, penetrationDepth * 1.2f);
-                q->position = Vector2_Sub(q->position, correction);
-            }
-
-            // 2. 속도 업데이트 (탄성 충돌 반영)
-            a->velocity = Vector2_Sub(a->velocity, Vector2_Scale(Vector2_Project(a->velocity, normal), (1 + RESTITUTION)));
-            q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
-        }
-    }
 }
