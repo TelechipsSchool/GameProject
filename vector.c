@@ -21,3 +21,8 @@ Vector2 Vector2_Clamp(Vector2 v, float maxLength) {
     if (len > maxLength) return Vector2_Scale(Vector2_Normalize(v), maxLength);
     return v;
 }
+float Vector2_Distance(Vector2 a, Vector2 b) {
+    float dx = b.x - a.x;
+    float dy = b.y - a.y;
+    return sqrtf(dx * dx + dy * dy);
+}

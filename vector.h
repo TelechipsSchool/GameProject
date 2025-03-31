@@ -14,3 +14,4 @@ Vector2 Vector2_Normalize(Vector2 v);
 float Vector2_Dot(Vector2 a, Vector2 b);
 Vector2 Vector2_Project(Vector2 v, Vector2 onto);
 Vector2 Vector2_Clamp(Vector2 v, float maxLength);
+float Vector2_Distance(Vector2 a, Vector2 b);

@@ -19,8 +19,8 @@ float line_length = 0.15f;
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
 double GRAVITY = 9.8f;  // 중력
-double centerCoefficient = 0.0008f;
-double RESTITUTION = 0.3f;      // 탄성 계수
+double centerCoefficient = 0.001f;
+double RESTITUTION = 0.8f;      // 탄성 계수
 double dragForce = 500.0f;      // 당기는 힘
 double maxForce = 700.0f;      // 최대 당기는 힘
 
