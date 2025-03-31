@@ -41,7 +41,6 @@ void start_game() {
     Vector2 dragStart, dragEnd;
     float dragThreshold = 30.0f;
     float gravityScale = 1.0f;
-    float centerCoefficient = 0.003f;
     float deltaTime = 1.0f / FPS;
     float last_shot_time = 0.0f;
 
@@ -148,7 +147,6 @@ void start_game() {
                     Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION)));
             }
 
-
             // 행성끼리 충돌 시
             for (int j = 0; j < planet_num; ++j) {
                 Planet* q = planet_list[j];
@@ -173,10 +171,12 @@ void start_game() {
                     q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
                 }
             }
+            if (p->isFlying) {
                 // 중력 계산
                 CalcGravity(p, gravityCenter, centerCoefficient, deltaTime);
                 p->position = Vector2_Add(p->position, Vector2_Scale(p->velocity, deltaTime));
                 ++i;
+            }
         }
 
         // 발사하고 5초 뒤에 생성
@@ -200,7 +200,7 @@ void start_game() {
             // 행성들 그리기
             for (int i = 0; i <= planet_num; ++i) {
                 Planet* p = planet_list[i];
-                if (!p || !p->isFlying) continue;
+                if (!p) continue;
 
                 ALLEGRO_BITMAP* planet_img = NULL;
                 switch (p->type) {
@@ -287,7 +287,7 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     p->velocity = vel;
     p->type = type;
     p->radius = get_radius(type);
-    p->isFlying = true;
+    p->isFlying = false;
     return p;
 }
 
@@ -316,7 +316,7 @@ void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
-    b->isFlying = false;
+    b->isFlying = true;
     b->type = 0;
     b->velocity = (Vector2){ 0,0 };
 }
