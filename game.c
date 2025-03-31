@@ -11,6 +11,7 @@ void start_game() {
     //새 타이머를 가리키는 포인터 반환. or NULL반환
     ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();//선입선출
     al_register_event_source(game_event_queue, al_get_mouse_event_source());
+    al_register_event_source(game_event_queue, al_get_keyboard_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
 
@@ -60,44 +61,16 @@ void start_game() {
         ALLEGRO_EVENT event;
         al_wait_for_event(game_event_queue, &event);
 
-        // 화면 닫을 때
-        if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            return;
+        // ESC 키를 눌렀을 때 게임 종료
+        if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                playing = false;  
+            }
+        }
+
         // 화면 새로고침 주기
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = 1;
-        }
-        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-            int mx = event.mouse.x;
-            int my = event.mouse.y;
-
-            // home 버튼 위치 클릭됐는지 확인
-            if (mx >= SCREEN_W - 60 && mx <= SCREEN_W - 10 &&
-                my >= 10 && my <= 60) {
-
-                playing = false;
-                // 리소스 정리 후 메뉴로 복귀
-                for (int i = 0; i < planet_num; ++i) {
-                    if (planet_list[i]) free(planet_list[i]);
-                    
-                }
-
-                al_destroy_bitmap(planet_img1);
-                al_destroy_bitmap(planet_img2);
-                al_destroy_bitmap(planet_img3);
-                al_destroy_bitmap(planet_img4);
-                al_destroy_bitmap(planet_img5);
-                al_destroy_bitmap(planet_img6);
-                al_destroy_bitmap(planet_img7);
-                al_destroy_bitmap(center);
-                al_destroy_bitmap(gravityfield);
-                al_destroy_bitmap(startpoint);
-                al_destroy_bitmap(home_icon);
-                al_destroy_event_queue(game_event_queue);
-                al_destroy_timer(timer);
-
-                return; // start_game() 종료 → main 메뉴 화면으로 복귀
-            }
         }
 
         ALLEGRO_MOUSE_STATE mouse;
