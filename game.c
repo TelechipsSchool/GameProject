@@ -45,7 +45,6 @@ void start_game() {
 
     if (!startpoint) printf("출발지점 이미지 로딩 실패\n");
 
-
     // 변수 선언
     Vector2 dragStart, dragEnd;
     float dragThreshold = 30.0f;
@@ -55,23 +54,18 @@ void start_game() {
 
     bool isFired = false, redraw = true, playing = true, isDragging = false;
 
+    char* username = getUserName();
+
     while (playing) {
         ALLEGRO_EVENT event;
         al_wait_for_event(game_event_queue, &event);
 
         // 화면 닫을 때
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            playing = 0;
+            return;
         // 화면 새로고침 주기
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = 1;
-        }
-        else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            if (event.keyboard.keycode == ALLEGRO_KEY_R) {
-                playing = false;
-                start_game(); // 재시작
-                return;
-            }
         }
         else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
             int mx = event.mouse.x;
@@ -296,6 +290,8 @@ void start_game() {
     al_destroy_bitmap(home_icon);
     al_destroy_event_queue(game_event_queue);
     al_destroy_timer(timer);
+
+    return;
 }
 
 // 충돌 체크 함수
@@ -382,4 +378,75 @@ void merge_planets(Planet* a, Planet* b) {
 void Win() {
     printf("Win!!\n");
 
+}
+
+char* getUserName() {
+    static char username[MAX_NAME_LENGTH] = "";  // 전역으로 선언하여 다른 함수에서 반환 가능
+    int username_length = 0;
+
+    ALLEGRO_FONT* namefont = get_username_font();
+    ALLEGRO_FONT* enterfont = get_entername_font();
+
+    ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
+    if (!event_queue || !timer) {
+        printf("이벤트 큐 또는 타이머 생성 실패\n");
+        return NULL;
+    }
+
+    al_register_event_source(event_queue, al_get_display_event_source(al_get_current_display()));
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    al_start_timer(timer);
+
+    bool typing = true;
+    while (typing) {
+        ALLEGRO_EVENT ev;
+        al_wait_for_event(event_queue, &ev);
+
+        if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                typing = false;  // ESC 키로 종료
+            }
+            else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && username_length > 0) {
+                // 백스페이스 처리
+                username_length--;
+                username[username_length] = '\0';
+            }
+            else if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER && username_length > 0) {
+                // 입력 완료 후 종료
+                typing = false;
+            }
+            else if (ev.keyboard.keycode >= ALLEGRO_KEY_A && ev.keyboard.keycode <= ALLEGRO_KEY_Z) {
+                // 알파벳 입력 처리
+                if (username_length < MAX_NAME_LENGTH - 1) {
+                    username[username_length] = ev.keyboard.keycode - ALLEGRO_KEY_A + 'A';
+                    username_length++;
+                }
+            }
+        }
+
+        if (ev.type == ALLEGRO_EVENT_TIMER) {
+            // 화면에 텍스트 그리기
+            al_clear_to_color(al_map_rgb(0, 0, 0));  // 배경을 검은색으로
+
+            // 제목 텍스트
+            al_draw_text(enterfont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Enter your name");
+
+            // 입력칸 그리기
+            al_draw_rectangle(SCREEN_W / 2 - 200, SCREEN_H / 2 + 10, SCREEN_W / 2 + 200, SCREEN_H / 2 + 70, al_map_rgb(255, 255, 255), 2);
+            al_draw_text(namefont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 25, ALLEGRO_ALIGN_CENTER, username);
+
+            // 화면 업데이트
+            al_flip_display();
+        }
+    }
+
+    // 자원 해제
+    al_destroy_font(enterfont);
+    al_destroy_font(namefont);
+    al_destroy_event_queue(event_queue);
+    al_destroy_timer(timer);
+
+    return username;
 }

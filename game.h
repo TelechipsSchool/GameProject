@@ -32,6 +32,9 @@ double maxForce = 200.0f;      // 최대 당기는 힘
 #define MAX_PLANET 100
 #define PLANET_TYPES 7
 
+// 유저 이름 최대 길이
+#define MAX_NAME_LENGTH 10
+
 typedef struct {
     Vector2 position;
     Vector2 velocity;
@@ -49,3 +52,5 @@ void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float delt
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type);
 void Destroy_Planet(Planet** planet_list, int* count, int index);
 void merge_planets(Planet* a, Planet* b);
+void Win();
+char* getUserName();
