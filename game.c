@@ -336,7 +336,7 @@ int get_radius(int type) {
 void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
     if (a->type > PLANET_TYPES) {
-        printf("win!!")
+        printf("win!!\n");
     }
     a->radius = get_radius(a->type);
     //a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
