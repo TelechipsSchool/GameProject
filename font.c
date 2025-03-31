@@ -46,3 +46,9 @@ ALLEGRO_FONT* get_entername_font() {
 	ALLEGRO_FONT* font = al_load_font("fonts/D2Coding/D2CodingBold-Ver1.3.2-20180524.ttf", 50, 0);
 	return font;
 }
+
+ALLEGRO_FONT* get_rank_font() {
+	// ÆùÆ®
+	ALLEGRO_FONT* font = al_load_font("fonts/D2Coding/D2CodingBold-Ver1.3.2-20180524.ttf", 50, 0);
+	return font;
+}

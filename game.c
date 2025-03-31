@@ -3,6 +3,8 @@
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
+
+char* username;
 int score = 0;
 
 void start_game() {
@@ -54,7 +56,7 @@ void start_game() {
 
     bool isFired = false, redraw = true, playing = true, isDragging = false;
 
-    char* username = getUserName();
+    username = getUserName();
 
     while (playing) {
         ALLEGRO_EVENT event;
@@ -63,6 +65,7 @@ void start_game() {
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                save_score(username, score);
                 playing = false;
                 menu();
             }
@@ -348,9 +351,9 @@ void merge_planets(Planet* a, Planet* b) {
     score += a->radius;
 }
 
-void Win() {
+void Win(username) {
     printf("Win!!\n");
-
+    save_score(username, score);
 }
 
 char* getUserName() {

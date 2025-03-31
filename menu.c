@@ -47,7 +47,7 @@ void menu() {
                     break;
                 case ALLEGRO_KEY_ENTER:
                     if (selected == MENU_START) start_game();
-                    else if (selected == MENU_RANK) printf("랭킹 보기\n");
+                    else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) printf("설정 화면\n");
                     else if (selected == MENU_HELP) {
                         help_menu();

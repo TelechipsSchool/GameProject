@@ -12,12 +12,10 @@
 
 #define SCREEN_W 1600
 #define SCREEN_H 900
-#define FPS 4000
+#define FPS 120
 
 #define GRID_SIZE 100
 #define GRID_WIDTH (SCREEN_W / GRID_SIZE + 1)
 #define GRID_HEIGHT (SCREEN_H / GRID_SIZE + 1)
-
-#define RANKING_FILE "ranking.txt"
 
 void init();
