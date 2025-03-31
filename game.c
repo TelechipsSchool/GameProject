@@ -61,7 +61,20 @@ void start_game() {
         else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_R) {
                 playing = false;
-                // 리소스 정리 후 다시 시작
+                start_game(); // 재시작
+                return;
+            }
+        }
+        else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            int mx = event.mouse.x;
+            int my = event.mouse.y;
+
+            // home 버튼 위치 클릭됐는지 확인
+            if (mx >= SCREEN_W - 60 && mx <= SCREEN_W - 10 &&
+                my >= 10 && my <= 60) {
+
+                playing = false;
+                // 리소스 정리 후 메뉴로 복귀
                 for (int i = 0; i < planet_num; ++i) {
                     if (planet_list[i]) free(planet_list[i]);
                 }
@@ -77,8 +90,7 @@ void start_game() {
                 al_destroy_event_queue(game_event_queue);
                 al_destroy_timer(timer);
 
-                start_game(); // 재시작
-                return;
+                return; // start_game() 종료 → main 메뉴 화면으로 복귀
             }
         }
 
@@ -217,16 +229,24 @@ void start_game() {
             al_flip_display();
         }
     }
+
+    // 해제
     for (int i = 0; i < planet_num; ++i) {
         if (planet_list[i]) free(planet_list[i]);//0만 false반환. 0아니면 true
     }
 
     // 해제
     al_destroy_bitmap(planet_img1);
+    al_destroy_bitmap(planet_img2);
+    al_destroy_bitmap(planet_img3);
+    al_destroy_bitmap(planet_img4);
+    al_destroy_bitmap(planet_img5);
     al_destroy_bitmap(center);
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
+    al_destroy_bitmap(home_icon);
     al_destroy_event_queue(game_event_queue);
+    al_destroy_timer(timer);
 }
 
 // 충돌 체크 함수

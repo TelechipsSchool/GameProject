@@ -7,7 +7,7 @@
 
 
 // 유도선 설정
-float line_length = 0.8f;
+float line_length = 0.15f;
 
 // 행성 발사 위치
 #define init_x 300
@@ -18,10 +18,10 @@ float line_length = 0.8f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수
-double GRAVITY = 0.01f;  // 중력
+double GRAVITY = 0.001f;  // 중력
 double RESTITUTION = 0.3f;      // 탄성 계수
 double dragForce = 500.0f;      // 당기는 힘
-double maxForce = 500.0f;      // 최대 당기는 힘
+double maxForce = 700.0f;      // 최대 당기는 힘
 
 // 최대 행성 개수
 #define MAX_PLANET 100
