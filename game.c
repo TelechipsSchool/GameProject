@@ -1,6 +1,8 @@
 ﻿#include "game.h"
 
-
+// 행성 배열
+Planet* planet_list[MAX_PLANET] = { 0 };
+int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
 
 void start_game() {
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);//0.00025초마다 이벤트 ->매초 4000번. 
@@ -21,10 +23,6 @@ void start_game() {
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     
-    Planet* planet_list[MAX_PLANET] = { 0 };
-    
-    // 행성 갯수
-    int planet_num = 0;//첫번째 행성 0부터시작.
     planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %5 +1);
 
     // 중력, 시작점, 센터 생성
@@ -316,7 +314,32 @@ void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
-    b->isFlying = true;
+    b->isFlying = false;
     b->type = 0;
     b->velocity = (Vector2){ 0,0 };
+
+    // 행성끼리 충돌 시
+    for (int j = 0; j < planet_num; ++j) {
+        Planet* q = planet_list[j];
+        if (q == NULL || q == p || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화행성인지체크
+        // 다른 행성과의 충돌
+        if (collision_check(p->position.x, p->position.y, p->radius,
+            q->position.x, q->position.y, q->radius)) {
+
+            if (p->type == q->type) {
+                merge_planets(p, q);
+                Destroy_Planet(planet_list, &planet_num, j);
+                if (j < i)i--;//인덱스 조정
+                continue;
+            }
+            // 충돌 방향 벡터 (i에서 j로 향하는 방향)
+            Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, q->position));
+            /* Vector2_Project : i와 j의 속도 투영값 계산
+            Vector2_Scale,Vector2_Sub: 탄성 충돌 공식을 사용하여 새로운 속도 계산
+            계산 업뎃 후 속도 반영
+            */
+            p->velocity = Vector2_Sub(p->velocity, Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION)));
+            q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
+        }
+    }
 }
