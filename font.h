@@ -1,7 +1,6 @@
 #pragma once
 #include "init.h"
 
-
 ALLEGRO_FONT* get_title_font();
 ALLEGRO_FONT* get_menu_font();
 ALLEGRO_FONT* get_next_font();

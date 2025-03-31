@@ -1,6 +1,6 @@
 #pragma once
-#include "stdbool.h"
-#include "math.h"
+#include <stdbool.h>
+#include <math.h>
 
 typedef struct {
     float x, y;

@@ -1,5 +1,4 @@
 ﻿#include "game.h"
-#include "font.h"
 
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
@@ -64,7 +63,8 @@ void start_game() {
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-                playing = false;  
+                playing = false;
+                menu();
             }
         }
 

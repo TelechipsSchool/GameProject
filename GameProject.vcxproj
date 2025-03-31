@@ -145,7 +145,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="button.c" />
     <ClCompile Include="display.c" />
     <ClCompile Include="font.c" />
     <ClCompile Include="help.c" />
@@ -156,7 +155,6 @@
     <ClCompile Include="vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="button.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />

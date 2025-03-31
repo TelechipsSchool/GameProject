@@ -1,5 +1,13 @@
 #include "menu.h"
 
+// 버튼 생성
+Button menu_buttons[MENU_COUNT] = {
+    {SCREEN_W / 2 - 100, 250, 200, 50},  // Start
+    {SCREEN_W / 2 - 100, 320, 200, 50},  // Rank
+    {SCREEN_W / 2 - 100, 390, 200, 50},   // Setting
+    {SCREEN_W / 2 - 100, 460, 200, 50}   // Help
+};
+
 void menu() {
     // Allegro 초기화
     init();

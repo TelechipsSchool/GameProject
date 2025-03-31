@@ -1,10 +1,9 @@
 #pragma once
 #include "init.h"
+#include "menu.h"
 #include "display.h"
 #include "vector.h"
 #include <stdlib.h>
-
-
 
 // 유도선 설정
 float line_length = 0.15f;
