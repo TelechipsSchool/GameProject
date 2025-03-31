@@ -18,4 +18,6 @@
 #define GRID_WIDTH (SCREEN_W / GRID_SIZE + 1)
 #define GRID_HEIGHT (SCREEN_H / GRID_SIZE + 1)
 
+#define RANKING_FILE "ranking.txt"
+
 void init();

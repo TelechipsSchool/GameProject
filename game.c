@@ -1,8 +1,10 @@
 ﻿#include "game.h"
+#include "font.h"
 
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
+int score = 0;
 
 void start_game() {
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);//0.00025초마다 이벤트 ->매초 4000번. 
@@ -11,6 +13,12 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_mouse_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
+
+    // 폰트
+    ALLEGRO_FONT* next_font = get_next_font();
+    ALLEGRO_FONT* score_text_font = get_score_text_font();
+    ALLEGRO_FONT* score_font = get_score_font();
+    ALLEGRO_FONT* score_best_font = get_score_best_font();
 
     // 행성 이미지
     ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
@@ -139,6 +147,8 @@ void start_game() {
             //화면 밖으로 나간 행성 제거
             if (p->position.x<-100 || p->position.x>SCREEN_W + 100 || p->position.y< -100 || p->position.y>SCREEN_H + 100) {
                 Destroy_Planet(planet_list, &planet_num, i);
+                // 점수 깎임
+                score -= 200;
                 continue;
             }
 
@@ -218,8 +228,18 @@ void start_game() {
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
             al_draw_bitmap(home_icon, SCREEN_W - 60, 10, 0);
-            
-            // 다음 행성 텍스트, 점수 표시
+           
+            // 다음 행성 표시
+            al_draw_filled_rectangle(40, 40, 200, 200, al_map_rgb(100, 100, 100));
+            al_draw_filled_rectangle(70, 70, 170, 170, al_map_rgb(50, 50, 50));
+            al_draw_text(next_font, al_map_rgb(255, 255, 255), 120, 170, ALLEGRO_ALIGN_CENTER, "NEXT");
+
+            // 점수 표시
+            al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
+            al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
+            al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");      
+            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", 100);
+            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
             
 
             // 행성들 그리기
@@ -345,8 +365,8 @@ int get_radius(int type) {
 
 void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
-    if (a->type > PLANET_TYPES) {
-        printf("win!\n");
+    if (a->type >= PLANET_TYPES) {
+        Win();
     }
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
@@ -354,4 +374,12 @@ void merge_planets(Planet* a, Planet* b) {
     b->isFlying = false;
     b->type = 0;
     b->velocity = (Vector2){ 0,0 };
+
+    // 행성 크기만큼 점수 추가
+    score += a->radius;
+}
+
+void Win() {
+    printf("Win!!\n");
+
 }

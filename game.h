@@ -14,8 +14,8 @@ float line_length = 0.15f;
 #define init_y SCREEN_H / 2
 
 // 행성 대기 위치
-#define wait_x 100
-#define wait_y 100
+#define wait_x 120
+#define wait_y 120
 
 // 목표 행성 위치
 #define center_x SCREEN_W - 400
