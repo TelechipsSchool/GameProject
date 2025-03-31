@@ -19,13 +19,13 @@ void start_game() {
     ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 90, 90);
     ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 120, 120);
     ALLEGRO_BITMAP* planet_img6 = load_bitmap_resized("images/planet_6.png", 160, 160);
-    ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 200, 200);
+    ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 300, 300);
     ALLEGRO_BITMAP* home_icon = load_bitmap_resized("images/home.png", 50, 50);
 
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     
-    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %3 + 1);        // 발사 행성은 type 3 까지만 나옴
+    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 3 + 1);        // 발사 행성은 type 3 까지만 나옴
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -339,7 +339,7 @@ int get_radius(int type) {
     case 4: return 45; break;
     case 5: return 60; break;
     case 6: return 80; break;
-    case 7: return 100; break;
+    case 7: return 150; break;
     }
 }
 
