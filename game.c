@@ -16,6 +16,7 @@ void start_game() {
     ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 70, 70);
     ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 100, 100);
     ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 140, 140);
+    ALLEGRO_BITMAP* home_icon = load_bitmap_resized("images/home.png", 50, 50);
 
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
@@ -56,6 +57,29 @@ void start_game() {
         // 화면 새로고침 주기
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = 1;
+        }
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_R) {
+                playing = false;
+                // 리소스 정리 후 다시 시작
+                for (int i = 0; i < planet_num; ++i) {
+                    if (planet_list[i]) free(planet_list[i]);
+                }
+                al_destroy_bitmap(planet_img1);
+                al_destroy_bitmap(planet_img2);
+                al_destroy_bitmap(planet_img3);
+                al_destroy_bitmap(planet_img4);
+                al_destroy_bitmap(planet_img5);
+                al_destroy_bitmap(center);
+                al_destroy_bitmap(gravityfield);
+                al_destroy_bitmap(startpoint);
+                al_destroy_bitmap(home_icon);
+                al_destroy_event_queue(game_event_queue);
+                al_destroy_timer(timer);
+
+                start_game(); // 재시작
+                return;
+            }
         }
 
         ALLEGRO_MOUSE_STATE mouse;
@@ -159,6 +183,7 @@ void start_game() {
             al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
+            al_draw_bitmap(home_icon, SCREEN_W - 60, 10, 0);
 
             // 행성들 그리기
             for (int i = 0; i <= planet_num; ++i) {
