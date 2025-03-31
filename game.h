@@ -21,12 +21,12 @@ float line_length = 0.15f;
 double GRAVITY = 9.8f;  // 중력
 double centerCoefficient = 0.0013f;
 double RESTITUTION = 0.8f;      // 탄성 계수
-double dragForce = 500.0f;      // 당기는 힘
-double maxForce = 700.0f;      // 최대 당기는 힘
+double dragForce = 150.0f;      // 당기는 힘
+double maxForce = 200.0f;      // 최대 당기는 힘
 
 // 최대 행성 개수
 #define MAX_PLANET 100
-#define PLANET_TYPES 5
+#define PLANET_TYPES 7
 
 typedef struct {
     Vector2 position;

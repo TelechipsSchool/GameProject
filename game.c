@@ -14,16 +14,18 @@ void start_game() {
 
     // 행성 이미지
     ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
-    ALLEGRO_BITMAP* planet_img2 = load_bitmap_resized("images/planet_2.png", 50, 50);
-    ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 70, 70);
-    ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 100, 100);
-    ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 140, 140);
+    ALLEGRO_BITMAP* planet_img2 = load_bitmap_resized("images/planet_2.png", 40, 40);
+    ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 60, 60);
+    ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 90, 90);
+    ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 120, 120);
+    ALLEGRO_BITMAP* planet_img6 = load_bitmap_resized("images/planet_6.png", 160, 160);
+    ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 200, 200);
     ALLEGRO_BITMAP* home_icon = load_bitmap_resized("images/home.png", 50, 50);
 
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     
-    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %3 +1);        // 발사 행성은 type 3 까지만 나옴
+    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() %3 + 1);        // 발사 행성은 type 3 까지만 나옴
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -81,6 +83,8 @@ void start_game() {
                 al_destroy_bitmap(planet_img3);
                 al_destroy_bitmap(planet_img4);
                 al_destroy_bitmap(planet_img5);
+                al_destroy_bitmap(planet_img6);
+                al_destroy_bitmap(planet_img7);
                 al_destroy_bitmap(center);
                 al_destroy_bitmap(gravityfield);
                 al_destroy_bitmap(startpoint);
@@ -197,7 +201,7 @@ void start_game() {
         // 발사하고 5초 뒤에 생성
         if (al_get_time() - last_shot_time > 5.0 && isFired) {
             if (planet_num < MAX_PLANET) {
-                planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 5 + 1);
+                planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 3 + 1);
             }
             isFired = false;
         }
@@ -228,6 +232,8 @@ void start_game() {
                     case 3: planet_img = planet_img3; break;
                     case 4: planet_img = planet_img4; break;
                     case 5: planet_img = planet_img5; break;
+                    case 6: planet_img = planet_img6; break;
+                    case 7: planet_img = planet_img7; break;
                     }
                 }
 
@@ -261,6 +267,8 @@ void start_game() {
     al_destroy_bitmap(planet_img3);
     al_destroy_bitmap(planet_img4);
     al_destroy_bitmap(planet_img5);
+    al_destroy_bitmap(planet_img6);
+    al_destroy_bitmap(planet_img7);
     al_destroy_bitmap(center);
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
@@ -308,8 +316,8 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     p->type = type;
     p->radius = get_radius(type);
     p->isFlying = false;
-    return p;
     p->explode_time = 0.;
+    return p;    
 }
 
 void Destroy_Planet(Planet** planet_list, int* count, int index) {
@@ -326,17 +334,19 @@ void Destroy_Planet(Planet** planet_list, int* count, int index) {
 int get_radius(int type) {
     switch (type) {
     case 1: return 15; break;
-    case 2: return 25; break;
-    case 3: return 35; break;
-    case 4: return 50; break;
-    case 5: return 70; break;
+    case 2: return 20; break;
+    case 3: return 30; break;
+    case 4: return 45; break;
+    case 5: return 60; break;
+    case 6: return 80; break;
+    case 7: return 100; break;
     }
 }
 
 void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
     if (a->type > PLANET_TYPES) {
-        printf("win!!\n");
+        printf("win!\n");
     }
     a->radius = get_radius(a->type);
     //a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
