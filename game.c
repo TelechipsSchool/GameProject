@@ -24,8 +24,10 @@ void start_game() {
 
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
+    Vector2 waitPoint = { wait_x, wait_y };
     
     planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 3 + 1);        // 발사 행성은 type 3 까지만 나옴
+    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);          // 다음 행성도 생성
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -120,7 +122,7 @@ void start_game() {
             if (Vector2_Length(dragVec) > dragThreshold && planet_num <MAX_PLANET) {
                 Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -dragForce), maxForce);
                
-                Planet* p = planet_list[planet_num - 1];
+                Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
                }
@@ -201,7 +203,8 @@ void start_game() {
         // 발사하고 5초 뒤에 생성
         if (al_get_time() - last_shot_time > 5.0 && isFired) {
             if (planet_num < MAX_PLANET) {
-                planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 3 + 1);
+                planet_list[planet_num - 1]->position = shootStart;
+                planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);
             }
             isFired = false;
         }
@@ -222,19 +225,14 @@ void start_game() {
                 if (!p) continue;
 
                 ALLEGRO_BITMAP* planet_img = NULL;
-                if (al_get_time() < p->explode_time) {
-                    planet_img = load_bitmap_resized("images/explode.png", p->radius * 2, p->radius * 2);;
-                }
-                else {
-                    switch (p->type) {
-                    case 1: planet_img = planet_img1; break;
-                    case 2: planet_img = planet_img2; break;
-                    case 3: planet_img = planet_img3; break;
-                    case 4: planet_img = planet_img4; break;
-                    case 5: planet_img = planet_img5; break;
-                    case 6: planet_img = planet_img6; break;
-                    case 7: planet_img = planet_img7; break;
-                    }
+                switch (p->type) {
+                case 1: planet_img = planet_img1; break;
+                case 2: planet_img = planet_img2; break;
+                case 3: planet_img = planet_img3; break;
+                case 4: planet_img = planet_img4; break;
+                case 5: planet_img = planet_img5; break;
+                case 6: planet_img = planet_img6; break;
+                case 7: planet_img = planet_img7; break;
                 }
 
                 if (planet_img == NULL) continue;
@@ -316,7 +314,6 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     p->type = type;
     p->radius = get_radius(type);
     p->isFlying = false;
-    p->explode_time = 0.;
     return p;    
 }
 
@@ -349,9 +346,7 @@ void merge_planets(Planet* a, Planet* b) {
         printf("win!\n");
     }
     a->radius = get_radius(a->type);
-    //a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
-
-    a->explode_time = al_get_time() + 0.5;      // 폭발 유지 2초
+    a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
 
     b->isFlying = false;
     b->type = 0;

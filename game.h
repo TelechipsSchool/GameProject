@@ -13,14 +13,18 @@ float line_length = 0.15f;
 #define init_x 300
 #define init_y SCREEN_H / 2
 
+// 행성 대기 위치
+#define wait_x 100
+#define wait_y 100
+
 // 목표 행성 위치
 #define center_x SCREEN_W - 400
 #define center_y SCREEN_H / 2
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
 double GRAVITY = 9.8f;  // 중력
-double centerCoefficient = 0.0013f;
-double RESTITUTION = 0.8f;      // 탄성 계수
+double centerCoefficient = 0.0015f;
+double RESTITUTION = 0.6f;      // 탄성 계수
 double dragForce = 150.0f;      // 당기는 힘
 double maxForce = 200.0f;      // 최대 당기는 힘
 
@@ -34,7 +38,6 @@ typedef struct {
     bool isFlying;
     int type;
     int radius;
-    float explode_time; // 폭발 시간
 } Planet;
 
 int get_radius(int type);
