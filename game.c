@@ -218,6 +218,9 @@ void start_game() {
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
             al_draw_bitmap(home_icon, SCREEN_W - 60, 10, 0);
+            
+            // 다음 행성 텍스트, 점수 표시
+            
 
             // 행성들 그리기
             for (int i = 0; i <= planet_num; ++i) {

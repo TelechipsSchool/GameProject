@@ -17,7 +17,8 @@ int main(void) {
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
 
 	// 폰트
-    ALLEGRO_FONT* font = get_font();
+    ALLEGRO_FONT* title_font = get_title_font();
+    ALLEGRO_FONT* menu_font = get_menu_font();
 
 	// 이벤트 큐 생성
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -60,22 +61,25 @@ int main(void) {
         // 화면 그리기
         al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
 
+        // 제목
+        al_draw_text(title_font, al_map_rgb(181, 178, 255), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
+
         // 메뉴 옵션 출력 (선택된 메뉴는 노란색, 나머지는 흰색)
-        al_draw_text(font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 250, ALLEGRO_ALIGN_CENTER, "START");
-        al_draw_text(font, (selected == MENU_RANK) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 320, ALLEGRO_ALIGN_CENTER, "RANK");
-        al_draw_text(font, (selected == MENU_SETTING) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 390, ALLEGRO_ALIGN_CENTER, "SETTING");
-        al_draw_text(font, (selected == MENU_HELP) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 460, ALLEGRO_ALIGN_CENTER, "HELP");
+        al_draw_text(menu_font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+            SCREEN_W / 2, 550, ALLEGRO_ALIGN_CENTER, "START");
+        al_draw_text(menu_font, (selected == MENU_RANK) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+            SCREEN_W / 2, 620, ALLEGRO_ALIGN_CENTER, "RANK");
+        al_draw_text(menu_font, (selected == MENU_SETTING) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+            SCREEN_W / 2, 690, ALLEGRO_ALIGN_CENTER, "SETTING");
+        al_draw_text(menu_font, (selected == MENU_HELP) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+            SCREEN_W / 2, 780, ALLEGRO_ALIGN_CENTER, "HELP");
 
         al_flip_display();
     }
 
     // 리소스 해제
     al_destroy_bitmap(main_screen);
-    al_destroy_font(font);
+    al_destroy_font(menu_font);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
 
