@@ -52,8 +52,8 @@ void start_game() {
     Vector2 shootStart = { init_x, init_y };
     Vector2 waitPoint = { wait_x, wait_y };
     
-    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % 3 + 1);        // 발사 행성은 type 3 까지만 나옴
-    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);          // 다음 행성도 생성
+    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % MODE + 1);        // 발사 행성은 type 3 까지만 나옴
+    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % MODE + 1);          // 다음 행성도 생성
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -96,6 +96,7 @@ void start_game() {
                 for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
                 planet_num = 0;
                 playing = false;
+                score = 0;
                 menu();
                 return;
                 
@@ -236,9 +237,17 @@ void start_game() {
 
             // 발사하고 5초 뒤에 생성
             if (al_get_time() - last_shot_time > 5.0 && isFired) {
+                // 발사 생성하기 전에 태양 있는지 확인
+                for (int i = 0; i < planet_num; ++i) {
+                    Planet* p = planet_list[i];
+                    if (p->type == 7) {
+                        win();
+                    }
+                }
+
                 if (planet_num < MAX_PLANET) {
                     planet_list[planet_num - 1]->position = shootStart;
-                    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);
+                    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % MODE + 1);
                 }
                 isFired = false;
             }
@@ -452,9 +461,6 @@ int get_radius(int type) {
 
 void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
-    if (a->type >= PLANET_TYPES) {
-        Win();
-    }
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
 
@@ -464,11 +470,6 @@ void merge_planets(Planet* a, Planet* b) {
 
     // 행성 크기만큼 점수 추가
     score += a->radius;
-}
-
-void Win(username) {
-    printf("Win!!\n");
-    save_score(username, score);
 }
 
 char* getUserName() {
@@ -536,4 +537,33 @@ char* getUserName() {
     al_destroy_timer(timer);
 
     return username;  // 동적 할당된 메모리를 반환
+}
+
+void win() {
+    // 태양 이미지 로드 (이미지 크기에 맞게 조정)
+    ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
+
+    // "You Win!" 텍스트를 표시할 폰트
+    ALLEGRO_FONT* win_font = get_next_font();
+
+    // 화면을 검은색으로 클리어
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+    // 태양 이미지 중앙에 그리기
+    al_draw_bitmap(sun_img, SCREEN_W / 2 - al_get_bitmap_width(sun_img) / 2, SCREEN_H / 2 - al_get_bitmap_height(sun_img) / 2, 0);
+
+    // "You Win!" 텍스트 중앙에 그리기
+    al_draw_text(win_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + al_get_bitmap_height(sun_img) / 2 + 20, ALLEGRO_ALIGN_CENTER, "You Win!");
+
+    // 화면 갱신
+    al_flip_display();
+
+    //// 잠시 대기 후, 메인 메뉴로 돌아가기
+    //al_rest(5.0);  // 2초간 대기
+
+    //// 게임 종료 후 메뉴 화면으로 전환
+    //menu();
+
+    // 자원 해제
+    al_destroy_bitmap(sun_img);
 }
