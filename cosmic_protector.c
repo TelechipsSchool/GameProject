@@ -2,7 +2,7 @@
 
 Rocket rocket = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0 };
 Bullet bullets[MAX_BULLETS] = { 0 };
-Asteroid asteroids[MAX_ASTEROIDS] = { 0 };
+Asteroid asteroids[MAX_ASTEROIDS] = { 0 };  // 큐로 바꿔서 메모리 공간 낭비 없애기
 
 bool key_state[ALLEGRO_KEY_MAX] = { false };
 
