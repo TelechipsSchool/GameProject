@@ -1,4 +1,5 @@
-﻿#include "game.h"
+﻿
+#include "game.h"
 
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
@@ -21,6 +22,19 @@ void start_game() {
     ALLEGRO_FONT* score_text_font = get_score_text_font();
     ALLEGRO_FONT* score_font = get_score_font();
     ALLEGRO_FONT* score_best_font = get_score_best_font();
+
+    //배경 이미지
+
+    ALLEGRO_BITMAP* scroll_frames[SCROLL_FRAMES];
+    int current_scroll_frame = 0;
+
+    char path[128];
+    for (int i = 0; i < SCROLL_FRAMES; ++i) {
+        sprintf(path, "images/scroll_frame_%d.png", i);
+        scroll_frames[i] = al_load_bitmap(path);
+        if (!scroll_frames[i]) printf("스크롤 프레임 %d로딩 실패\n", i);
+
+    }
 
     // 행성 이미지
     ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
@@ -191,7 +205,22 @@ void start_game() {
 
         // 화면 업데이트 redraw
         if (redraw) {
+
+            background_timer += deltaTime;
+            if (background_timer >= background_interval) {
+                current_scroll_frame = (current_scroll_frame + 1) % SCROLL_FRAMES;
+                background_timer = 0.0f;
+            }
+
             al_clear_to_color(al_map_rgb(20, 20, 20));
+            //배경
+            al_draw_scaled_bitmap(scroll_frames[current_scroll_frame],
+                0, 0,
+                al_get_bitmap_width(scroll_frames[current_scroll_frame]),
+                al_get_bitmap_height(scroll_frames[current_scroll_frame]),
+                0, 0,
+                SCREEN_W, SCREEN_H,
+                0);
 
             //1.중력필드 배경, 2. 출발 지점, 3. 중심 순서로 그림
             al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
@@ -264,6 +293,9 @@ void start_game() {
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
     al_destroy_bitmap(home_icon);
+    for (int i = 0; i < SCROLL_FRAMES; ++i) {
+        if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
+    }
     al_destroy_event_queue(game_event_queue);
     al_destroy_timer(timer);
 

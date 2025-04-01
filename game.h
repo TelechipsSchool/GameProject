@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 #include "init.h"
 #include "menu.h"
@@ -12,6 +13,13 @@ float line_length = 0.15f;
 // 행성 발사 위치
 #define init_x 300
 #define init_y SCREEN_H / 2
+
+//배경
+#define SCROLL_FRAMES 80
+
+//배경 전용 타이머
+float background_timer = 0.0f;
+float background_interval = 0.2f;
 
 // 행성 대기 위치
 #define wait_x 120
