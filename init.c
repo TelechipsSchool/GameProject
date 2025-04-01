@@ -14,7 +14,7 @@ void (*init_functions[])(void) = {
 	al_install_mouse,
 	al_install_keyboard,
 	al_install_audio,
-al_init_acodec_addon
+	al_init_acodec_addon
 
 };
 

@@ -76,15 +76,28 @@ void start_game() {
     char* username = getUserName();
     int high_score = get_high_score();
 
+    al_install_audio();
+    al_init_acodec_addon();
+    al_reserve_samples(16);
+    ALLEGRO_SAMPLE_ID sample_id;
+    ALLEGRO_SAMPLE* sample = al_load_sample("audio/start.ogg");
+    if (!sample) {
+        printf("음향 로딩 실패!\n");
+    }
+    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
+    
+
 
     while (playing) {
         ALLEGRO_EVENT event;
         al_wait_for_event(game_event_queue, &event);
         
+        
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
                 //printf("%s %d\n", username, score);       // 디버깅 용
+                al_stop_sample(&sample_id);
                 save_score(username, score);
 
                 // 해제 먼저!
@@ -371,6 +384,7 @@ void start_game() {
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
     al_destroy_bitmap(home_icon);
+    al_destroy_sample(sample);
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
     }

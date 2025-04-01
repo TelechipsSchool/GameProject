@@ -53,6 +53,17 @@ while (running) {
                     else if (selected == MENU_SETTING) printf("설정 화면\n");
                     else if (selected == MENU_HELP) {
                         ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
+                        ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
+                        ALLEGRO_SAMPLE_ID sample_id;
+
+                        if (!sample) {
+                            printf("음향 로딩 실패!\n");
+                        }
+                        else {
+                            al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
+
+
+                         }
                         if (!help_screen) {
 
                             printf("help.png 로딩 실패!\n");
@@ -75,10 +86,13 @@ while (running) {
                                     help_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                                     in_help = false; // ESC 누르면 루프 종료
 
+                                    al_stop_sample(&sample_id);
+
                                 }
                             }
 
                             al_destroy_bitmap(help_screen);
+                            al_destroy_sample(sample);
                         }
                     }
                     break;
