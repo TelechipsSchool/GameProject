@@ -5,6 +5,7 @@
 #include "display.h"
 #include "vector.h"
 #include "rank.h"
+#include "setting.h"
 #include <stdlib.h>
 
 // 유도선 설정

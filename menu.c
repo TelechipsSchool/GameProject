@@ -34,9 +34,9 @@ void menu() {
     MenuOption selected = MENU_START;
     bool running = true;
 
-while (running) {
+    while (running) {
         ALLEGRO_EVENT event;
-       
+
         // 키보드 입력 처리
         while (al_get_next_event(event_queue, &event)) {
             if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -50,7 +50,13 @@ while (running) {
                 case ALLEGRO_KEY_ENTER:
                     if (selected == MENU_START) { al_stop_samples();  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
-                    else if (selected == MENU_SETTING) printf("설정 화면\n");
+                    else if (selected == MENU_SETTING) {
+                        printf("설정 화면\n");
+                        show_setting_menu();
+
+                        ALLEGRO_EVENT tmp;
+                        while (al_get_next_event(event_queue, &tmp));
+                    }
                     else if (selected == MENU_HELP) {
                         ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
                         ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
@@ -63,7 +69,7 @@ while (running) {
                             al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
 
 
-                         }
+                        }
                         if (!help_screen) {
 
                             printf("help.png 로딩 실패!\n");
@@ -73,7 +79,7 @@ while (running) {
                                 al_get_bitmap_width(help_screen), al_get_bitmap_height(help_screen),
                                 0, 0, SCREEN_W, SCREEN_H, 0);
                             al_flip_display();
-                        
+
 
                             // ESC가 눌릴 때까지 기다리는 루프
 
@@ -81,7 +87,7 @@ while (running) {
                             while (in_help) {
                                 ALLEGRO_EVENT help_event;
                                 al_wait_for_event(event_queue, &help_event);
-                        
+
                                 if (help_event.type == ALLEGRO_EVENT_KEY_DOWN &&
                                     help_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                                     in_help = false; // ESC 누르면 루프 종료
@@ -103,15 +109,15 @@ while (running) {
             }
         }
 
-       
- 
-        if (main_screen!=NULL&& display!=NULL) {
-            
+
+
+        if (main_screen != NULL && display != NULL) {
+
             al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
         }
         else {
-            DEBUG_MSG(main screen 또는 display - 로드 실패);
-           // al_clear_to_color(al_map_rgb(20, 20, 20));
+            DEBUG_MSG(main screen - 로드 실패);
+            // al_clear_to_color(al_map_rgb(20, 20, 20));
             return 0;
         }
         // 화면 그리기

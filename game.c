@@ -1,6 +1,7 @@
 ﻿
 #include "game.h"
 
+
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
@@ -52,8 +53,15 @@ void start_game() {
     Vector2 shootStart = { init_x, init_y };
     Vector2 waitPoint = { wait_x, wait_y };
     
-    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % MODE + 1);        // 발사 행성은 type 3 까지만 나옴
-    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % MODE + 1);          // 다음 행성도 생성
+    int max_type = 3;
+    switch (current_difficulty) {
+    case DIFFICULTY_EASY: printf("난이도: EASY\n"); max_type = 4; break;
+    case DIFFICULTY_MEDIUM:printf("난이도: MEDIUM\n"); max_type = 3; break;
+    case DIFFICULTY_HARD: printf("난이도: HARD\n"); max_type = 2; break;
+    }
+
+    planet_list[planet_num++] = Create_Planet(shootStart, (Vector2) { 0, 0 }, rand() % max_type + 1);       // 발사 행성은 type 3 까지만 나옴
+    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % max_type + 1);         // 다음 행성도 생성
 
     // 중력, 시작점, 센터 생성
     Vector2 gravityCenter = { center_x, center_y };
@@ -273,7 +281,7 @@ void start_game() {
 
                 if (planet_num < MAX_PLANET) {
                     planet_list[planet_num - 1]->position = shootStart;
-                    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % MODE + 1);
+                    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % max_type + 1);
                 }
                 isFired = false;
             }

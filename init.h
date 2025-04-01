@@ -13,6 +13,7 @@
 
 
 #define DEBUG_MSG(msg) printf("DEBUG:%s\n",#msg);
+
 #define SCREEN_W 1600
 #define SCREEN_H 900
 #define FPS 120

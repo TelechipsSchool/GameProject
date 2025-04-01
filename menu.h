@@ -3,6 +3,7 @@
 #include "display.h"
 #include "font.h"
 #include "rank.h"
+#include "setting.h"
 
 typedef enum { MENU_START, MENU_RANK, MENU_SETTING, MENU_HELP, MENU_COUNT } MenuOption;
 

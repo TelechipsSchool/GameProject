@@ -45,6 +45,9 @@
     <ClCompile Include="rank.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="setting.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="display.h">
@@ -69,6 +72,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="rank.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="setting.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
