@@ -19,7 +19,7 @@ void menu() {
         return 0;  
     }
 
-    ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/shot.ogg");
+    ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
     // 폰트
     ALLEGRO_FONT* title_font = get_title_font();
     ALLEGRO_FONT* menu_font = get_menu_font();
@@ -48,7 +48,7 @@ while (running) {
                     selected = (selected + 1) % MENU_COUNT;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    if (selected == MENU_START) { al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
+                    if (selected == MENU_START) { al_stop_samples();  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) printf("설정 화면\n");
                     else if (selected == MENU_HELP) {
