@@ -54,3 +54,9 @@ ALLEGRO_FONT* get_rank_font() {
 	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
 	return font;
 }
+
+ALLEGRO_FONT* get_win_font() {
+	// ÆùÆ®
+	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
+	return font;
+}
