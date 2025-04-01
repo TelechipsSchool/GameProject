@@ -3,6 +3,7 @@
 #define SIZE(a) (sizeof(a)/sizeof((a)[0]))
 
 ALLEGRO_DISPLAY* display = NULL;
+ALLEGRO_SAMPLE* menu_bgm = NULL;
 
 
 void (*init_functions[])(void) = {
@@ -12,6 +13,7 @@ void (*init_functions[])(void) = {
 	al_init_primitives_addon,
 	al_install_mouse,
 	al_install_keyboard
+
 };
 
 
@@ -23,7 +25,8 @@ void init() {
 	for (int i = 0; i < SIZE(init_functions); ++i) {
 		init_functions[i]();
 	}
-	
+
+
 	// 난수 생성기를 초기화
 	srand(time(NULL));
 
@@ -34,5 +37,4 @@ void init() {
 			exit(1);
 		}
 	}
-
 }

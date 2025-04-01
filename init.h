@@ -11,6 +11,7 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
 
+
 #define DEBUG_MSG(msg) printf("DEBUG:%s\n",#msg);
 #define SCREEN_W 1600
 #define SCREEN_H 900

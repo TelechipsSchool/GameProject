@@ -15,11 +15,11 @@ float line_length = 0.15f;
 #define init_y SCREEN_H / 2
 
 //배경
-#define SCROLL_FRAMES 80
+#define SCROLL_FRAMES 40
 
 //배경 전용 타이머
 float background_timer = 0.0f;
-float background_interval = 0.2f;
+float background_interval = 0.3f;
 
 // 행성 대기 위치
 #define wait_x 120
@@ -31,8 +31,8 @@ float background_interval = 0.2f;
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
 double GRAVITY = 9.8f;  // 중력
-double centerCoefficient = 0.015f;
-double RESTITUTION = 0.6f;      // 탄성 계수
+double centerCoefficient = 0.03f;
+double RESTITUTION = 0.3f;      // 탄성 계수
 double dragForce = 150.0f;      // 당기는 힘
 double maxForce = 200.0f;      // 최대 당기는 힘
 

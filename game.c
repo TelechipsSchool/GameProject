@@ -29,7 +29,7 @@ void start_game() {
     ALLEGRO_BITMAP* scroll_frames[SCROLL_FRAMES];
     int current_scroll_frame = 0;
 
-    char path[128];
+    char path[50];
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         sprintf(path, "images/scroll_frame_%d.png", i);
         scroll_frames[i] = al_load_bitmap(path);
@@ -154,7 +154,7 @@ void start_game() {
                 if (p->position.x<-100 || p->position.x>SCREEN_W + 100 || p->position.y< -100 || p->position.y>SCREEN_H + 100) {
                     Destroy_Planet(planet_list, &planet_num, i);
                     // 점수 깎임
-                    score -= 200;
+                    score -= 100;
                     continue;
                 }
 
@@ -470,7 +470,7 @@ void Win(username) {
 }
 
 char* getUserName() {
-    static char username[MAX_NAME_LENGTH] = "";  // 전역으로 선언하여 다른 함수에서 반환 가능
+    char username[MAX_NAME_LENGTH] = "";  // 전역으로 선언하여 다른 함수에서 반환 가능
     int username_length = 0;
 
     ALLEGRO_FONT* namefont = get_username_font();
