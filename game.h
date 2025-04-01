@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 
-
 // 유도선 설정
 float line_length = 0.15f;
 

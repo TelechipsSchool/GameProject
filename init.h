@@ -12,7 +12,7 @@
 
 #define SCREEN_W 1600
 #define SCREEN_H 900
-#define FPS 4000
+#define FPS 120
 
 #define GRID_SIZE 100
 #define GRID_WIDTH (SCREEN_W / GRID_SIZE + 1)
