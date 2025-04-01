@@ -238,9 +238,22 @@ void start_game() {
             // 발사하고 5초 뒤에 생성
             if (al_get_time() - last_shot_time > 5.0 && isFired) {
                 // 발사 생성하기 전에 태양 있는지 확인
+                // 승리 조건
                 for (int i = 0; i < planet_num; ++i) {
                     Planet* p = planet_list[i];
-                    if (p->type == 7) {
+                    if (p->type >= PLANET_TYPES) {
+                        save_score(username, score);
+
+                        // 해제 먼저!
+                        for (int i = 0; i < planet_num; ++i) {
+                            Destroy_Planet(planet_list, &planet_num, i);
+                        }
+
+                        // 안전 초기화
+                        for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
+                        planet_num = 0;
+                        playing = false;
+                        score = 0;
                         win();
                     }
                 }

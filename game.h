@@ -44,7 +44,7 @@ double maxForce = 200.0f;      // 최대 당기는 힘
 #define MAX_NAME_LENGTH 20
 
 // 난이도
-int MODE = 5;
+int MODE = 6;
 
 typedef struct {
     Vector2 position;
