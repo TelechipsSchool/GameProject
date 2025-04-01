@@ -5,6 +5,7 @@ ALLEGRO_DISPLAY* display = NULL;
 
 void init() {
 	// Allegro 초기화
+
 	if (!al_init()) {
 		printf("al_init() 실패\n");
 		exit(1);

@@ -49,6 +49,10 @@ typedef struct {
     bool isFlying;
     int type;
     int radius;
+    bool wasInGravityZone;
+    bool isLeavingGravityZone;
+    float rotation;         // 회전 각도
+    float angularVelocity;  // 각속도
 } Planet;
 
 int get_radius(int type);

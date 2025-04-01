@@ -177,6 +177,21 @@ void start_game() {
                         Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION * 0.5)));      // 탄성 계수 줄임.
                 }
 
+                float distance = Vector2_Length(Vector2_Sub(p->position, gravityCenter));
+
+                // 먼저 wasInGravityZone 조건: 완전히 안쪽까지 들어갔을 때만 true
+                if (distance < 280.0f) {
+                    p->wasInGravityZone = true;
+                }
+
+                // 그 이후에 나가려는 상태 체크
+                if (p->wasInGravityZone && distance >= 300.0f && distance <= 350.0f) {
+                    p->isLeavingGravityZone = true;
+                }
+                else {
+                    p->isLeavingGravityZone = false;
+                }
+
                 for (int j = 0; j < planet_num; ++j) {
                     Planet* q = planet_list[j];
                     if (q == NULL || q == p || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화 행성 체크
@@ -212,6 +227,7 @@ void start_game() {
                     // 중력 계산
                     CalcGravity(p, gravityCenter, centerCoefficient, deltaTime);
                     p->position = Vector2_Add(p->position, Vector2_Scale(p->velocity, deltaTime));
+                    p->rotation += p->angularVelocity * deltaTime;
                     ++i;
                 }
             }
@@ -286,18 +302,49 @@ void start_game() {
                 case 7: planet_img = planet_img7; break;
                 }
 
+                if (planet_img)
+                    al_draw_rotated_bitmap(planet_img,
+                        p->radius, p->radius,               // 이미지 중심 (x, y)
+                        p->position.x, p->position.y,       // 그릴 위치
+                        p->rotation,                        // 회전 각도 (라디안)
+                        0);                                 // 플래그
+
                 if (planet_img == NULL) continue;
                 // position에서 빼기하는 이유는, 중심 좌표에서 시작하면 그림이 밀림
                 al_draw_bitmap(planet_img, p->position.x - p->radius,
                     p->position.y - p->radius, 0);
             }
 
+            bool danger = false;
+            for (int i = 0; i < planet_num; ++i) {
+                Planet* p = planet_list[i];
+                if (p && p->isLeavingGravityZone) {
+                    danger = true;
+                    break;
+                }
+            }
 
+            //중력장 테두리 색상 표시
+            if (danger) {
+                al_draw_circle(center_x, center_y, 350, al_map_rgb(255, 0, 0), 3); // 붉은 테두리
+            }
+            else {
+                al_draw_circle(center_x, center_y, 350, al_map_rgb(255, 255, 255), 1); // 기본 테두리
+            }
             // 드래그 하는 동안, 유도선 그리기
             if (isDragging) {
                 Vector2 forceVec = Vector2_Clamp(Vector2_Scale(Vector2_Sub(dragEnd, dragStart), -line_length), maxForce);
                 Vector2 endPoint = Vector2_Add(shootStart, forceVec);
-                al_draw_line(shootStart.x, shootStart.y, endPoint.x, endPoint.y, al_map_rgb(255, 255, 0), 2);
+                //al_draw_line(shootStart.x, shootStart.y, endPoint.x, endPoint.y, al_map_rgb(255, 255, 0), 2);
+               
+                // 예측 궤적 점 그리기
+                int dotCount = 10; // 점 개수
+                float stepScale = 0.15f; // 각 점 간 거리 계수
+                for (int i = 1; i <= dotCount; ++i) {
+                    float t = i * stepScale;
+                    Vector2 dotPos = Vector2_Add(shootStart, Vector2_Scale(forceVec, t));
+                    al_draw_filled_circle(dotPos.x, dotPos.y, 3, al_map_rgb(255, 255, 255)); // 점 반지름 3픽셀
+                }
             }
 
             // 화면 갱신
@@ -375,6 +422,10 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     p->type = type;
     p->radius = get_radius(type);
     p->isFlying = false;
+    p->wasInGravityZone = false;
+    p->isLeavingGravityZone = false;
+    p->rotation = 0.0f;
+    p->angularVelocity = ((float)(rand() % 200) - 100) / 100.0f;
     return p;    
 }
 
