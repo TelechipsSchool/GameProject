@@ -19,6 +19,7 @@ void menu() {
         return 0;  
     }
 
+    ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/shot.ogg");
     // 폰트
     ALLEGRO_FONT* title_font = get_title_font();
     ALLEGRO_FONT* menu_font = get_menu_font();
@@ -29,13 +30,13 @@ void menu() {
     al_register_event_source(event_queue, al_get_display_event_source(display));
 
     al_draw_bitmap(main_screen, 0, 0, 0);
-
+    al_play_sample(menu_bgm, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
     MenuOption selected = MENU_START;
     bool running = true;
 
 while (running) {
         ALLEGRO_EVENT event;
-
+       
         // 키보드 입력 처리
         while (al_get_next_event(event_queue, &event)) {
             if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -47,7 +48,7 @@ while (running) {
                     selected = (selected + 1) % MENU_COUNT;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    if (selected == MENU_START) start_game();
+                    if (selected == MENU_START) { al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) printf("설정 화면\n");
                     else if (selected == MENU_HELP) {
@@ -121,5 +122,6 @@ while (running) {
     al_destroy_font(menu_font);
     //al_destroy_display(display);
     al_destroy_display(display); display = NULL;
+    al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);
 }

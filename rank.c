@@ -40,7 +40,7 @@ void display_ranks() {
     al_clear_to_color(al_map_rgb(20, 20, 20));
 
     while (running) {
-        int y = 100;
+        int y = 200;
 
         // 이벤트 큐 생성
         ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -54,12 +54,14 @@ void display_ranks() {
             menu();
         }
 
+        al_draw_text(rank_font, al_map_rgb(255, 255, 255),
+            SCREEN_W / 2, 100, ALLEGRO_ALIGN_CENTER, "RANKING");
+
         // 화면에 텍스트를 출력
         for (int i = 0; i < rank_count; ++i) {
-            printf("Drawing: %d. %s - %d\n", i + 1, ranks[i].username, ranks[i].score);
-            // 점수와 이름을 표시
+            // 이름 - 점수 표시
             al_draw_textf(rank_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y, ALLEGRO_ALIGN_CENTER, "%d. %s - %d", i + 1, ranks[i].username, ranks[i].score);
-            y += 30;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가
+            y += 50;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가
         }
 
         // 화면 업데이트

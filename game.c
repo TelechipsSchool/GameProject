@@ -76,6 +76,7 @@ void start_game() {
 
     username = getUserName();
 
+
     while (playing) {
         ALLEGRO_EVENT event;
         al_wait_for_event(game_event_queue, &event);
