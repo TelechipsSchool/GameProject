@@ -479,11 +479,11 @@ char* getUserName() {
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
     if (!event_queue || !timer) {
-        printf("이벤트 큐 또는 타이머 생성 실패\n");
+        DEBUG_MSG(event_queue 또는 timer - 생성 실패);
         return NULL;
     }
     if (!display) {
-        fprintf(stderr, "디스플레이 생성 실패!\n");
+        DEBUG_MSG(display - 생성 실패);
         return NULL;
     }
 

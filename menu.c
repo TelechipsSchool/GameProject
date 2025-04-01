@@ -18,7 +18,7 @@ void menu() {
     // 메뉴 화면 생성
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
     if (!main_screen) {
-        fprintf(stderr, "main_screen 이미지 로드 실패\n");
+        DEBUG_MSG(main screen - 로드 실패);
         return 0;  // 또는 적절한 fallback 처리
     }
 
@@ -71,7 +71,7 @@ void menu() {
             al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
         }
         else {
-            printf("이미지 로드 실패\n");
+            DEBUG_MSG(main screen 또는 display - 이미지 로드 실패);
            // al_clear_to_color(al_map_rgb(20, 20, 20));
             return 0;
         }

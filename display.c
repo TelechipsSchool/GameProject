@@ -3,14 +3,14 @@
 ALLEGRO_BITMAP* load_bitmap_resized(const char* filename, int w, int h) {
     ALLEGRO_BITMAP* loaded_bmp = al_load_bitmap(filename);
     if (!loaded_bmp) {
-        printf("load_bitmap 실패함\n");
+        DEBUG_MSG(load_bitmap - 로드 실패);
         return NULL;
     }
 
     ALLEGRO_BITMAP* resized_bmp = al_create_bitmap(w, h);
 
     if (!resized_bmp) {
-        printf("create_bitmap실패\n");
+        DEBUG_MSG(create_bitmap - 생성 실패);
         al_destroy_bitmap(loaded_bmp);
         return NULL;
     }

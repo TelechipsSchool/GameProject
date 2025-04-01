@@ -8,7 +8,7 @@ void help_menu() {
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
     if (!help_screen) {
-        printf("help.png 로딩 실패!\n");
+        DEBUG_MSG(help_screen - help.png 로딩 실패);
     }
     else {
         al_draw_scaled_bitmap(help_screen, 0, 0,

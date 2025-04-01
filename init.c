@@ -30,7 +30,7 @@ void init() {
 	if (!display) {//게임 중 ESC 종료시 출력 
 		display = al_create_display(SCREEN_W, SCREEN_H);
 		if (!display) {
-			printf("디스플레이 생성 실패\n");
+			DEBUG_MSG(create_display - 이미지 생성 실패);
 			exit(1);
 		}
 	}
