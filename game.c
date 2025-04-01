@@ -22,6 +22,7 @@ void start_game() {
     ALLEGRO_FONT* score_text_font = get_score_text_font();
     ALLEGRO_FONT* score_font = get_score_font();
     ALLEGRO_FONT* score_best_font = get_score_best_font();
+    ALLEGRO_FONT* pause_font = get_title_font();
 
     //배경 이미지
 
@@ -46,6 +47,8 @@ void start_game() {
     ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 300, 300);
     ALLEGRO_BITMAP* home_icon = load_bitmap_resized("images/home.png", 50, 50);
 
+    
+
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     Vector2 waitPoint = { wait_x, wait_y };
@@ -69,6 +72,7 @@ void start_game() {
     float last_shot_time = 0.0f;
 
     bool isFired = false, redraw = true, playing = true, isDragging = false;
+    bool paused = false;
 
     username = getUserName();
 
@@ -80,8 +84,23 @@ void start_game() {
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 save_score(username, score);
+
+                // 해제 먼저!
+                for (int i = 0; i < planet_num; ++i) {
+                    Destroy_Planet(planet_list, &planet_num, i);
+                }
+
+                // 안전 초기화
+                for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
+                planet_num = 0;
                 playing = false;
                 menu();
+                return;
+                
+            }
+            else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+                paused = !paused;  // true <-> false 전환
+                printf("Space bar - %s\n", paused ? "Paused" : "Resumed");
             }
         }
 
@@ -89,6 +108,7 @@ void start_game() {
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = 1;
         }
+
 
         ALLEGRO_MOUSE_STATE mouse;
         al_get_mouse_state(&mouse);
@@ -123,84 +143,87 @@ void start_game() {
             last_shot_time = al_get_time();
         }
 
-        // 행성이 날라가는 도중 계산
-        for (int i = 0; i < planet_num;) {
-            Planet* p = planet_list[i];
-            if (p == NULL) { ++i; continue; }
+        if (!paused) {
 
-            //화면 밖으로 나간 행성 제거
-            if (p->position.x<-100 || p->position.x>SCREEN_W + 100 || p->position.y< -100 || p->position.y>SCREEN_H + 100) {
-                Destroy_Planet(planet_list, &planet_num, i);
-                // 점수 깎임
-                score -= 200;
-                continue;
-            }
+            // 행성이 날라가는 도중 계산
+            for (int i = 0; i < planet_num;) {
+                Planet* p = planet_list[i];
+                if (p == NULL) { ++i; continue; }
 
-            if (!p->isFlying || p->type == 0) { ++i; continue; }
-
-
-            // 중앙 원과 충돌 시
-            if (collision_check(p->position.x, p->position.y, p->radius, center_x, center_y, 15)) {
-                Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, gravityCenter));//중심에서 반대 0벡터
-                // 1. 위치 보정 (겹침 해소)
-                float distance = Vector2_Distance(p->position, (Vector2) { center_x, center_y });
-                float penetrationDepth = (p->radius + 15) - distance; // 겹친 거리 계산
-
-                if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
-                    Vector2 correction = Vector2_Scale(normal, penetrationDepth);
-                    p->position = Vector2_Add(p->position, correction);
+                //화면 밖으로 나간 행성 제거
+                if (p->position.x<-100 || p->position.x>SCREEN_W + 100 || p->position.y< -100 || p->position.y>SCREEN_H + 100) {
+                    Destroy_Planet(planet_list, &planet_num, i);
+                    // 점수 깎임
+                    score -= 200;
+                    continue;
                 }
 
-                p->velocity = Vector2_Sub(p->velocity,
-                    Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION * 0.5)));      // 탄성 계수 줄임.
-            }
+                if (!p->isFlying || p->type == 0) { ++i; continue; }
 
-            for (int j = 0; j < planet_num; ++j) {
-                Planet* q = planet_list[j];
-                if (q == NULL || q == p || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화 행성 체크
 
-                if (collision_check(p->position.x, p->position.y, p->radius,
-                    q->position.x, q->position.y, q->radius)) {
-
-                    if (p->type == q->type) {
-                        merge_planets(p, q);
-                        Destroy_Planet(planet_list, &planet_num, j);
-                        if (j < i)i--;//인덱스 조정
-                        continue;
-                    }
-
-                    // 충돌 방향 벡터 (a에서 q로 향하는 방향)
-                    Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, q->position));
-
-                    // 위치 보정 (겹침 해소)
-                    float distance = Vector2_Distance(p->position, q->position);
-                    float penetrationDepth = (p->radius + q->radius) - distance; // 겹친 거리 계산
+                // 중앙 원과 충돌 시
+                if (collision_check(p->position.x, p->position.y, p->radius, center_x, center_y, 15)) {
+                    Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, gravityCenter));//중심에서 반대 0벡터
+                    // 1. 위치 보정 (겹침 해소)
+                    float distance = Vector2_Distance(p->position, (Vector2) { center_x, center_y });
+                    float penetrationDepth = (p->radius + 15) - distance; // 겹친 거리 계산
 
                     if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
-                        Vector2 correction = Vector2_Scale(normal, penetrationDepth * 1.05f);
-                        q->position = Vector2_Sub(q->position, correction);
+                        Vector2 correction = Vector2_Scale(normal, penetrationDepth);
+                        p->position = Vector2_Add(p->position, correction);
                     }
 
-                    // 속도 업데이트 (탄성 충돌 반영)
-                    p->velocity = Vector2_Sub(p->velocity, Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION)));
-                    q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
+                    p->velocity = Vector2_Sub(p->velocity,
+                        Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION * 0.5)));      // 탄성 계수 줄임.
+                }
+
+                for (int j = 0; j < planet_num; ++j) {
+                    Planet* q = planet_list[j];
+                    if (q == NULL || q == p || !q->isFlying) continue; // 자기 자신과의 충돌 무시+비활성화 행성 체크
+
+                    if (collision_check(p->position.x, p->position.y, p->radius,
+                        q->position.x, q->position.y, q->radius)) {
+
+                        if (p->type == q->type) {
+                            merge_planets(p, q);
+                            Destroy_Planet(planet_list, &planet_num, j);
+                            if (j < i)i--;//인덱스 조정
+                            continue;
+                        }
+
+                        // 충돌 방향 벡터 (a에서 q로 향하는 방향)
+                        Vector2 normal = Vector2_Normalize(Vector2_Sub(p->position, q->position));
+
+                        // 위치 보정 (겹침 해소)
+                        float distance = Vector2_Distance(p->position, q->position);
+                        float penetrationDepth = (p->radius + q->radius) - distance; // 겹친 거리 계산
+
+                        if (penetrationDepth > 0) { // 이미 겹쳐 있는 경우 밀쳐내기
+                            Vector2 correction = Vector2_Scale(normal, penetrationDepth * 1.05f);
+                            q->position = Vector2_Sub(q->position, correction);
+                        }
+
+                        // 속도 업데이트 (탄성 충돌 반영)
+                        p->velocity = Vector2_Sub(p->velocity, Vector2_Scale(Vector2_Project(p->velocity, normal), (1 + RESTITUTION)));
+                        q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
+                    }
+                }
+                if (p->isFlying) {
+                    // 중력 계산
+                    CalcGravity(p, gravityCenter, centerCoefficient, deltaTime);
+                    p->position = Vector2_Add(p->position, Vector2_Scale(p->velocity, deltaTime));
+                    ++i;
                 }
             }
-            if (p->isFlying) {
-                // 중력 계산
-                CalcGravity(p, gravityCenter, centerCoefficient, deltaTime);
-                p->position = Vector2_Add(p->position, Vector2_Scale(p->velocity, deltaTime));
-                ++i;
-            }
-        }
 
-        // 발사하고 5초 뒤에 생성
-        if (al_get_time() - last_shot_time > 5.0 && isFired) {
-            if (planet_num < MAX_PLANET) {
-                planet_list[planet_num - 1]->position = shootStart;
-                planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);
+            // 발사하고 5초 뒤에 생성
+            if (al_get_time() - last_shot_time > 5.0 && isFired) {
+                if (planet_num < MAX_PLANET) {
+                    planet_list[planet_num - 1]->position = shootStart;
+                    planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % 3 + 1);
+                }
+                isFired = false;
             }
-            isFired = false;
         }
 
         // 화면 업데이트 redraw
@@ -211,7 +234,9 @@ void start_game() {
                 current_scroll_frame = (current_scroll_frame + 1) % SCROLL_FRAMES;
                 background_timer = 0.0f;
             }
-
+            if (!display) {
+                return 0;
+            }
             al_clear_to_color(al_map_rgb(20, 20, 20));
             //배경
             al_draw_scaled_bitmap(scroll_frames[current_scroll_frame],
@@ -221,6 +246,10 @@ void start_game() {
                 0, 0,
                 SCREEN_W, SCREEN_H,
                 0);
+
+            if (paused) {
+                al_draw_text(pause_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2, ALLEGRO_ALIGN_CENTRE, "PAUSED");
+            }
 
             //1.중력필드 배경, 2. 출발 지점, 3. 중심 순서로 그림
             al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
@@ -280,6 +309,11 @@ void start_game() {
     for (int i = 0; i < planet_num; ++i) {
         if (planet_list[i]) free(planet_list[i]);//0만 false반환. 0아니면 true
     }
+
+    for (int i = 0; i < MAX_PLANET; ++i) {
+        planet_list[i] = NULL;
+    }
+    planet_num = 0;
 
     // 해제
     al_destroy_bitmap(planet_img1);
@@ -347,6 +381,7 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
 void Destroy_Planet(Planet** planet_list, int* count, int index) {
     if (!planet_list[index]) return;//0이면 없는 상태.
     free(planet_list[index]);
+    planet_list[index] = NULL;
     //뒤 행성들을 앞으로 당겨서 빈칸 없애기.
     for (int i = index; i < (*count) - 1; ++i) {
         planet_list[i] = planet_list[i + 1];
@@ -401,8 +436,16 @@ char* getUserName() {
         printf("이벤트 큐 또는 타이머 생성 실패\n");
         return NULL;
     }
+    if (!display) {
+        fprintf(stderr, "디스플레이 생성 실패!\n");
+        return NULL;
+    }
 
-    al_register_event_source(event_queue, al_get_display_event_source(al_get_current_display()));
+    // 그 다음에 등록
+    al_register_event_source(event_queue, al_get_display_event_source(display));
+
+
+ //   al_register_event_source(event_queue, al_get_display_event_source(al_get_current_display()));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);

@@ -18,4 +18,5 @@
 #define GRID_WIDTH (SCREEN_W / GRID_SIZE + 1)
 #define GRID_HEIGHT (SCREEN_H / GRID_SIZE + 1)
 
+extern ALLEGRO_DISPLAY* display;
 void init();

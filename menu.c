@@ -13,10 +13,14 @@ void menu() {
     init();
 
     // Display 생성
-    ALLEGRO_DISPLAY* display = al_create_display(SCREEN_W, SCREEN_H);
+   // ALLEGRO_DISPLAY* display = al_create_display(SCREEN_W, SCREEN_H);
 
     // 메뉴 화면 생성
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
+    if (!main_screen) {
+        fprintf(stderr, "main_screen 이미지 로드 실패\n");
+        return 0;  // 또는 적절한 fallback 처리
+    }
 
     // 폰트
     ALLEGRO_FONT* title_font = get_title_font();
@@ -61,8 +65,16 @@ void menu() {
         }
 
         // 화면 그리기
-        al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
-
+ 
+        if (main_screen!=NULL&& display!=NULL) {
+            
+            al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+        }
+        else {
+            printf("이미지 로드 실패\n");
+           // al_clear_to_color(al_map_rgb(20, 20, 20));
+            return 0;
+        }
         // 제목
         al_draw_text(title_font, al_map_rgb(181, 178, 255), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
 
@@ -82,6 +94,7 @@ void menu() {
     // 리소스 해제
     al_destroy_bitmap(main_screen);
     al_destroy_font(menu_font);
-    al_destroy_display(display);
+    //al_destroy_display(display);
+    al_destroy_display(display); display = NULL;
     al_destroy_event_queue(event_queue);
 }
