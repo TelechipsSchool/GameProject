@@ -9,11 +9,8 @@ Button menu_buttons[MENU_COUNT] = {
 };
 
 void menu() {
-    // Allegro 珥덇린??
+    // Allegro 초기화
     init();
-
-    // Display 생성
-   // ALLEGRO_DISPLAY* display = al_create_display(SCREEN_W, SCREEN_H);
 
     // 메뉴 화면 생성
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
