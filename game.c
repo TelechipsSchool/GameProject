@@ -5,7 +5,6 @@
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
 
-char* username;
 int score = 0;
 
 void start_game() {
@@ -74,16 +73,18 @@ void start_game() {
     bool isFired = false, redraw = true, playing = true, isDragging = false;
     bool paused = false;
 
-    username = getUserName();
+    char* username = getUserName();
+    int high_score = get_high_score();
 
 
     while (playing) {
         ALLEGRO_EVENT event;
         al_wait_for_event(game_event_queue, &event);
-
+        
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
+                //printf("%s %d\n", username, score);       // 디버깅 용
                 save_score(username, score);
 
                 // 해제 먼저!
@@ -283,7 +284,7 @@ void start_game() {
             al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
             al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
             al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");      
-            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", 100);
+            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", high_score);
             al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
             
 
@@ -471,28 +472,26 @@ void Win(username) {
 }
 
 char* getUserName() {
-    char username[MAX_NAME_LENGTH] = "";  // 전역으로 선언하여 다른 함수에서 반환 가능
-    int username_length = 0;
+    char* username = (char*)malloc(MAX_NAME_LENGTH);
+    if (!username) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    username[0] = '\0';  // 초기화
 
+    int username_length = 0;
     ALLEGRO_FONT* namefont = get_username_font();
     ALLEGRO_FONT* enterfont = get_entername_font();
 
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
     if (!event_queue || !timer) {
-        DEBUG_MSG(event_queue 또는 timer - 생성 실패);
-        return NULL;
-    }
-    if (!display) {
-        DEBUG_MSG(display - 생성 실패);
+        printf("Event queue or timer creation failed\n");
+        free(username);  // 메모리 누수 방지
         return NULL;
     }
 
-    // 그 다음에 등록
     al_register_event_source(event_queue, al_get_display_event_source(display));
-
-
- //   al_register_event_source(event_queue, al_get_display_event_source(al_get_current_display()));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
@@ -507,44 +506,34 @@ char* getUserName() {
                 typing = false;  // ESC 키로 종료
             }
             else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && username_length > 0) {
-                // 백스페이스 처리
                 username_length--;
                 username[username_length] = '\0';
             }
             else if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER && username_length > 0) {
-                // 입력 완료 후 종료
                 typing = false;
             }
             else if (ev.keyboard.keycode >= ALLEGRO_KEY_A && ev.keyboard.keycode <= ALLEGRO_KEY_Z) {
-                // 알파벳 입력 처리
                 if (username_length < MAX_NAME_LENGTH - 1) {
                     username[username_length] = ev.keyboard.keycode - ALLEGRO_KEY_A + 'A';
                     username_length++;
+                    username[username_length] = '\0';  // 문자열 끝 처리
                 }
             }
         }
 
         if (ev.type == ALLEGRO_EVENT_TIMER) {
-            // 화면에 텍스트 그리기
-            al_clear_to_color(al_map_rgb(0, 0, 0));  // 배경을 검은색으로
-
-            // 제목 텍스트
+            al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_text(enterfont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Enter your name");
-
-            // 입력칸 그리기
             al_draw_rectangle(SCREEN_W / 2 - 200, SCREEN_H / 2 + 10, SCREEN_W / 2 + 200, SCREEN_H / 2 + 70, al_map_rgb(255, 255, 255), 2);
             al_draw_text(namefont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 25, ALLEGRO_ALIGN_CENTER, username);
-
-            // 화면 업데이트
             al_flip_display();
         }
     }
 
-    // 자원 해제
     al_destroy_font(enterfont);
     al_destroy_font(namefont);
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
 
-    return username;
+    return username;  // 동적 할당된 메모리를 반환
 }

@@ -12,6 +12,7 @@ typedef struct {
 } Rank;
 
 int load_score(Rank* ranks);
-void save_score(char* username, int score);
+int get_high_score();
+void save_score(const char* username, int score);
 void display_ranks();
 ALLEGRO_FONT* get_rank_font();

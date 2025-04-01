@@ -19,11 +19,31 @@ int load_score(Rank* ranks) {
     return rank_count;  // 불러온 랭킹의 개수 반환
 }
 
+int get_high_score() {
+    Rank ranks[MAX_RANKS];  // 랭킹 저장 배열
+    int rank_count = load_score(ranks);  // 랭킹 로드
+
+    if (rank_count == 0) {
+        return 0;  // 랭킹이 없으면 0 반환
+    }
+
+    int max_score = 0;  // 첫 번째 점수를 초기 최대값으로 설정
+
+    for (int i = 1; i < rank_count; i++) {
+        if (ranks[i].score > max_score) {
+            max_score = ranks[i].score;
+        }
+    }
+
+    return max_score;
+}
+
+
 // 새로운 점수를 파일에 저장하는 함수
-void save_score(char* username, int score) {
-    FILE* file = fopen(RANKING_FILE, "w");
+void save_score(const char* username, int score) {
+    FILE* file = fopen(RANKING_FILE, "a");
     if (file) {
-        fprintf(file, "%s %d", username, score);
+        fprintf(file, "%s %d\n", username, score);
         fclose(file);
     }
 }
@@ -54,11 +74,11 @@ void display_ranks() {
             menu();
         }
 
-        al_draw_text(rank_font, al_map_rgb(255, 255, 255),
+        al_draw_text(rank_font, al_map_rgb(255, 255, 0),
             SCREEN_W / 2, 100, ALLEGRO_ALIGN_CENTER, "RANKING");
 
         // 화면에 텍스트를 출력
-        for (int i = 0; i < rank_count; ++i) {
+        for (int i = 0; i < rank_count && i < MAX_RANKS; ++i) {
             // 이름 - 점수 표시
             al_draw_textf(rank_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y, ALLEGRO_ALIGN_CENTER, "%d. %s - %d", i + 1, ranks[i].username, ranks[i].score);
             y += 50;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가

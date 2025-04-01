@@ -4,7 +4,7 @@
 #include "menu.h"
 #include "display.h"
 #include "vector.h"
-#include "rank.h"   
+#include "rank.h"
 #include <stdlib.h>
 
 // 유도선 설정
