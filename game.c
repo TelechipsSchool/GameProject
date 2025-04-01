@@ -308,11 +308,6 @@ void start_game() {
                         p->position.x, p->position.y,       // 그릴 위치
                         p->rotation,                        // 회전 각도 (라디안)
                         0);                                 // 플래그
-
-            //    if (planet_img == NULL) continue;
-            //    // position에서 빼기하는 이유는, 중심 좌표에서 시작하면 그림이 밀림
-            //    al_draw_bitmap(planet_img, p->position.x - p->radius,
-            //        p->position.y - p->radius, 0);
             }
             
             bool danger = false;

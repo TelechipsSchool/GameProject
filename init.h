@@ -9,6 +9,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_ttf.h>
 
 #define SCREEN_W 1600
 #define SCREEN_H 900
@@ -19,4 +20,5 @@
 #define GRID_HEIGHT (SCREEN_H / GRID_SIZE + 1)
 
 extern ALLEGRO_DISPLAY* display;
+void (*init_functions[])(void);
 void init();
