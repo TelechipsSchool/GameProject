@@ -571,7 +571,7 @@ void win() {
     ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
 
     // "You Win!" 텍스트를 표시할 폰트
-    ALLEGRO_FONT* win_font = get_next_font();
+    ALLEGRO_FONT* win_font = get_win_font();
 
     // 화면을 검은색으로 클리어
     al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -588,9 +588,6 @@ void win() {
     // 잠시 대기 후, 메인 메뉴로 돌아가기
     al_rest(5.0);  // 5초간 대기
 
-    //// 게임 종료 후 메뉴 화면으로 전환
-    //menu();
-
-    // 자원 해제
-    al_destroy_bitmap(sun_img);
+    // 게임 종료 후 메뉴 화면으로 전환
+    menu();
 }

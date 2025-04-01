@@ -9,3 +9,4 @@ ALLEGRO_FONT* get_score_text_font();
 ALLEGRO_FONT* get_score_best_font();
 ALLEGRO_FONT* get_entername_font();
 ALLEGRO_FONT* get_username_font();
+ALLEGRO_FONT* get_win_font();
