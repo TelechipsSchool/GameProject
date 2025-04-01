@@ -4,7 +4,7 @@
 #include "font.h"
 
 #define RANKING_FILE "ranking.txt"
-#define MAX_RANKS 100
+#define MAX_RANKS 10
 
 typedef struct {
     char username[100];  // 사용자 이름

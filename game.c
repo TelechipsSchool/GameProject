@@ -253,7 +253,7 @@ void start_game() {
             if (!display) {
                 return 0;
             }
-            al_clear_to_color(al_map_rgb(20, 20, 20));
+            //al_clear_to_color(al_map_rgb(20, 20, 20));
             //배경
             al_draw_scaled_bitmap(scroll_frames[current_scroll_frame],
                 0, 0,

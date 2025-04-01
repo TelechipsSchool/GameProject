@@ -16,7 +16,6 @@ int load_score(Rank* ranks) {
     else {
         printf("fail to load ranks\n");
     }
-
     return rank_count;  // 불러온 랭킹의 개수 반환
 }
 
@@ -31,21 +30,39 @@ void save_score(char* username, int score) {
 
 void display_ranks() {
     ALLEGRO_FONT* rank_font = get_rank_font();
-    float x = 50, y = 50;  // 시작 위치 (좌측 상단)
 
-    Rank* ranks[MAX_RANKS];
+    Rank ranks[MAX_RANKS];
 
     int rank_count = load_score(ranks);
 
-    printf("%d. %s - %d", 0, ranks[0]->username, ranks[0]->score);
+    bool running = true;
 
-    // 화면에 텍스트를 출력
-    for (int i = 0; i < rank_count; i++) {
-        // 점수와 이름을 표시
-        al_draw_textf(rank_font, al_map_rgb(255, 255, 255), x, y, 0, "%d. %s - %d", i + 1, ranks[i]->username, ranks[i]->score);
-        y += 30;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가
+    al_clear_to_color(al_map_rgb(20, 20, 20));
+
+    while (running) {
+        int y = 100;
+
+        // 이벤트 큐 생성
+        ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
+        al_register_event_source(event_queue, al_get_keyboard_event_source());
+        ALLEGRO_EVENT rank_event;
+        al_wait_for_event(event_queue, &rank_event);
+
+        if (rank_event.type == ALLEGRO_EVENT_KEY_DOWN &&
+            rank_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+            running = false; // ESC 누르면 루프 종료
+            menu();
+        }
+
+        // 화면에 텍스트를 출력
+        for (int i = 0; i < rank_count; ++i) {
+            printf("Drawing: %d. %s - %d\n", i + 1, ranks[i].username, ranks[i].score);
+            // 점수와 이름을 표시
+            al_draw_textf(rank_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y, ALLEGRO_ALIGN_CENTER, "%d. %s - %d", i + 1, ranks[i].username, ranks[i].score);
+            y += 30;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가
+        }
+
+        // 화면 업데이트
+        al_flip_display();
     }
-
-    // 화면 업데이트
-    al_flip_display();
 }
