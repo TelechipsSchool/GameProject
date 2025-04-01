@@ -16,3 +16,4 @@ int get_high_score();
 void save_score(const char* username, int score);
 void display_ranks();
 ALLEGRO_FONT* get_rank_font();
+int compare_ranks(const void* a, const void* b);

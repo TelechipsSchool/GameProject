@@ -59,6 +59,9 @@ void display_ranks() {
 
     al_clear_to_color(al_map_rgb(20, 20, 20));
 
+    // 랭킹을 내림차순으로 정렬
+    qsort(ranks, rank_count, sizeof(Rank), compare_ranks);
+
     while (running) {
         int y = 200;
 
@@ -87,4 +90,11 @@ void display_ranks() {
         // 화면 업데이트
         al_flip_display();
     }
+}
+
+// 점수를 내림차순으로 비교하는 함수
+int compare_ranks(const void* a, const void* b) {
+    Rank* rank_a = (Rank*)a;
+    Rank* rank_b = (Rank*)b;
+    return rank_b->score - rank_a->score;  // 내림차순 정렬
 }
