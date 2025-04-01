@@ -21,6 +21,7 @@
 #define MAX_BULLETS 1000
 #define MAX_ASTEROIDS 5
 #define ASTEROID_HITS 5
+#define ROCKET_HITS 1
 #define PI 3.1415926535897
 #define DEBUG_MSG(msg) printf("[DEBUG]: %s\n", msg)
 
@@ -32,6 +33,9 @@
 typedef struct {
     float x, y, dx, dy;
     float angle;
+    float invisible_timer; 
+    int hits;
+    bool active;
 } Rocket;
 
 typedef struct {
@@ -57,3 +61,4 @@ void check_collisions();
 double getRadian(int num);
 void loadBitmap();
 void destroyBitmap();
+void check_die();

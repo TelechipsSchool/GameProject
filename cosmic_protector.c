@@ -64,6 +64,7 @@ int main() {
             }
             update_bullets();
             update_asteroids();
+            check_die();
             check_collisions();
             spawn_asteroids();
             redraw = true;
@@ -148,12 +149,43 @@ void update_bullets() {
 }
 // 소행성 랜덤 생성
 void spawn_asteroids() {
+    int edge = 0;
+    float angle = 0;
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
         if (!asteroids[i].active && (rand() % 50 == 0)) {
+            edge = rand() % 4;  // 테두리 위, 아래, 왼쪽, 오른쪽
             asteroids[i].x = rand() % SCREEN_WIDTH;
             asteroids[i].y = rand() % SCREEN_HEIGHT;
-            asteroids[i].dx = (rand() % 5 - 2) * 2;
-            asteroids[i].dy = (rand() % 5 - 2) * 2;
+            // 테두리에서 출발 위치 설정 - 코드 동작 안됨.
+            /*switch (edge) {
+                case 0: {
+                    asteroids[i].x = rand() % SCREEN_WIDTH;
+                    asteroids[i].y = -20;
+                } break;
+                case 1: {
+                    asteroids[i].x = rand() % SCREEN_WIDTH;
+                    asteroids[i].y =  SCREEN_HEIGHT + 20;
+                } break;
+                case 2: {
+                    asteroids[i].x = -20;
+                    asteroids[i].y = rand() % SCREEN_HEIGHT;
+                } break;
+                case 3: {
+                    asteroids[i].x = SCREEN_WIDTH + 20;
+                    asteroids[i].y = rand() % SCREEN_HEIGHT;
+                }break;
+                default: break;
+            }*/
+            //do {
+            //    angle = atan2(SCREEN_HEIGHT / 2 - asteroids[i].y, SCREEN_WIDTH / 2 - asteroids[i].x);
+            //    asteroids[i].dx = cos(angle) * (2 + rand() % 3);
+            //    asteroids[i].dy = sin(angle) * (2 + rand() % 3);
+            //} while (!asteroids[i].dx && !asteroids[i].dy);
+            do {
+                asteroids[i].dx = (rand() % MAX_ASTEROIDS - 2) * 2;
+                asteroids[i].dy = (rand() % MAX_ASTEROIDS - 2) * 2;
+            } while (!asteroids[i].dx && !asteroids[i].dy);
+
             asteroids[i].hits = 0;
             asteroids[i].active = true;
         }
@@ -163,8 +195,8 @@ void spawn_asteroids() {
 void update_asteroids() {
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
         if (asteroids[i].active) {
-            asteroids[i].x += asteroids[i].dx;
-            asteroids[i].y += asteroids[i].dy;
+            asteroids[i].x += asteroids[i].dx * 0.5;
+            asteroids[i].y += asteroids[i].dy * 0.5;
             if (asteroids[i].x < 0 || asteroids[i].x > SCREEN_WIDTH || asteroids[i].y < 0 || asteroids[i].y > SCREEN_HEIGHT) {
                 asteroids[i].active = false;
             }
@@ -179,7 +211,7 @@ void check_collisions() {
                 if (asteroids[j].active) {
                     float dx = bullets[i].x - asteroids[j].x;
                     float dy = bullets[i].y - asteroids[j].y;
-                    if (sqrt(dx * dx + dy * dy) < 20) {
+                    if (sqrt(dx * dx + dy * dy) < 30) {
                         bullets[i].active = false;
                         asteroids[j].hits++;
                         if (asteroids[j].hits >= ASTEROID_HITS) {
@@ -191,6 +223,22 @@ void check_collisions() {
         }
     }
 }
+// 로켓과 소행성 감지 - 이어서 진행ㄱ
+void check_die() {
+    for (int i = 0; i < MAX_ASTEROIDS; i++) {
+        while(rocket.active) {
+            float dx = rocket.x - asteroids[i].x;
+            float dy = rocket.y - asteroids[i].y;
+            if (sqrt(dx * dx + dy * dy) < 20) {
+                rocket.active = false;
+            }
+        }
+        // 여기 구현. false로 탈출 시 invisible_timer키고 timer 끝나면 다시 active=true로 바꾸기
+    }
+}
+
+
+
 
 // display
 void draw_scene() {
@@ -209,7 +257,7 @@ void draw_scene() {
 
         }
         else if (asteroids[i].hits >= ASTEROID_HITS) {
-            if(i % 2) al_draw_bitmap(explosion_large, asteroids[i].x - 20, asteroids[i].y - 20, 0);
+            if(!i % 2) al_draw_bitmap(explosion_large, asteroids[i].x - 20, asteroids[i].y - 20, 0);
             else al_draw_bitmap(explosion_small, asteroids[i].x - 20, asteroids[i].y - 20, 0);
         }
     }
