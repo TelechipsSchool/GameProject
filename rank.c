@@ -14,7 +14,7 @@ int load_score(Rank* ranks) {
         fclose(file);
     }
     else {
-        printf("fail to load ranks\n");
+        DEBUG_MSG(rank file - 로드 실패);
     }
     return rank_count;  // 불러온 랭킹의 개수 반환
 }

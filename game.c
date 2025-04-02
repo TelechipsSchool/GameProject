@@ -18,7 +18,7 @@ void start_game() {
     //소리 
     ALLEGRO_SAMPLE* pull_sound = al_load_sample("audio/planet_pull.ogg");
     if (!pull_sound) {
-        printf("행성 당기는 소리 로딩 실패!\n");
+        DEBUG_MSG(pull_sound - 행성 당기는 소리 로드 실패);
     }
     ALLEGRO_SAMPLE* release_sound = al_load_sample("audio/planet_push.ogg");
 
@@ -31,7 +31,7 @@ void start_game() {
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         sprintf(path, "images/scroll_frame_%d.png", i);
         scroll_frames[i] = al_load_bitmap(path);
-        if (!scroll_frames[i]) printf("스크롤 프레임 %d로딩 실패\n", i);
+        if (!scroll_frames[i]) DEBUG_MSG(scroll_frames - 로드 실패);
 
     }
 
@@ -54,7 +54,7 @@ void start_game() {
     int max_type = 3;
     switch (current_difficulty) {
     case DIFFICULTY_EASY: printf("난이도: EASY\n"); max_type = 4; break;
-    case DIFFICULTY_MEDIUM:printf("난이도: MEDIUM\n"); max_type = 3; break;
+    case DIFFICULTY_MEDIUM:printf("난이도: NORMAL\n"); max_type = 3; break;
     case DIFFICULTY_HARD: printf("난이도: HARD\n"); max_type = 2; break;
     }
 
@@ -67,7 +67,7 @@ void start_game() {
     ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
     ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 700, 700);
 
-    if (!startpoint) printf("출발지점 이미지 로딩 실패\n");
+    if (!startpoint) DEBUG_MSG(startpoint - 이미지 로드 실패);
 
     // 변수 선언
     Vector2 dragStart, dragEnd;
@@ -86,7 +86,7 @@ void start_game() {
     
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/start.ogg");
     if (!sample) {
-        printf("음향 로딩 실패!\n");
+        DEBUG_MSG(sample - start 음향 로드 실패);
     }
     al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     
@@ -457,7 +457,7 @@ void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float delt
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     Planet* p = (Planet*)calloc(1,sizeof(Planet));
     if (!p) {
-        printf("행성 생성 실패 : 메모리 부족\n");
+        DEBUG_MSG(Create_Planet - 메모리 부족);
         return 0;
     }
     p->position = pos;
@@ -512,7 +512,7 @@ void merge_planets(Planet* a, Planet* b) {
 char* getUserName() {
     char* username = (char*)malloc(MAX_NAME_LENGTH);
     if (!username) {
-        printf("Memory allocation failed\n");
+        DEBUG_MSG(username - 메모리 할당 실패);
         return NULL;
     }
     username[0] = '\0';  // 초기화
@@ -522,7 +522,7 @@ char* getUserName() {
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
     if (!event_queue || !timer || !display) {
-        printf("Event queue or timer creation failed\n");
+        DEBUG_MSG(event queue or timer or display - 생성 실패);
         free(username);  // 메모리 누수 방지
         return NULL;
     }

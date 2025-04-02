@@ -21,7 +21,7 @@ ALLEGRO_FONT* get_font(int size) {
     if (!fonts[size]) {
         fonts[size] = al_load_font(FONT_PATH, size, 0);
         if (!fonts[size]) {
-            printf("폰트 로딩 실패: %dpx\n", size);
+            printf("폰트 로딩 실패: %d\n", size);
 			exit(1);
         }
     }

@@ -10,7 +10,7 @@ void help_menu() {
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
     if (!sample) {
-        printf("음향 로딩 실패!\n");
+        DEBUG_MSG(sample - help 음향 로드 실패);
     }
     else {
         al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
