@@ -90,7 +90,7 @@ void start_game() {
     if (!sample) {
         printf("음향 로딩 실패!\n");
     }
-    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
+    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &sample_id);
     
 
 
@@ -122,8 +122,8 @@ void start_game() {
                 
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+                play_music("audio/switch.ogg");
                 paused = !paused;  // true <-> false 전환
-                printf("Space bar - %s\n", paused ? "Paused" : "Resumed");
             }
         }
 
@@ -543,6 +543,8 @@ char* getUserName() {
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 typing = false;  // ESC 키로 종료
+                play_music("audio/cancel.ogg");
+                menu();
             }
             else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && username_length > 0) {
                 play_music("audio/erase.ogg");
