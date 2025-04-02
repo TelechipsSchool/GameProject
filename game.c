@@ -5,8 +5,6 @@
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
 
-ALLEGRO_SAMPLE_ID sample_id;
-
 int score = 0;
 
 void start_game() {
@@ -90,7 +88,7 @@ void start_game() {
     if (!sample) {
         printf("음향 로딩 실패!\n");
     }
-    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &sample_id);
+    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     
 
 
@@ -103,7 +101,7 @@ void start_game() {
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
                 //printf("%s %d\n", username, score);       // 디버깅 용
-                al_stop_sample(&sample_id);
+                al_stop_samples();
                 save_score(username, score);
 
                 // 해제 먼저!
@@ -118,8 +116,7 @@ void start_game() {
                 score = 0;
                 play_music("audio/cancel.ogg");
                 menu();
-                return;
-                
+                return;                
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
                 play_music("audio/switch.ogg");
@@ -599,7 +596,7 @@ void win() {
     // 잠시 대기 후, 메인 메뉴로 돌아가기
     al_rest(5.0);  // 5초간 대기
 
-    al_stop_sample(&sample_id);
+    al_stop_samples();
     // 해제 먼저!
     for (int i = 0; i < planet_num; ++i) {
         Destroy_Planet(planet_list, &planet_num, i);
