@@ -43,15 +43,18 @@ void menu() {
                 switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_UP:
                     selected = (selected - 1 + MENU_COUNT) % MENU_COUNT;
+                    play_music("audio/switch.ogg");
                     break;
                 case ALLEGRO_KEY_DOWN:
                     selected = (selected + 1) % MENU_COUNT;
+                    play_music("audio/switch.ogg");
                     break;
                 case ALLEGRO_KEY_ENTER:
                     if (selected == MENU_START) { al_stop_samples();  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
-                        printf("설정 화면\n");
+                        //printf("설정 화면\n");
+                        play_music("audio/enter.ogg");
                         show_setting_menu();
 
                         ALLEGRO_EVENT tmp;
@@ -59,6 +62,7 @@ void menu() {
                     }
                     else if (selected == MENU_HELP) {
                         ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
+                        play_music("audio/enter.ogg");
                         ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
                         ALLEGRO_SAMPLE_ID sample_id;
 
@@ -104,6 +108,7 @@ void menu() {
                     break;
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
+                    play_music("audio/cancel.ogg");
                     break;
                 }
             }

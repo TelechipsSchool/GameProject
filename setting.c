@@ -34,16 +34,20 @@ void show_setting_menu() {
             switch (ev.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
                 selected = (selected + 2) % 3;//위-> 난이도상
+                play_music("audio/switch.ogg");
                 break;
             case ALLEGRO_KEY_DOWN:
                 selected = (selected + 1) % 3;//아래방향->난이도하
+                play_music("audio/switch.ogg");
                 break;
             case ALLEGRO_KEY_ENTER:
                 current_difficulty = (Difficulty)selected;//디폴트 중간난이도
+                play_music("audio/enter.ogg");
                 in_setting = false;
                 break;
             case ALLEGRO_KEY_ESCAPE:
                 in_setting = false;
+                play_music("audio/cancel.ogg");
                 break;
             }
         }

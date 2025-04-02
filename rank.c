@@ -75,6 +75,7 @@ void display_ranks() {
         if (rank_event.type == ALLEGRO_EVENT_KEY_DOWN &&
             rank_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
             running = false; // ESC 누르면 루프 종료
+            play_music("audio/cancel.ogg");
             menu();
         }
 

@@ -124,7 +124,7 @@ void start_game() {
                 planet_num = 0;
                 playing = false;
                 score = 0;
-
+                play_music("audio/cancel.ogg");
                 menu();
                 return;
                 
