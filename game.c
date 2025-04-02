@@ -497,6 +497,7 @@ int get_radius(int type) {
 }
 
 void merge_planets(Planet* a, Planet* b) {
+    play_music("audio/enter.ogg");
     a->type += 1;
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);

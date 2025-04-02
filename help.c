@@ -3,7 +3,6 @@
 void help_menu() {
     ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
-    ALLEGRO_SAMPLE_ID sample_id;    
 
     // 이벤트 큐 생성
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -13,7 +12,7 @@ void help_menu() {
         DEBUG_MSG(sample - help 음향 로드 실패);
     }
     else {
-        al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &sample_id);
+        al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 
         if (!help_screen) {
             DEBUG_MSG(help_screen - help.png 로딩 실패);
@@ -34,10 +33,11 @@ void help_menu() {
                     help_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                     in_help = false; // ESC 누르면 루프 종료
                     play_music("audio/cancel.ogg");
+                    menu();
                 }
             }
 
-            al_stop_sample(&sample_id);
+            al_stop_samples();
             al_destroy_sample(sample);
             al_destroy_bitmap(help_screen);
         }
