@@ -1,5 +1,4 @@
-﻿
-#include "game.h"
+﻿#include "game.h"
 
 
 // 행성 배열
@@ -93,7 +92,7 @@ void start_game() {
     char* username = getUserName();
     int high_score = get_high_score();
 
-    al_reserve_samples(16);
+    //al_reserve_samples(16);
     
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/start.ogg");
     if (!sample) {
@@ -125,6 +124,7 @@ void start_game() {
                 planet_num = 0;
                 playing = false;
                 score = 0;
+
                 menu();
                 return;
                 

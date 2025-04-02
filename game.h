@@ -8,6 +8,7 @@
 #include "setting.h"
 #include <stdlib.h>
 #include "font.h"
+#include "audio.h"
 
 // 유도선 설정
 float line_length = 0.15f;
