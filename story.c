@@ -12,6 +12,7 @@ void story1() {
     int y_position = 100;
 
     // 텍스트 시작
+    al_rest(2.0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안녕, 난 암스트롱이야");
     play_music("audio/story.ogg");
     al_flip_display();
@@ -45,7 +46,7 @@ void story1() {
 
     // 텍스트 위에서부터 다시 시작
     y_position = 100;
-
+    al_rest(2.0);
     al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"반가워 %s!", username);
     play_music("audio/story.ogg");
     al_flip_display();
@@ -138,7 +139,7 @@ char* getUserName() {
             }
             else if (ev.keyboard.keycode >= ALLEGRO_KEY_A && ev.keyboard.keycode <= ALLEGRO_KEY_Z) {
                 if (username_length < MAX_NAME_LENGTH - 1) {
-                    //play_music("audio/keyboard.ogg");
+                    play_music("audio/keyboard.ogg");
                     username[username_length] = ev.keyboard.keycode - ALLEGRO_KEY_A + 'A';
                     username_length++;
                     username[username_length] = '\0';  // 문자열 끝 처리
