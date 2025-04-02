@@ -65,4 +65,4 @@ void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float delt
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type);
 void Destroy_Planet(Planet** planet_list, int* count, int index);
 void merge_planets(Planet* a, Planet* b);
-void win();
+//void win();

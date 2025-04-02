@@ -1,7 +1,9 @@
 ﻿#include "story.h"
 
 void story1() {
-    // 메뉴 화면 생성
+    // 게임 시작 시 스토리
+
+    // 배경 화면 생성
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
     if (!story_screen || !display) {
         DEBUG_MSG(story_screen - 화면 로드 실패);
@@ -92,6 +94,174 @@ void story1() {
 
 	// 게임 진행
 	start_game(username);
+}
+
+void story2() {
+    // 소행성 게임 시작 전 스토리
+
+    // 배경 화면 생성
+    ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
+    if (!story_screen) {
+        DEBUG_MSG(story_screen - 화면 로드 실패);
+        return 0;
+    }
+    al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    int y_position = 100;
+
+    // 텍스트 시작
+    al_rest(2.0);
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"좋아! 드디어 태양을 만들었어.");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"하지만, 문제가 있어. 그 행성으로 소행성이 다가오고 있어.");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"우리는 그 소행성을 막아야 해!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 소행성을 부수고, 행성을 지켜야 해! 이건 우리에게 중요한 전투야!");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"소행성을 맞추고 파괴해야 해! 우리 모두 힘을 합쳐야 해!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 게임 시작  >>");
+    al_flip_display();
+
+    ALLEGRO_KEYBOARD_STATE key_state;
+    bool enter_pressed = false;
+    while (!enter_pressed) {
+        al_get_keyboard_state(&key_state);
+        if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
+            enter_pressed = true;
+        }
+        al_flip_display();
+    }
+
+    // 게임 진행
+    // 소행성 부수는 게임 실행
+}
+
+void story3() {
+    // 외계인 출몰 시 스토리
+
+    // 배경 화면 생성
+    ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
+    if (!story_screen) {
+        DEBUG_MSG(story_screen - 화면 로드 실패);
+        return 0;
+    }
+    al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    int y_position = 100;
+
+    // 텍스트 시작
+    al_rest(2.0);
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계 적들이 나타났어!");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이들은 우리가 행성을 지키는 걸 방해하려고 하는 놈들이야.");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리가 외계 적들과 싸워야 할 시간이야.");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"공격을 피하고, 그들을 물리쳐야 해!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 게임 재개  >>");
+    al_flip_display();
+
+    ALLEGRO_KEYBOARD_STATE key_state;
+    bool enter_pressed = false;
+    while (!enter_pressed) {
+        al_get_keyboard_state(&key_state);
+        if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
+            enter_pressed = true;
+        }
+        al_flip_display();
+    }
+
+    // 다음 게임 실행
+}
+
+void story4(char* username) {
+    // 게임 종료 후 스토리
+    
+    // 배경 화면 생성
+    ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
+    if (!story_screen) {
+        DEBUG_MSG(story_screen - 화면 로드 실패);
+        return 0;
+    }
+    al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    int y_position = 100;
+
+    // 텍스트 시작
+    al_rest(2.0);
+    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 이곳은 우리가 살아갈 새로운 고향이 될 거야.");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"지구에서 멀리 떠나왔지만, 인류는 다시 한번 희망을 찾았어.");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(2.0);
+
+    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"넌 정말 대단해, %s! 너 없었으면 우린 이겨내지 못했을 거야.", username);
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"자, 이제 새로운 시대를 시작해볼까? 우리 모두의 새로운 미래를 위해!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    al_rest(5.0);
+
+    al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    // 텍스트 위에서부터 다시 시작
+    // 여기에 캐릭터 연출 추가해야됨
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 200, ALLEGRO_ALIGN_CENTER, u8"넌 정말 대단해, <이름>! 너 없었으면 우린 이겨내지 못했을 거야.");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    al_rest(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 게임 종료  >>");
+    al_flip_display();
+
+    ALLEGRO_KEYBOARD_STATE key_state;
+    bool enter_pressed = false;
+    while (!enter_pressed) {
+        al_get_keyboard_state(&key_state);
+        if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
+            enter_pressed = true;
+        }
+        al_flip_display();
+    }
 }
 
 char* getUserName() {

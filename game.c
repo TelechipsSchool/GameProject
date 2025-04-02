@@ -268,7 +268,7 @@ void start_game(char* username) {
                         planet_num = 0;
                         playing = false;
                         score = 0;
-                        win();
+                        story2();
                     }
                 }
 
@@ -500,36 +500,36 @@ void merge_planets(Planet* a, Planet* b) {
     score += a->radius;
 }
 
-void win() {
-    // 태양 이미지 로드 (이미지 크기에 맞게 조정)
-    ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
-
-    // 화면을 검은색으로 클리어
-    al_clear_to_color(al_map_rgb(0, 0, 0));
-
-    // 태양 이미지 중앙에 그리기
-    al_draw_bitmap(sun_img, SCREEN_W / 2 - al_get_bitmap_width(sun_img) / 2, SCREEN_H / 2 - al_get_bitmap_height(sun_img) / 2, 0);
-
-    // "You Win!" 텍스트 중앙에 그리기
-    al_draw_text(win_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + al_get_bitmap_height(sun_img) / 2 + 20, ALLEGRO_ALIGN_CENTER, "You Win!");
-
-    // 화면 갱신
-    al_flip_display();
-
-    // 잠시 대기 후, 메인 메뉴로 돌아가기
-    al_rest(5.0);  // 5초간 대기
-
-    al_stop_samples();
-    // 해제 먼저!
-    for (int i = 0; i < planet_num; ++i) {
-        Destroy_Planet(planet_list, &planet_num, i);
-    }
-
-    // 안전 초기화
-    for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
-    planet_num = 0;
-    score = 0;
-
-    // 게임 종료 후 메뉴 화면으로 전환
-    menu();
-}
+//void win() {
+//    // 태양 이미지 로드 (이미지 크기에 맞게 조정)
+//    ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
+//
+//    // 화면을 검은색으로 클리어
+//    al_clear_to_color(al_map_rgb(0, 0, 0));
+//
+//    // 태양 이미지 중앙에 그리기
+//    al_draw_bitmap(sun_img, SCREEN_W / 2 - al_get_bitmap_width(sun_img) / 2, SCREEN_H / 2 - al_get_bitmap_height(sun_img) / 2, 0);
+//
+//    // "You Win!" 텍스트 중앙에 그리기
+//    al_draw_text(win_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + al_get_bitmap_height(sun_img) / 2 + 20, ALLEGRO_ALIGN_CENTER, "You Win!");
+//
+//    // 화면 갱신
+//    al_flip_display();
+//
+//    // 잠시 대기 후, 메인 메뉴로 돌아가기
+//    al_rest(5.0);  // 5초간 대기
+//
+//    al_stop_samples();
+//    // 해제 먼저!
+//    for (int i = 0; i < planet_num; ++i) {
+//        Destroy_Planet(planet_list, &planet_num, i);
+//    }
+//
+//    // 안전 초기화
+//    for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
+//    planet_num = 0;
+//    score = 0;
+//
+//    // 게임 종료 후 메뉴 화면으로 전환
+//    menu();
+//}
