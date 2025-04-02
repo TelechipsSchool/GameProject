@@ -10,7 +10,7 @@ Button menu_buttons[MENU_COUNT] = {
 
 void menu() {
     // 메뉴 화면 생성
-    ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
+    ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
     if (!main_screen) {
         DEBUG_MSG(main screen - 화면 로드 실패);
         return 0;
