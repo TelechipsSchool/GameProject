@@ -83,7 +83,7 @@ void menu() {
         }
         // 화면 그리기
         
-        al_draw_text(title_font, al_map_rgb(181, 178, 255), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
+        al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
 
         // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
 
