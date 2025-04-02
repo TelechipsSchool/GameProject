@@ -52,19 +52,20 @@ void menu() {
                     selected = (selected + 1) % MENU_COUNT;  
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    al_stop_samples();
-                    play_music("audio/enter.ogg");
+                    al_stop_samples();                    
                     if (selected == MENU_START) {
                         story1();
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
+                        play_music("audio/enter.ogg");
                         show_setting_menu();
 
                         ALLEGRO_EVENT tmp;
                         while (al_get_next_event(event_queue, &tmp));
                     }
                     else if (selected == MENU_HELP) {
+                        play_music("audio/enter.ogg");
                         help_menu();
                     }
                     break;
@@ -111,7 +112,5 @@ void menu() {
     al_destroy_bitmap(main_screen);
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
-    al_destroy_event_queue(event_queue);
-    
+    al_destroy_event_queue(event_queue);    
 }
-
