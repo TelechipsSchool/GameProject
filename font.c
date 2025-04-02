@@ -1,6 +1,6 @@
 #include "font.h"
 
-#define FONT_PATH "fonts/ChunkFive-Regular.otf"
+#define FONT_PATH "fonts/The Jamsil 6 ExtraBold.ttf"
 static ALLEGRO_FONT* fonts[256] = { NULL };
 
 // 전역 폰트 포인터
