@@ -26,7 +26,7 @@ void menu() {
     al_register_event_source(event_queue, al_get_display_event_source(display));
 
     al_draw_bitmap(main_screen, 0, 0, 0);
-    bool success = al_play_sample(menu_bgm, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+    al_play_sample(menu_bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     MenuOption selected = MENU_START;
     bool running = true;
 
