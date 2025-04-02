@@ -23,6 +23,7 @@ void start_game() {
     if (!pull_sound) {
         printf("행성 당기는 소리 로딩 실패!\n");
     }
+    ALLEGRO_SAMPLE* release_sound = al_load_sample("audio/planet_push.ogg");
 
     // 폰트
     /*
@@ -171,6 +172,8 @@ void start_game() {
                 Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
+                // 마우스 처음 눌렀을 때만 재생
+                al_play_sample(release_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                }
 
             isFired = true;
