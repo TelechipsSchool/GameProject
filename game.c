@@ -407,8 +407,6 @@ void start_game(char* username) {
     al_destroy_bitmap(center);
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
-    al_destroy_bitmap(home_icon);
-    al_destroy_sample(sample);
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
     }
