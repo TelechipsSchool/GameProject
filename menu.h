@@ -5,6 +5,7 @@
 #include "rank.h"
 #include "setting.h"
 #include "audio.h"
+#include "help.h"
 
 typedef enum { MENU_START, MENU_RANK, MENU_SETTING, MENU_HELP, MENU_COUNT } MenuOption;
 

@@ -17,13 +17,11 @@ void show_setting_menu() {
     al_register_event_source(setting_queue, al_get_display_event_source(display));
 
     al_draw_bitmap(setting_screen, 0, 0, 0);
-    const char* options[] = { "EASY", "MEDIUM", "HARD" };
+    const char* options[] = { "EASY", "NORMAL", "HARD" };
     int selected = (int)current_difficulty;//enum으로 선언
     bool in_setting = true;
 
     while (in_setting) {
-
-
         ALLEGRO_EVENT ev;
         al_wait_for_event(setting_queue, &ev);
 
@@ -69,6 +67,7 @@ void show_setting_menu() {
         al_flip_display();
     }
 
+    menu();
     al_destroy_bitmap(setting_screen);
     al_destroy_event_queue(setting_queue);
     
