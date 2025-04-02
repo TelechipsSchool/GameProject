@@ -73,7 +73,7 @@ void menu() {
                     al_stop_samples();
                     play_music("audio/enter.ogg");
                     if (selected == MENU_START) {
-                        story1();
+                        story4("yoonkyo");
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {

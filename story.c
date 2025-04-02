@@ -25,11 +25,24 @@ void story1() {
         return 0;
     }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+    
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_play = load_bitmap_resized("images/astronaut/play.png", 300, 300);
+    if (!a_play) {
+        DEBUG_MSG(a_play - 화면 로드 실패);
+        return 0;
+    }
+    ALLEGRO_BITMAP* a_holdingplanet = load_bitmap_resized("images/astronaut/holdingplanet.png", 300, 300);
+    if (!a_holdingplanet) {
+        DEBUG_MSG(a_holdingplanet - 화면 로드 실패);
+        return 0;
+    }
 
     int y_position = 100;
 
     // 텍스트 시작
-    wait_or_skip(2.0);
+    al_rest(2.0);
+    al_draw_bitmap(a_play, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안녕, 난 암스트롱이야");
     play_music("audio/story.ogg");
     al_flip_display();
@@ -60,6 +73,8 @@ void story1() {
     char* username = getUserName();
 
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    al_draw_bitmap(a_holdingplanet, 1300, 600, 0);
 
     // 텍스트 위에서부터 다시 시작
     y_position = 100;
@@ -120,12 +135,18 @@ void story2() {
         DEBUG_MSG(story_screen - 화면 로드 실패);
         return 0;
     }
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_flight = load_bitmap_resized("images/astronaut/flight.png", 300, 300);
+    if (!a_flight) {
+        DEBUG_MSG(a_flight - 화면 로드 실패);
+        return 0;
+    }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
 
     int y_position = 100;
 
     // 텍스트 시작
-    wait_or_skip(2.0);
+    al_rest(2.0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"좋아! 드디어 태양을 만들었어.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
@@ -177,12 +198,18 @@ void story3() {
         DEBUG_MSG(story_screen - 화면 로드 실패);
         return 0;
     }
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_weapon = load_bitmap_resized("images/astronaut/weapon.png", 300, 300);
+    if (!a_weapon) {
+        DEBUG_MSG(a_weapon - 화면 로드 실패);
+        return 0;
+    }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
 
     int y_position = 100;
 
     // 텍스트 시작
-    wait_or_skip(2.0);
+    al_rest(2.0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계 적들이 나타났어!");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이들은 우리가 행성을 지키는 걸 방해하려고 하는 놈들이야.");
@@ -225,12 +252,23 @@ void story4(char* username) {
         DEBUG_MSG(story_screen - 화면 로드 실패);
         return 0;
     }
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_rocket = load_bitmap_resized("images/astronaut/rocket.png", 300, 300);
+    if (!a_rocket) {
+        DEBUG_MSG(a_rocket - 화면 로드 실패);
+        return 0;
+    }
+    ALLEGRO_BITMAP* a_end = load_bitmap_resized("images/astronaut/end.png", 600, 600);
+    if (!a_rocket) {
+        DEBUG_MSG(a_end - 화면 로드 실패);
+        return 0;
+    }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
 
     int y_position = 100;
 
     // 텍스트 시작
-    wait_or_skip(2.0);
+    al_rest(2.0);
     al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
@@ -258,8 +296,8 @@ void story4(char* username) {
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
 
     // 텍스트 위에서부터 다시 시작
-    // 여기에 캐릭터 연출 추가해야됨
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 200, ALLEGRO_ALIGN_CENTER, u8"넌 정말 대단해, <이름>! 너 없었으면 우린 이겨내지 못했을 거야.");
+    al_draw_bitmap(a_end, SCREEN_W / 2 - 300, SCREEN_H - 800, 0);
+    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 200, ALLEGRO_ALIGN_CENTER, u8"넌 정말 대단해, %s! 너 없었으면 우린 이겨내지 못했을 거야.", username);
     play_music("audio/story.ogg");
     al_flip_display();
     wait_or_skip(2.0);
@@ -346,7 +384,3 @@ char* getUserName() {
 
     return username;  // 동적 할당된 메모리를 반환
 }
-
-
-
-
