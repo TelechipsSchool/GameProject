@@ -48,7 +48,7 @@ void menu() {
                 case ALLEGRO_KEY_ENTER:
                     al_stop_samples();
                     play_music("audio/enter.ogg");
-                    if (selected == MENU_START) {           
+                    if (selected == MENU_START) {
                         start_game();
                     }
                     else if (selected == MENU_RANK) display_ranks();
@@ -65,7 +65,7 @@ void menu() {
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     play_music("audio/cancel.ogg");
-                    return;
+                   // return;
                     break;
                 }
             }
@@ -104,5 +104,6 @@ void menu() {
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);
+    
 }
 
