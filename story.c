@@ -5,16 +5,24 @@ void story1() {
 
     // 배경 화면 생성
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
-    if (!story_screen || !display) {
+    if (!story_screen) {
         DEBUG_MSG(story_screen - 화면 로드 실패);
         return 0;
     }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+    
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_play = load_bitmap_resized("images/astronaut/play.png", 400, 400);
+    if (!a_play) {
+        DEBUG_MSG(story_screen - 화면 로드 실패);
+        return 0;
+    }
 
     int y_position = 100;
 
     // 텍스트 시작
     al_rest(2.0);
+    al_draw_bitmap(a_play, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안녕, 난 암스트롱이야");
     play_music("audio/story.ogg");
     al_flip_display();

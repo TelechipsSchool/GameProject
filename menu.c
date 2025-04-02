@@ -22,6 +22,23 @@ void menu() {
         return 0;
     }
 
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_hi = load_bitmap_resized("images/astronaut/hi.png", 100, 100);
+    if (!a_hi) {
+        DEBUG_MSG(a_hi - 화면 로드 실패);
+        return 0;
+    }
+    ALLEGRO_BITMAP* a_laptop = load_bitmap_resized("images/astronaut/laptop.png", 200, 200);
+    if (!a_laptop) {
+        DEBUG_MSG(a_laptop - 화면 로드 실패);
+        return 0;
+    }
+    ALLEGRO_BITMAP* a_superman = load_bitmap_resized("images/astronaut/superman.png", 200, 200);
+    if (!a_laptop) {
+        DEBUG_MSG(a_superman - 화면 로드 실패);
+        return 0;
+    }
+
     ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
     // 폰트
@@ -30,8 +47,9 @@ void menu() {
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
-
+    
     al_draw_bitmap(main_screen, 0, 0, 0);
+    
     al_play_sample(menu_bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     MenuOption selected = MENU_START;
     bool running = true;
@@ -55,7 +73,7 @@ void menu() {
                     al_stop_samples();
                     play_music("audio/enter.ogg");
                     if (selected == MENU_START) {
-                        story3();
+                        story1();
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
@@ -89,6 +107,9 @@ void menu() {
             return 0;
         }
         // 화면 그리기
+        al_draw_bitmap(a_laptop, 1100, 300, 0);
+        al_draw_bitmap(a_superman, 400, 100, 0);
+        al_draw_bitmap(a_hi, SCREEN_W / 2 - 200, 525 + 70 * selected, 0);
         
         /*al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");*/
         al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
@@ -103,12 +124,13 @@ void menu() {
             SCREEN_W / 2, 690, ALLEGRO_ALIGN_CENTER, "SETTING");
         al_draw_text(menu_font, (selected == MENU_HELP) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
             SCREEN_W / 2, 780, ALLEGRO_ALIGN_CENTER, "HELP");
-
+        
         al_flip_display();
     }
 
 // 리소스 해제
     al_destroy_bitmap(main_screen);
+    al_destroy_bitmap(a_hi);
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);    
