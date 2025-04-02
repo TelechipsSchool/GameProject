@@ -1,4 +1,5 @@
 #pragma once
 #include "init.h"
+#include "audio.h"
 
-void help();
+void help_menu();

@@ -16,6 +16,7 @@ void menu() {
         return 0;  
     }
 
+    ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
     // 폰트
      init_all_fonts();
@@ -25,7 +26,7 @@ void menu() {
     al_register_event_source(event_queue, al_get_display_event_source(display));
 
     al_draw_bitmap(main_screen, 0, 0, 0);
-    al_play_sample(menu_bgm, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+    al_play_sample(menu_bgm, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_bgm_id);
     MenuOption selected = MENU_START;
     bool running = true;
 
@@ -37,27 +38,26 @@ void menu() {
             if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                 switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_UP:
-                    selected = (selected - 1 + MENU_COUNT) % MENU_COUNT;
                     play_music("audio/switch.ogg");
+                    selected = (selected - 1 + MENU_COUNT) % MENU_COUNT;                    
                     break;
                 case ALLEGRO_KEY_DOWN:
-                    selected = (selected + 1) % MENU_COUNT;
                     play_music("audio/switch.ogg");
+                    selected = (selected + 1) % MENU_COUNT;                    
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    if (selected == MENU_START) { al_stop_samples();  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
+                    play_music("audio/enter.ogg");
+                    if (selected == MENU_START) { al_stop_sample(&menu_bgm_id);  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
                         //printf("설정 화면\n");
-                        play_music("audio/enter.ogg");
                         show_setting_menu();
 
                         ALLEGRO_EVENT tmp;
                         while (al_get_next_event(event_queue, &tmp));
                     }
-                    else if (selected == MENU_HELP) {
-                        ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
-                        play_music("audio/enter.ogg");
+                    else if (selected == MENU_HELP) {                        
+                        ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");                        
                         ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
                         ALLEGRO_SAMPLE_ID sample_id;
 

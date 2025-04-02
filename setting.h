@@ -7,6 +7,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include "audio.h"
 
 typedef enum {//난이도 3단계-중간 디폴트
     DIFFICULTY_EASY,

@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "font.h"
+#include "audio.h"
 
 #define RANKING_FILE "ranking.txt"
 #define MAX_RANKS 10
