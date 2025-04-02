@@ -88,7 +88,12 @@ void start_game() {
     if (!sample) {
         DEBUG_MSG(sample - start 음향 로드 실패);
     }
-    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+
+    ALLEGRO_SAMPLE_INSTANCE* game_bgm = al_create_sample_instance(sample);
+
+    al_attach_sample_instance_to_mixer(game_bgm, al_get_default_mixer());
+    al_set_sample_instance_playmode(game_bgm, ALLEGRO_PLAYMODE_LOOP);
+    al_play_sample_instance(game_bgm);
     
 
 
@@ -121,6 +126,8 @@ void start_game() {
             else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
                 play_music("audio/switch.ogg");
                 paused = !paused;  // true <-> false 전환
+                al_set_sample_instance_playing(game_bgm, !paused);
+  
             }
         }
 
@@ -292,10 +299,12 @@ void start_game() {
         // 화면 업데이트 redraw
         if (redraw) {
 
-            background_timer += deltaTime;
-            if (background_timer >= background_interval) {
-                current_scroll_frame = (current_scroll_frame + 1) % SCROLL_FRAMES;
-                background_timer = 0.0f;
+            if (!paused) {
+                background_timer += deltaTime;
+                if (background_timer >= background_interval) {
+                    current_scroll_frame = (current_scroll_frame + 1) % SCROLL_FRAMES;
+                    background_timer = 0.0f;
+                }
             }
             if (!display) {
                 return 0;
@@ -318,7 +327,6 @@ void start_game() {
             al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
-            al_draw_bitmap(home_icon, SCREEN_W - 60, 10, 0);
            
             // 다음 행성 표시
             al_draw_filled_rectangle(40, 40, 200, 200, al_map_rgb(100, 100, 100));
@@ -416,6 +424,7 @@ void start_game() {
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
     al_destroy_bitmap(home_icon);
+    al_destroy_sample_instance(game_bgm);
     al_destroy_sample(sample);
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
