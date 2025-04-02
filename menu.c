@@ -43,12 +43,12 @@ void menu() {
                     break;
                 case ALLEGRO_KEY_DOWN:
                     play_music("audio/switch.ogg");
-                    selected = (selected + 1) % MENU_COUNT;                    
+                    selected = (selected + 1) % MENU_COUNT;  
                     break;
-                case ALLEGRO_KEY_ENTER:                    
+                case ALLEGRO_KEY_ENTER:
                     al_stop_samples();
                     play_music("audio/enter.ogg");
-                    if (selected == MENU_START) {                        
+                    if (selected == MENU_START) {           
                         start_game();
                     }
                     else if (selected == MENU_RANK) display_ranks();
@@ -59,7 +59,7 @@ void menu() {
                         while (al_get_next_event(event_queue, &tmp));
                     }
                     else if (selected == MENU_HELP) {
-                        al_stop_sample(&menu_bgm_id);                        help_menu();
+                        help_menu();
                     }
                     break;
                 case ALLEGRO_KEY_ESCAPE:
