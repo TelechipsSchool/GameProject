@@ -545,14 +545,17 @@ char* getUserName() {
                 typing = false;  // ESC 키로 종료
             }
             else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && username_length > 0) {
+                play_music("audio/erase.ogg");
                 username_length--;
                 username[username_length] = '\0';
             }
             else if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER && username_length > 0) {
+                play_music("audio/enter.ogg");
                 typing = false;
             }
             else if (ev.keyboard.keycode >= ALLEGRO_KEY_A && ev.keyboard.keycode <= ALLEGRO_KEY_Z) {
                 if (username_length < MAX_NAME_LENGTH - 1) {
+                    play_music("audio/keyboard.ogg");
                     username[username_length] = ev.keyboard.keycode - ALLEGRO_KEY_A + 'A';
                     username_length++;
                     username[username_length] = '\0';  // 문자열 끝 처리
