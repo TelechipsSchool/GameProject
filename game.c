@@ -168,12 +168,11 @@ void start_game() {
                 Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
+                isFired = true;
+                last_shot_time = al_get_time();
                 // 마우스 처음 눌렀을 때만 재생
                 al_play_sample(release_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-               }
-
-            isFired = true;
-            last_shot_time = al_get_time();
+               }           
         }
 
         if (!paused) {
