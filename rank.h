@@ -6,9 +6,10 @@
 
 #define RANKING_FILE "ranking.txt"
 #define MAX_RANKS 10
+#define MAX_NAME_LENGTH 40
 
 typedef struct {
-    char username[100];  // 사용자 이름
+    char username[MAX_NAME_LENGTH];  // 사용자 이름
     int score;           // 점수
 } Rank;
 
