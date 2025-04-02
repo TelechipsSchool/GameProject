@@ -146,6 +146,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio.c" />
     <ClCompile Include="display.c" />
     <ClCompile Include="font.c" />
     <ClCompile Include="help.c" />
@@ -158,6 +159,7 @@
     <ClCompile Include="vector.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="audio.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
