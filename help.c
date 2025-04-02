@@ -25,6 +25,7 @@ void help_menu() {
             if (help_event.type == ALLEGRO_EVENT_KEY_DOWN &&
                 help_event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 in_help = false; // ESC 누르면 루프 종료
+                play_music("audio/cancel.ogg");
             }
         }
 

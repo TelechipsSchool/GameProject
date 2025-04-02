@@ -1,10 +1,11 @@
-﻿
-#include "game.h"
+﻿#include "game.h"
 
 
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
+
+ALLEGRO_SAMPLE_ID sample_id;
 
 int score = 0;
 
@@ -16,6 +17,12 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_keyboard_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
+    //소리 
+    ALLEGRO_SAMPLE* pull_sound = al_load_sample("audio/planet_pull.ogg");
+    if (!pull_sound) {
+        printf("행성 당기는 소리 로딩 실패!\n");
+    }
+    ALLEGRO_SAMPLE* release_sound = al_load_sample("audio/planet_push.ogg");
 
     //배경 이미지
 
@@ -77,10 +84,8 @@ void start_game() {
     char* username = getUserName();
     int high_score = get_high_score();
 
-    al_install_audio();
-    al_init_acodec_addon();
-    al_reserve_samples(16);
-    ALLEGRO_SAMPLE_ID sample_id;
+    //al_reserve_samples(16);
+    
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/start.ogg");
     if (!sample) {
         printf("음향 로딩 실패!\n");
@@ -111,6 +116,7 @@ void start_game() {
                 planet_num = 0;
                 playing = false;
                 score = 0;
+                play_music("audio/cancel.ogg");
                 menu();
                 return;
                 
@@ -136,9 +142,13 @@ void start_game() {
                 isDragging = true;
                 dragStart.x = mouse.x;
                 dragStart.y = mouse.y;
+                // 마우스 처음 눌렀을 때만 재생
+                al_play_sample(pull_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             }
             dragEnd.x = mouse.x;
             dragEnd.y = mouse.y;
+            
+
         }
         //마우스를 드래그 놓은 위치 선언.
 
@@ -154,6 +164,8 @@ void start_game() {
                 Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
+                // 마우스 처음 눌렀을 때만 재생
+                al_play_sample(release_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                }
 
             isFired = true;
@@ -581,6 +593,17 @@ void win() {
 
     // 잠시 대기 후, 메인 메뉴로 돌아가기
     al_rest(5.0);  // 5초간 대기
+
+    al_stop_sample(&sample_id);
+    // 해제 먼저!
+    for (int i = 0; i < planet_num; ++i) {
+        Destroy_Planet(planet_list, &planet_num, i);
+    }
+
+    // 안전 초기화
+    for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
+    planet_num = 0;
+    score = 0;
 
     // 게임 종료 후 메뉴 화면으로 전환
     menu();
