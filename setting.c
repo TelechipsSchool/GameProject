@@ -10,9 +10,6 @@ void show_setting_menu() {
         DEBUG_MSG(setting screen - 이미지 로드 실패);
         return;
     }
-    //폰트
-   // ALLEGRO_FONT* title_font = get_title_font();
-   // ALLEGRO_FONT* menu_font = get_menu_font();
 
     //설정 시 이벤트 큐 생성
     ALLEGRO_EVENT_QUEUE* setting_queue = al_create_event_queue();
@@ -55,7 +52,6 @@ void show_setting_menu() {
         }
         else {
             DEBUG_MSG(setting screen 또는 display - 로드 실패);
-            // al_clear_to_color(al_map_rgb(20, 20, 20));
             return 0;
         }
         // 화면 그리기
@@ -70,7 +66,6 @@ void show_setting_menu() {
     }
 
     al_destroy_bitmap(setting_screen);
-  //  al_destroy_font(menu_font);
     al_destroy_event_queue(setting_queue);
     
 }

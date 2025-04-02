@@ -3,12 +3,26 @@
 #define FONT_PATH "fonts/ChunkFive-Regular.otf"
 static ALLEGRO_FONT* fonts[256] = { NULL };
 
+// 전역 폰트 포인터
+ALLEGRO_FONT* title_font = NULL;
+ALLEGRO_FONT* menu_font = NULL;
+ALLEGRO_FONT* score_font = NULL;
+ALLEGRO_FONT* next_font = NULL;
+ALLEGRO_FONT* score_text_font = NULL;
+ALLEGRO_FONT* score_best_font = NULL;
+ALLEGRO_FONT* username_font = NULL;
+ALLEGRO_FONT* entername_font = NULL;
+ALLEGRO_FONT* rank_font = NULL;
+ALLEGRO_FONT* win_font = NULL;
+ALLEGRO_FONT* pause_font = NULL;
+
 ALLEGRO_FONT* get_font(int size) {
     if (size <= 0 || size >= 256) return NULL;
     if (!fonts[size]) {
         fonts[size] = al_load_font(FONT_PATH, size, 0);
         if (!fonts[size]) {
             printf("폰트 로딩 실패: %dpx\n", size);
+			exit(1);
         }
     }
     return fonts[size];
@@ -24,18 +38,7 @@ void destroy_all_fonts() {
 }
 
 
-// 전역 폰트 포인터
-ALLEGRO_FONT* title_font = NULL;
-ALLEGRO_FONT* menu_font = NULL;
-ALLEGRO_FONT* score_font = NULL;
-ALLEGRO_FONT* next_font = NULL;
-ALLEGRO_FONT* score_text_font = NULL;
-ALLEGRO_FONT* score_best_font = NULL;
-ALLEGRO_FONT* username_font = NULL;
-ALLEGRO_FONT* entername_font = NULL;
-ALLEGRO_FONT* rank_font = NULL;
-ALLEGRO_FONT* win_font = NULL;
-ALLEGRO_FONT* pause_font = NULL;
+
 // 초기화 함수
 void init_all_fonts() {
 	title_font = get_font(140);
@@ -50,64 +53,3 @@ void init_all_fonts() {
 	win_font = get_font(50);
 	pause_font = get_font(50);
 }
-
-/*
-ALLEGRO_FONT* get_title_font() {
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 140, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_menu_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_next_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 30, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_score_text_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 30, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_score_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 40, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_score_best_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 20, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_username_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 30, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_entername_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_rank_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
-	return font;
-}
-
-ALLEGRO_FONT* get_win_font() {
-	// 폰트
-	ALLEGRO_FONT* font = al_load_font(FONT_PATH, 50, 0);
-	return font;
-}
-*/

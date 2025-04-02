@@ -17,14 +17,6 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
 
-    // 폰트
-    /*
-    ALLEGRO_FONT* next_font = get_next_font();
-    ALLEGRO_FONT* score_text_font = get_score_text_font();
-    ALLEGRO_FONT* score_font = get_score_font();
-    ALLEGRO_FONT* score_best_font = get_score_best_font();
-    ALLEGRO_FONT* pause_font = get_title_font();
-    */
     //배경 이미지
 
     ALLEGRO_BITMAP* scroll_frames[SCROLL_FRAMES];
@@ -517,8 +509,6 @@ char* getUserName() {
     username[0] = '\0';  // 초기화
 
     int username_length = 0;
-    //ALLEGRO_FONT* namefont = get_username_font();
-    //ALLEGRO_FONT* enterfont = get_entername_font();
 
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
@@ -567,8 +557,6 @@ char* getUserName() {
         }
     }
 
-  //  al_destroy_font(enter_font);
-   // al_destroy_font(name_font);
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
 
@@ -578,9 +566,6 @@ char* getUserName() {
 void win() {
     // 태양 이미지 로드 (이미지 크기에 맞게 조정)
     ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
-
-    // "You Win!" 텍스트를 표시할 폰트
-   // ALLEGRO_FONT* win_font = get_win_font();
 
     // 화면을 검은색으로 클리어
     al_clear_to_color(al_map_rgb(0, 0, 0));

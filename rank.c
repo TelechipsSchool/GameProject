@@ -49,7 +49,6 @@ void save_score(const char* username, int score) {
 }
 
 void display_ranks() {
-   // ALLEGRO_FONT* rank_font = get_rank_font();
     if (rank_font == NULL) { DEBUG_MSG(rank_font - NULL); exit(1); }
 
     Rank ranks[MAX_RANKS];
@@ -79,12 +78,13 @@ void display_ranks() {
         }
 
         if (rank_font==NULL) { DEBUG_MSG(rank_font - NULL); exit(1); }
-        al_draw_text(rank_font, al_map_rgb(255, 255, 0),
-            SCREEN_W / 2, 100, ALLEGRO_ALIGN_CENTER, "RANKING");
+        al_draw_text(rank_font, al_map_rgb(255, 255, 0),SCREEN_W / 2, 100, ALLEGRO_ALIGN_CENTER, "RANKING");
+
 
         // 화면에 텍스트를 출력
         for (int i = 0; i < rank_count && i < MAX_RANKS; ++i) {
             // 이름 - 점수 표시
+            init_all_fonts();
             al_draw_textf(rank_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y, ALLEGRO_ALIGN_CENTER, "%d. %s - %d", i + 1, ranks[i].username, ranks[i].score);
             y += 50;  // 각 랭킹 사이 간격을 두기 위해 y 좌표 증가
         }

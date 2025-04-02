@@ -9,9 +9,6 @@ Button menu_buttons[MENU_COUNT] = {
 };
 
 void menu() {
-    // Allegro 초기화
-    init();
-
     // 메뉴 화면 생성
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
     if (!main_screen) {
@@ -21,9 +18,7 @@ void menu() {
 
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
     // 폰트
-  //  ALLEGRO_FONT* title_font = get_title_font();
-  //  ALLEGRO_FONT* menu_font = get_menu_font();
-
+     init_all_fonts();
     // 이벤트 큐 생성
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -117,11 +112,10 @@ void menu() {
         }
         else {
             DEBUG_MSG(main screen - 로드 실패);
-            // al_clear_to_color(al_map_rgb(20, 20, 20));
             return 0;
         }
         // 화면 그리기
-        init_all_fonts();
+        
         al_draw_text(title_font, al_map_rgb(181, 178, 255), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
 
         // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
@@ -140,10 +134,8 @@ void menu() {
 
 // 리소스 해제
     al_destroy_bitmap(main_screen);
-   // al_destroy_font(menu_font);
-    //al_destroy_display(display);
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);
-    destroy_all_fonts();
-}
+    }
+
