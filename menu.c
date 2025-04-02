@@ -13,7 +13,7 @@ void menu() {
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
     if (!main_screen) {
         DEBUG_MSG(main screen - 화면 로드 실패);
-        return 0;  
+        return 0;
     }
 
     ALLEGRO_SAMPLE_ID menu_bgm_id;
@@ -47,7 +47,10 @@ void menu() {
                     break;
                 case ALLEGRO_KEY_ENTER:
                     play_music("audio/enter.ogg");
-                    if (selected == MENU_START) { al_stop_sample(&menu_bgm_id);  al_destroy_sample(menu_bgm); menu_bgm = NULL; start_game(); }
+                    al_stop_samples();
+
+                    if (selected == MENU_START) {
+                        start_game(); }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
                         //printf("설정 화면\n");
