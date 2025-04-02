@@ -7,6 +7,7 @@
 #include "rank.h"
 #include "setting.h"
 #include <stdlib.h>
+#include "font.h"
 
 // 유도선 설정
 float line_length = 0.15f;
