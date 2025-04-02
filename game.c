@@ -1,13 +1,12 @@
 ﻿#include "game.h"
 
-
 // 행성 배열
 Planet* planet_list[MAX_PLANET] = { 0 };
 int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
 
 int score = 0;
 
-void start_game() {
+void start_game(char* username) {
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);//0.00025초마다 이벤트 ->매초 4000번. 
     //새 타이머를 가리키는 포인터 반환. or NULL반환
     ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();//선입선출
@@ -43,7 +42,6 @@ void start_game() {
     ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 120, 120);
     ALLEGRO_BITMAP* planet_img6 = load_bitmap_resized("images/planet_6.png", 160, 160);
     ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 300, 300);
-    ALLEGRO_BITMAP* home_icon = load_bitmap_resized("images/home.png", 50, 50);
 
     
 
@@ -79,7 +77,6 @@ void start_game() {
     bool isFired = false, redraw = true, playing = true, isDragging = false;
     bool paused = false;
 
-    char* username = getUserName();
     int high_score = get_high_score();
 
     ALLEGRO_SAMPLE_INSTANCE* game_bgm = init_bgm("audio/start.ogg");
@@ -411,7 +408,7 @@ void start_game() {
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);
     al_destroy_bitmap(home_icon);
-    al_destroy_sample_instance(game_bgm);
+    al_destroy_sample(sample);
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
     }
@@ -503,74 +500,6 @@ void merge_planets(Planet* a, Planet* b) {
 
     // 행성 크기만큼 점수 추가
     score += a->radius;
-}
-
-char* getUserName() {
-    char* username = (char*)malloc(MAX_NAME_LENGTH);
-    if (!username) {
-        DEBUG_MSG(username - 메모리 할당 실패);
-        return NULL;
-    }
-    username[0] = '\0';  // 초기화
-
-    int username_length = 0;
-
-    ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
-    if (!event_queue || !timer || !display) {
-        DEBUG_MSG(event queue or timer or display - 생성 실패);
-        free(username);  // 메모리 누수 방지
-        return NULL;
-    }
-    
-    al_register_event_source(event_queue, al_get_display_event_source(display));
-    al_register_event_source(event_queue, al_get_keyboard_event_source());
-    al_register_event_source(event_queue, al_get_timer_event_source(timer));
-    al_start_timer(timer);
-
-    bool typing = true;
-    while (typing) {
-        ALLEGRO_EVENT ev;
-        al_wait_for_event(event_queue, &ev);
-
-        if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-            if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-                typing = false;  // ESC 키로 종료
-                play_music("audio/cancel.ogg");
-                menu();
-            }
-            else if (ev.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && username_length > 0) {
-                play_music("audio/erase.ogg");
-                username_length--;
-                username[username_length] = '\0';
-            }
-            else if (ev.keyboard.keycode == ALLEGRO_KEY_ENTER && username_length > 0) {
-                play_music("audio/enter.ogg");
-                typing = false;
-            }
-            else if (ev.keyboard.keycode >= ALLEGRO_KEY_A && ev.keyboard.keycode <= ALLEGRO_KEY_Z) {
-                if (username_length < MAX_NAME_LENGTH - 1) {
-                    play_music("audio/keyboard.ogg");
-                    username[username_length] = ev.keyboard.keycode - ALLEGRO_KEY_A + 'A';
-                    username_length++;
-                    username[username_length] = '\0';  // 문자열 끝 처리
-                }
-            }
-        }
-
-        if (ev.type == ALLEGRO_EVENT_TIMER) {
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(entername_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Enter your name");
-            al_draw_rectangle(SCREEN_W / 2 - 200, SCREEN_H / 2 + 10, SCREEN_W / 2 + 200, SCREEN_H / 2 + 70, al_map_rgb(255, 255, 255), 2);
-            al_draw_text(username_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 25, ALLEGRO_ALIGN_CENTER, username);
-            al_flip_display();
-        }
-    }
-
-    al_destroy_event_queue(event_queue);
-    al_destroy_timer(timer);
-
-    return username;  // 동적 할당된 메모리를 반환
 }
 
 void win() {

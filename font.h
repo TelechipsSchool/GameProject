@@ -16,3 +16,4 @@ extern ALLEGRO_FONT* entername_font;
 extern ALLEGRO_FONT* rank_font;
 extern ALLEGRO_FONT* win_font;
 extern ALLEGRO_FONT* pause_font;
+extern ALLEGRO_FONT* story_font;

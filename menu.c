@@ -1,6 +1,6 @@
-#include "menu.h"
+ï»¿#include "menu.h"
 
-// ¸Ş´º ¹öÆ°
+// ë©”ë‰´ ë²„íŠ¼
 Button menu_buttons[MENU_COUNT] = {
     {SCREEN_W / 2 - 100, 250, 200, 50},  // Start
     {SCREEN_W / 2 - 100, 320, 200, 50},  // Rank
@@ -9,24 +9,24 @@ Button menu_buttons[MENU_COUNT] = {
 };
 
 void menu() {
-    // ¸Ş´º È­¸é »ı¼º
+    // ë©”ë‰´ í™”ë©´ ìƒì„±
     ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
     if (!main_screen) {
-        DEBUG_MSG(main screen - È­¸é ·Îµå ½ÇÆĞ);
+        DEBUG_MSG(main screen - í™”ë©´ ë¡œë“œ ì‹¤íŒ¨);
         return 0;
     }
-    // ¸Ş´º È­¸é »ı¼º
+    // ë©”ë‰´ í™”ë©´ ìƒì„±
     ALLEGRO_BITMAP* title = load_bitmap_resized("images/title.png", 600, 120);
     if (!main_screen) {
-        DEBUG_MSG(title - È­¸é ·Îµå ½ÇÆĞ);
+        DEBUG_MSG(title - í™”ë©´ ë¡œë“œ ì‹¤íŒ¨);
         return 0;
     }
 
     ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
-    // ÆùÆ®
+    // í°íŠ¸
     init_all_fonts();
-    // ÀÌº¥Æ® Å¥ »ı¼º
+    // ì´ë²¤íŠ¸ í ìƒì„±
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -39,7 +39,7 @@ void menu() {
     while (running) {
         ALLEGRO_EVENT event;
 
-        // Å°º¸µå ÀÔ·Â Ã³¸®
+        // í‚¤ë³´ë“œ ì…ë ¥ ì²˜ë¦¬
         while (al_get_next_event(event_queue, &event)) {
             if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                 switch (event.keyboard.keycode) {
@@ -55,7 +55,7 @@ void menu() {
                     al_stop_samples();
                     play_music("audio/enter.ogg");
                     if (selected == MENU_START) {
-                        start_game();
+                        story1();
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
@@ -85,15 +85,15 @@ void menu() {
             al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
         }
         else {
-            DEBUG_MSG(main screen - ·Îµå ½ÇÆĞ);
+            DEBUG_MSG(main screen - ë¡œë“œ ì‹¤íŒ¨);
             return 0;
         }
-        // È­¸é ±×¸®±â
+        // í™”ë©´ ê·¸ë¦¬ê¸°
         
         /*al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");*/
         al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
 
-        // ¸Ş´º ¿É¼Ç Ãâ·Â(¼±ÅÃµÈ ¸Ş´º´Â ³ë¶õ»ö, ³ª¸ÓÁö´Â Èò»ö)
+        // ë©”ë‰´ ì˜µì…˜ ì¶œë ¥(ì„ íƒëœ ë©”ë‰´ëŠ” ë…¸ë€ìƒ‰, ë‚˜ë¨¸ì§€ëŠ” í°ìƒ‰)
 
         al_draw_text(menu_font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
             SCREEN_W / 2, 550, ALLEGRO_ALIGN_CENTER, "START");
@@ -107,7 +107,7 @@ void menu() {
         al_flip_display();
     }
 
-// ¸®¼Ò½º ÇØÁ¦
+// ë¦¬ì†ŒìŠ¤ í•´ì œ
     al_destroy_bitmap(main_screen);
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;

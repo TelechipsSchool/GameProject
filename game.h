@@ -1,14 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma once
+#include <stdlib.h>
 #include "init.h"
 #include "menu.h"
 #include "display.h"
 #include "vector.h"
 #include "rank.h"
 #include "setting.h"
-#include <stdlib.h>
 #include "font.h"
 #include "audio.h"
+#include "story.h"
 
 // 유도선 설정
 float line_length = 0.15f;
@@ -43,9 +44,6 @@ double maxForce = 200.0f;      // 최대 당기는 힘
 #define MAX_PLANET 100
 #define PLANET_TYPES 7
 
-// 유저 이름 최대 길이
-#define MAX_NAME_LENGTH 20
-
 typedef struct {
     Vector2 position;
     Vector2 velocity;
@@ -60,7 +58,7 @@ typedef struct {
 
 int get_radius(int type);
 
-void start_game();
+void start_game(char* username);
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
 // 핵심 중력 + 회전 보정 함수
 void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float deltaTime);
@@ -68,4 +66,3 @@ Planet* Create_Planet(Vector2 pos, Vector2 vel, int type);
 void Destroy_Planet(Planet** planet_list, int* count, int index);
 void merge_planets(Planet* a, Planet* b);
 void win();
-char* getUserName();

@@ -15,6 +15,7 @@ ALLEGRO_FONT* entername_font = NULL;
 ALLEGRO_FONT* rank_font = NULL;
 ALLEGRO_FONT* win_font = NULL;
 ALLEGRO_FONT* pause_font = NULL;
+ALLEGRO_FONT* story_font = NULL;
 
 ALLEGRO_FONT* get_font(int size) {
     if (size <= 0 || size >= 256) return NULL;
@@ -52,4 +53,5 @@ void init_all_fonts() {
 	rank_font = get_font(50);
 	win_font = get_font(50);
 	pause_font = get_font(50);
+    story_font = get_font(40);
 }
