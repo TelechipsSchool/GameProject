@@ -1,5 +1,4 @@
-﻿
-#include "game.h"
+﻿#include "game.h"
 
 
 // 행성 배열
