@@ -22,8 +22,6 @@ void show_setting_menu() {
     bool in_setting = true;
 
     while (in_setting) {
-
-
         ALLEGRO_EVENT ev;
         al_wait_for_event(setting_queue, &ev);
 
@@ -69,6 +67,7 @@ void show_setting_menu() {
         al_flip_display();
     }
 
+    menu();
     al_destroy_bitmap(setting_screen);
     al_destroy_event_queue(setting_queue);
     
