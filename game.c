@@ -366,18 +366,37 @@ void start_game(char* username) {
                 al_draw_circle(center_x, center_y, 350, al_map_rgb(255, 255, 255), 1); // 기본 테두리
             }
             // 드래그 하는 동안, 유도선 그리기
+            // 유도선 (중력 반영한 예측 궤도)
             if (isDragging) {
-                Vector2 forceVec = Vector2_Clamp(Vector2_Scale(Vector2_Sub(dragEnd, dragStart), -line_length), maxForce);
-                Vector2 endPoint = Vector2_Add(shootStart, forceVec);
-                //al_draw_line(shootStart.x, shootStart.y, endPoint.x, endPoint.y, al_map_rgb(255, 255, 0), 2);
-               
-                // 예측 궤적 점 그리기
-                int dotCount = 10; // 점 개수
-                float stepScale = 0.15f; // 각 점 간 거리 계수
-                for (int i = 1; i <= dotCount; ++i) {
-                    float t = i * stepScale;
-                    Vector2 dotPos = Vector2_Add(shootStart, Vector2_Scale(forceVec, t));
-                    al_draw_filled_circle(dotPos.x, dotPos.y, 3, al_map_rgb(255, 255, 255)); // 점 반지름 3픽셀
+                Vector2 forceVec = Vector2_Clamp(Vector2_Scale(Vector2_Sub(dragEnd, dragStart), -line_length * 0.5f), maxForce);
+
+                Vector2 position = shootStart;
+                Vector2 velocity = forceVec;
+
+                int dotCount = 12; //점 12개
+                float predict_delta_time = 0.8f;   //점간의 간격 받아오는 시간 계산
+                float gravityStrength = 1400000.0f;   //이 부분으로 휘는 정도 
+                Vector2 gravityCenter = { center_x, center_y }; //중력 중간 위치
+
+                for (int i = 0; i < dotCount; ++i) {  //포물선 계산
+                    Vector2 toCenter = Vector2_Sub(gravityCenter, position);
+                    float distance = Vector2_Length(toCenter);
+
+                    if (distance == 0) break; // divide by zero 방지
+
+                    Vector2 gravityDir = Vector2_Normalize(toCenter);
+                    float gravityForce = gravityStrength / (distance * distance + 100.0f);  //100더한게 값 뜨는거 방지
+                    Vector2 gravity = Vector2_Scale(gravityDir, gravityForce);
+
+
+                    //printf("velocity: (%f, %f)\n", velocity.x, velocity.y);        /위치 디버깅용
+                    //printf("gravity: (%f, %f)\n", gravity.x, gravity.y);
+
+
+                    velocity = Vector2_Add(velocity, Vector2_Scale(gravity, predict_delta_time));
+                    position = Vector2_Add(position, Vector2_Scale(velocity, predict_delta_time));
+
+                    al_draw_filled_circle(position.x, position.y, 2, al_map_rgb(255, 255, 255));
                 }
             }
 
