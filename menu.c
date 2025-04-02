@@ -65,6 +65,7 @@ void menu() {
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     play_music("audio/cancel.ogg");
+                    return;
                     break;
                 }
             }
@@ -103,5 +104,5 @@ void menu() {
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);
-    }
+}
 
