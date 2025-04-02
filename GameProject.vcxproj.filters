@@ -51,6 +51,9 @@
     <ClCompile Include="audio.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="story.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="display.h">
@@ -81,6 +84,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="audio.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="story.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

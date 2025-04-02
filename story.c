@@ -3,7 +3,7 @@
 void story1() {
     // 메뉴 화면 생성
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
-    if (!story_screen) {
+    if (!story_screen || !display) {
         DEBUG_MSG(story_screen - 화면 로드 실패);
         return 0;
     }
