@@ -88,7 +88,7 @@ void start_game() {
     if (!sample) {
         DEBUG_MSG(sample - start 음향 로드 실패);
     }
-    al_play_sample(sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+    al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     
 
 
