@@ -161,12 +161,11 @@ void start_game() {
                 Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
+                isFired = true;
+                last_shot_time = al_get_time();
                 // 마우스 처음 눌렀을 때만 재생
                 al_play_sample(release_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-               }
-
-            isFired = true;
-            last_shot_time = al_get_time();
+               }           
         }
 
         if (!paused) {
@@ -318,7 +317,6 @@ void start_game() {
             al_draw_bitmap(gravityfield, center_x - 350, center_y - 350, 0);
             al_draw_bitmap(startpoint, init_x - 75, init_y - 75, 0);
             al_draw_bitmap(center, center_x - 15, center_y - 15, 0);
-            al_draw_bitmap(home_icon, SCREEN_W - 60, 10, 0);
            
             // 다음 행성 표시
             al_draw_filled_rectangle(40, 40, 200, 200, al_map_rgb(100, 100, 100));

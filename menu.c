@@ -15,6 +15,12 @@ void menu() {
         DEBUG_MSG(main screen - 화면 로드 실패);
         return 0;
     }
+    // 메뉴 화면 생성
+    ALLEGRO_BITMAP* title = load_bitmap_resized("images/title.png", 600, 120);
+    if (!main_screen) {
+        DEBUG_MSG(title - 화면 로드 실패);
+        return 0;
+    }
 
     ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
@@ -83,7 +89,8 @@ void menu() {
         }
         // 화면 그리기
         
-        al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");
+        /*al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");*/
+        al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
 
         // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
 
