@@ -82,20 +82,7 @@ void start_game() {
     char* username = getUserName();
     int high_score = get_high_score();
 
-    //al_reserve_samples(16);
-    
-    ALLEGRO_SAMPLE* sample = al_load_sample("audio/start.ogg");
-    if (!sample) {
-        DEBUG_MSG(sample - start 음향 로드 실패);
-    }
-
-    ALLEGRO_SAMPLE_INSTANCE* game_bgm = al_create_sample_instance(sample);
-
-    al_attach_sample_instance_to_mixer(game_bgm, al_get_default_mixer());
-    al_set_sample_instance_playmode(game_bgm, ALLEGRO_PLAYMODE_LOOP);
-    al_play_sample_instance(game_bgm);
-    
-
+    ALLEGRO_SAMPLE_INSTANCE* game_bgm = init_bgm("audio/start.ogg");
 
     while (playing) {
         ALLEGRO_EVENT event;
@@ -106,7 +93,7 @@ void start_game() {
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
                 //printf("%s %d\n", username, score);       // 디버깅 용
-               // al_stop_samples();
+
                 al_set_sample_instance_playing(game_bgm, false);
                 save_score(username, score);
 
@@ -425,7 +412,6 @@ void start_game() {
     al_destroy_bitmap(startpoint);
     al_destroy_bitmap(home_icon);
     al_destroy_sample_instance(game_bgm);
-    al_destroy_sample(sample);
     for (int i = 0; i < SCROLL_FRAMES; ++i) {
         if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
     }
