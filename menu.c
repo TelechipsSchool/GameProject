@@ -111,7 +111,5 @@ void menu() {
     al_destroy_bitmap(main_screen);
     al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
-    al_destroy_event_queue(event_queue);
-    
+    al_destroy_event_queue(event_queue);    
 }
-

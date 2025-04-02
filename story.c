@@ -12,12 +12,15 @@ void story1() {
     int y_position = 100;
 
     // 텍스트 시작
+    al_rest(2.0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안녕, 난 암스트롱이야");
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
 
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"너의 이름은 뭐야?");
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
@@ -32,6 +35,7 @@ void story1() {
     while (!enter_pressed) {
         al_get_keyboard_state(&key_state);
         if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
             enter_pressed = true;
         }
         al_flip_display();
@@ -42,8 +46,9 @@ void story1() {
 
     // 텍스트 위에서부터 다시 시작
     y_position = 100;
-
+    al_rest(2.0);
     al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"반가워 %s!", username);
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
@@ -51,6 +56,7 @@ void story1() {
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"지구가 점점 온난화로 인해 살기 힘든 환경이 되어가고 있어.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"우리는 이제 새로운 집을 찾아 떠나야 해.");
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
@@ -58,6 +64,7 @@ void story1() {
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"다행히도, 다른 은하계에서 살 수 있는 행성을 찾았어.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"하지만 그곳엔 태양이 없어서... 우리가 태양을 만들어야 해!");
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
@@ -65,6 +72,7 @@ void story1() {
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"우리의 첫 번째 목표는, 주변 행성들을 융합해서 태양을 만드는 거야.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"태양이 없으면 아무것도 할 수 없으니까!");
+    play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     al_rest(2.0);
@@ -76,6 +84,7 @@ void story1() {
     while (!enter_pressed) {
         al_get_keyboard_state(&key_state);
         if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
             enter_pressed = true;
         }
         al_flip_display();
