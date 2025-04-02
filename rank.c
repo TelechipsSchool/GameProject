@@ -67,6 +67,7 @@ void display_ranks() {
     qsort(ranks, rank_count, sizeof(Rank), compare_ranks);
 
     bool running = true;
+    if (!display) { DEBUG_MSG(display - NULL); exit(0); }
     al_clear_to_color(al_map_rgb(20, 20, 20));
 
     // 이벤트 큐 생성
