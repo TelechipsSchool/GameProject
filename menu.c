@@ -71,6 +71,7 @@ void menu() {
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     play_music("audio/cancel.ogg");
+                    
                    // return;
                     break;
                 }

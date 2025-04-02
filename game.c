@@ -106,7 +106,8 @@ void start_game() {
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
                 //printf("%s %d\n", username, score);       // 디버깅 용
-                al_stop_samples();
+               // al_stop_samples();
+                al_set_sample_instance_playing(game_bgm, false);
                 save_score(username, score);
 
                 // 해제 먼저!
