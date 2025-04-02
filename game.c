@@ -18,12 +18,13 @@ void start_game() {
     al_start_timer(timer);
 
     // 폰트
+    /*
     ALLEGRO_FONT* next_font = get_next_font();
     ALLEGRO_FONT* score_text_font = get_score_text_font();
     ALLEGRO_FONT* score_font = get_score_font();
     ALLEGRO_FONT* score_best_font = get_score_best_font();
     ALLEGRO_FONT* pause_font = get_title_font();
-
+    */
     //배경 이미지
 
     ALLEGRO_BITMAP* scroll_frames[SCROLL_FRAMES];
@@ -516,17 +517,17 @@ char* getUserName() {
     username[0] = '\0';  // 초기화
 
     int username_length = 0;
-    ALLEGRO_FONT* namefont = get_username_font();
-    ALLEGRO_FONT* enterfont = get_entername_font();
+    //ALLEGRO_FONT* namefont = get_username_font();
+    //ALLEGRO_FONT* enterfont = get_entername_font();
 
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0);  // 60fps
-    if (!event_queue || !timer) {
+    if (!event_queue || !timer || !display) {
         printf("Event queue or timer creation failed\n");
         free(username);  // 메모리 누수 방지
         return NULL;
     }
-
+    
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
@@ -559,15 +560,15 @@ char* getUserName() {
 
         if (ev.type == ALLEGRO_EVENT_TIMER) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(enterfont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Enter your name");
+            al_draw_text(entername_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 4, ALLEGRO_ALIGN_CENTER, "Enter your name");
             al_draw_rectangle(SCREEN_W / 2 - 200, SCREEN_H / 2 + 10, SCREEN_W / 2 + 200, SCREEN_H / 2 + 70, al_map_rgb(255, 255, 255), 2);
-            al_draw_text(namefont, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 25, ALLEGRO_ALIGN_CENTER, username);
+            al_draw_text(username_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 25, ALLEGRO_ALIGN_CENTER, username);
             al_flip_display();
         }
     }
 
-    al_destroy_font(enterfont);
-    al_destroy_font(namefont);
+  //  al_destroy_font(enter_font);
+   // al_destroy_font(name_font);
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
 
@@ -579,7 +580,7 @@ void win() {
     ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
 
     // "You Win!" 텍스트를 표시할 폰트
-    ALLEGRO_FONT* win_font = get_win_font();
+   // ALLEGRO_FONT* win_font = get_win_font();
 
     // 화면을 검은색으로 클리어
     al_clear_to_color(al_map_rgb(0, 0, 0));

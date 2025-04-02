@@ -7,6 +7,7 @@
 #include "rank.h"
 #include "setting.h"
 #include <stdlib.h>
+#include "font.h"
 
 // 유도선 설정
 float line_length = 0.15f;
@@ -43,9 +44,6 @@ double maxForce = 200.0f;      // 최대 당기는 힘
 
 // 유저 이름 최대 길이
 #define MAX_NAME_LENGTH 20
-
-// 난이도
-int MODE = 6;
 
 typedef struct {
     Vector2 position;

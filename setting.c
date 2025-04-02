@@ -11,8 +11,8 @@ void show_setting_menu() {
         return;
     }
     //폰트
-    ALLEGRO_FONT* title_font = get_title_font();
-    ALLEGRO_FONT* menu_font = get_menu_font();
+   // ALLEGRO_FONT* title_font = get_title_font();
+   // ALLEGRO_FONT* menu_font = get_menu_font();
 
     //설정 시 이벤트 큐 생성
     ALLEGRO_EVENT_QUEUE* setting_queue = al_create_event_queue();
@@ -70,7 +70,7 @@ void show_setting_menu() {
     }
 
     al_destroy_bitmap(setting_screen);
-    al_destroy_font(menu_font);
+  //  al_destroy_font(menu_font);
     al_destroy_event_queue(setting_queue);
     
 }

@@ -49,7 +49,8 @@ void save_score(const char* username, int score) {
 }
 
 void display_ranks() {
-    ALLEGRO_FONT* rank_font = get_rank_font();
+   // ALLEGRO_FONT* rank_font = get_rank_font();
+    if (rank_font == NULL) { DEBUG_MSG(rank_font - NULL); exit(1); }
 
     Rank ranks[MAX_RANKS];
 
@@ -77,6 +78,7 @@ void display_ranks() {
             menu();
         }
 
+        if (rank_font==NULL) { DEBUG_MSG(rank_font - NULL); exit(1); }
         al_draw_text(rank_font, al_map_rgb(255, 255, 0),
             SCREEN_W / 2, 100, ALLEGRO_ALIGN_CENTER, "RANKING");
 
@@ -90,6 +92,7 @@ void display_ranks() {
         // 화면 업데이트
         al_flip_display();
     }
+    
 }
 
 // 점수를 내림차순으로 비교하는 함수
