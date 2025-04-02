@@ -16,6 +16,11 @@ void start_game() {
     al_register_event_source(game_event_queue, al_get_keyboard_event_source());
     al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
+    //소리 
+    ALLEGRO_SAMPLE* pull_sound = al_load_sample("audio/planet_pull.ogg");
+    if (!pull_sound) {
+        printf("행성 당기는 소리 로딩 실패!\n");
+    }
 
     // 폰트
     ALLEGRO_FONT* next_font = get_next_font();
@@ -143,9 +148,13 @@ void start_game() {
                 isDragging = true;
                 dragStart.x = mouse.x;
                 dragStart.y = mouse.y;
+                // 마우스 처음 눌렀을 때만 재생
+                al_play_sample(pull_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             }
             dragEnd.x = mouse.x;
             dragEnd.y = mouse.y;
+            
+
         }
         //마우스를 드래그 놓은 위치 선언.
 
