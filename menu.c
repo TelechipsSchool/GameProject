@@ -9,35 +9,25 @@ Button menu_buttons[MENU_COUNT] = {
 };
 
 void menu() {
-    // 메뉴 화면 생성
-    ALLEGRO_BITMAP* main_screen = load_bitmap_resized("images/menu.png", SCREEN_W, SCREEN_H);
-    if (!main_screen) {
-        DEBUG_MSG(main screen - 화면 로드 실패);
-        return 0;
-    }
-    // 메뉴 화면 생성
-    ALLEGRO_BITMAP* title = load_bitmap_resized("images/title.png", 600, 120);
-    if (!main_screen) {
-        DEBUG_MSG(title - 화면 로드 실패);
-        return 0;
+
+    // 이미지 포인터 선언
+    ALLEGRO_BITMAP* main_screen = NULL, * title = NULL;
+    ALLEGRO_BITMAP* a_hi = NULL, * a_laptop = NULL, * a_superman = NULL;
+
+    // 이미지 정보 배열
+    ImageAsset assets[] = {
+        {"images/menu.png", SCREEN_W, SCREEN_H, &main_screen},
+        {"images/title.png", 600, 120, &title},
+        {"images/astronaut/hi.png", 100, 100, &a_hi},
+        {"images/astronaut/laptop.png", 200, 200, &a_laptop},
+        {"images/astronaut/superman.png", 200, 200, &a_superman}
+    };
+
+    // 이미지 로딩
+    if (!load_image_assets(assets, sizeof(assets) / sizeof(assets[0]))) {
+        return; // 하나라도 로드 실패 시 조기 종료
     }
 
-    // 캐릭터 생성
-    ALLEGRO_BITMAP* a_hi = load_bitmap_resized("images/astronaut/hi.png", 100, 100);
-    if (!a_hi) {
-        DEBUG_MSG(a_hi - 화면 로드 실패);
-        return 0;
-    }
-    ALLEGRO_BITMAP* a_laptop = load_bitmap_resized("images/astronaut/laptop.png", 200, 200);
-    if (!a_laptop) {
-        DEBUG_MSG(a_laptop - 화면 로드 실패);
-        return 0;
-    }
-    ALLEGRO_BITMAP* a_superman = load_bitmap_resized("images/astronaut/superman.png", 200, 200);
-    if (!a_laptop) {
-        DEBUG_MSG(a_superman - 화면 로드 실패);
-        return 0;
-    }
 
     ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");

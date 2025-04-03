@@ -4,6 +4,8 @@
 
 extern ALLEGRO_BITMAP* planet_images[8] = { NULL };
 
+
+//game.c 이미지로드
 void load_planet_images() {
     int sizes[] = { 0, 30, 40, 60, 90, 120, 160, 300 };  // index 0은 사용 안 함
 
@@ -29,4 +31,16 @@ void destroy_planet_images(ALLEGRO_BITMAP** planet_images) {
             planet_images[i] = NULL;
         }
     }
+}
+
+//menu.c 이미지 로드
+bool load_image_assets(const ImageAsset* assets, int count) {
+    for (int i = 0; i < count; ++i) {
+        *(assets[i].target) = load_bitmap_resized(assets[i].path, assets[i].width, assets[i].height);
+        if (*(assets[i].target) == NULL) {
+            DEBUG_MSG(이미지 로드 실패);
+            return false;
+        }
+    }
+    return true;
 }
