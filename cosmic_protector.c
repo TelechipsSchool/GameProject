@@ -57,7 +57,7 @@ int heart_x_pos;
 void game2(char* username, int score, int high_score) {
     game_start_time = time(NULL);
 
-    ALLEGRO_DISPLAY* display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+    
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60);
     ALLEGRO_EVENT event;
@@ -65,7 +65,7 @@ void game2(char* username, int score, int high_score) {
     loadBitmap();
 
     al_register_event_source(event_queue, al_get_keyboard_event_source());
-    al_register_event_source(event_queue, al_get_display_event_source(display));
+    
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
     bool running = true;
@@ -248,6 +248,7 @@ void fire_bullet() {
             break;
         }
     }
+    play_music("audio/shot.ogg");
 }
 // 총알 전진
 void update_bullets() {
@@ -425,6 +426,7 @@ void check_collisions() {
                         asteroids[j].hits++;
                         if (asteroids[j].hits >= ASTEROID_HITS) {
                             asteroids[j].active = false;
+                            play_music_effect("sfx/big_explosion.ogg");  //운석파괴 소리
                         }
                     }
                 }
@@ -447,6 +449,7 @@ void check_alien_collisions() {
                     alien1.hits++;
                     if (alien1.hits >= ALIEN_HITS) {
                         alien1.active = false;
+                        play_music_effect("sfx/powerup.ogg"); //외계인1 죽이는 소리
                     }
                 }
             }
@@ -464,6 +467,7 @@ void check_die() {
             dx = rocket.x - asteroids[i].x;
             dy = rocket.y - asteroids[i].y;
             if (sqrt(dx * dx + dy * dy) < 30 && rocket.active) {
+                play_music_effect("sfx/collision.ogg");  // 로켓이랑 행성 충돌
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
@@ -494,6 +498,7 @@ void check_die_because_alien_bullet() {
             dx = rocket.x - alien1.bullets[i].x;
             dy = rocket.y - alien1.bullets[i].y;
             if (sqrt(dx * dx + dy * dy) < 29 && rocket.active) {
+                
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
@@ -515,6 +520,7 @@ void check_die_because_alien() {
         dx = rocket.x - alien1.x;
         dy = rocket.y - alien1.y;
         if (sqrt(dx * dx + dy * dy) < 29 && rocket.active) {
+            
             rocket.active = false;
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
