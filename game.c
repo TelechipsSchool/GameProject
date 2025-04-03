@@ -15,16 +15,11 @@ void start_game(char* username) {
 
     // 행성 이미지
     load_planet_images();
-        
-    // 발사 지점
-    Vector2 shootStart = { init_x, init_y };
-    Vector2 waitPoint = { wait_x, wait_y };
     
     int max_type = get_max_type_by_difficulty(current_difficulty);
     create_initial_planets(shootStart, waitPoint, max_type);
 
     // 중력, 시작점, 센터 생성
-    Vector2 gravityCenter = { center_x, center_y };
     ALLEGRO_BITMAP* center = load_bitmap_resized("images/center.png", 30, 30);
     ALLEGRO_BITMAP* startpoint = load_bitmap_resized("images/ShootStartingPoint.png", 150, 150);
     ALLEGRO_BITMAP* gravityfield = load_bitmap_resized("images/GravityField.png", 700, 700);
@@ -34,12 +29,10 @@ void start_game(char* username) {
     // 변수 선언
     Vector2 dragStart, dragEnd;
     float dragThreshold = 30.0f;
-    float gravityScale = 1.0f;
     float deltaTime = 1.0f / FPS;
     float last_shot_time = 0.0f;
 
-    bool isFired = false, redraw = true, playing = true, isDragging = false;
-    bool paused = false;
+    bool isFired = false, redraw = true, playing = true, isDragging = false, paused = false;
 
     int high_score = get_high_score();
 
@@ -52,7 +45,6 @@ void start_game(char* username) {
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
-                //printf("%s %d\n", username, score);       // 디버깅 용
 
                 al_set_sample_instance_playing(game_bgm, false);
 
@@ -65,7 +57,7 @@ void start_game(char* username) {
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
                 play_music("audio/switch.ogg");
-                paused = !paused;  // true <-> false 전환
+                paused = !paused;  // true <-> false 토글
                 al_set_sample_instance_playing(game_bgm, !paused);
   
             }
@@ -75,7 +67,6 @@ void start_game(char* username) {
         else if (event.type == ALLEGRO_EVENT_TIMER) {
             redraw = 1;
         }
-
 
         ALLEGRO_MOUSE_STATE mouse;
         al_get_mouse_state(&mouse);
@@ -89,12 +80,10 @@ void start_game(char* username) {
                 // 마우스 처음 눌렀을 때만 재생
                 al_play_sample(pull_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             }
+            // 마우스 뗀 위치
             dragEnd.x = mouse.x;
             dragEnd.y = mouse.y;
-            
-
         }
-        //마우스를 드래그 놓은 위치 선언.
 
         // 마우스 뗏을 때
         else if (isDragging && !isFired) {
@@ -103,8 +92,7 @@ void start_game(char* username) {
 
             // 유도선 길이만큼 행성한테 힘을 가함 (-인 이유는 드래그 반대방향이므로)
             if (Vector2_Length(dragVec) > dragThreshold && planet_num <MAX_PLANET) {
-                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -dragForce), maxForce);
-               
+                Vector2 force = Vector2_Clamp(Vector2_Scale(dragVec, -dragForce), maxForce);               
                 Planet* p = planet_list[planet_num - 2];
                 p->velocity = force;
                 p->isFlying = true;
@@ -116,7 +104,6 @@ void start_game(char* username) {
         }
 
         if (!paused) {
-
             // 행성이 날라가는 도중 계산
             for (int i = 0; i < planet_num;) {
                 Planet* p = planet_list[i];
@@ -196,6 +183,7 @@ void start_game(char* username) {
                         q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
                     }
                 }
+
                 if (p->isFlying) {
                     // 중력 계산
                     CalcGravity(p, gravityCenter, deltaTime);
@@ -212,6 +200,7 @@ void start_game(char* username) {
                 for (int i = 0; i < planet_num; ++i) {
                     Planet* p = planet_list[i];
                     if (p->type >= PLANET_TYPES) {
+                        // 점수 저장
                         save_score(username, score);
 
                         // 해제 먼저!
@@ -238,7 +227,6 @@ void start_game(char* username) {
 
         // 화면 업데이트 redraw
         if (redraw) {
-
             if (!paused) {
                 background_timer += deltaTime;
                 if (background_timer >= background_interval) {
