@@ -11,7 +11,7 @@ bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2) {
 // 핵심 중력 + 회전 보정 함수
 void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float deltaTime) {
     Vector2 gravityDir = Vector2_Normalize(Vector2_Sub(center, rb->position));
-    Vector2 gravity = Vector2_Scale(gravityDir, GRAVITY);
+    Vector2 gravity = Vector2_Scale(gravityDir, 9.8f);
 
     Vector2 vel = rb->velocity;
     Vector2 nextPos = Vector2_Add(rb->position, vel);

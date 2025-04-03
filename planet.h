@@ -1,6 +1,6 @@
 #pragma once
 #include "init.h"
-#include "Vector.h"
+#include "vector.h"
 
 // 최대 행성 개수
 #define MAX_PLANET 100

@@ -4,7 +4,7 @@
 #include "planet.h"
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
-const double GRAVITY = 9.8f;  // 중력
+//const double GRAVITY = 9.8f;  // 중력
 
 // 충돌 체크 함수
 bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);

@@ -11,9 +11,7 @@
 #include "audio.h"
 #include "story.h"
 #include "image.h"
-<<<<<<< HEAD
 #include "resource.h"
-=======
 #include "planet.h"
 #include "physics.h"
 
