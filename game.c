@@ -6,33 +6,6 @@ int planet_num = 0;         // 행성 갯수, 첫번째 행성 0부터시작.
 int score = 0;
 
 void start_game(char* username) {
-    //ALLEGRO_TIMER* timer = al_create_timer(1.0 / FPS);//0.00025초마다 이벤트 ->매초 4000번. 
-    ////새 타이머를 가리키는 포인터 반환. or NULL반환
-    //ALLEGRO_EVENT_QUEUE* game_event_queue = al_create_event_queue();//선입선출
-    //al_register_event_source(game_event_queue, al_get_mouse_event_source());
-    //al_register_event_source(game_event_queue, al_get_keyboard_event_source());
-    //al_register_event_source(game_event_queue, al_get_timer_event_source(timer));
-    //al_start_timer(timer);
-    ////소리 
-    //ALLEGRO_SAMPLE* pull_sound = al_load_sample("audio/planet_pull.ogg");
-    //if (!pull_sound) {
-    //    DEBUG_MSG(pull_sound - 행성 당기는 소리 로드 실패);
-    //}
-    //ALLEGRO_SAMPLE* release_sound = al_load_sample("audio/planet_push.ogg");
-
-    ////배경 이미지
-
-    //ALLEGRO_BITMAP* scroll_frames[SCROLL_FRAMES];
-    //int current_scroll_frame = 0;
-
-    //char path[50];
-    //for (int i = 0; i < SCROLL_FRAMES; ++i) {
-    //    sprintf(path, "images/scroll_frame_%d.png", i);
-    //    scroll_frames[i] = al_load_bitmap(path);
-    //    if (!scroll_frames[i]) DEBUG_MSG(scroll_frames - 로드 실패);
-
-    //}
-
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* game_event_queue;
     ALLEGRO_SAMPLE* pull_sound;

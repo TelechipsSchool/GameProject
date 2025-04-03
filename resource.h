@@ -4,7 +4,6 @@
 #include "display.h"
 #include "audio.h"
 
-
 //¹è°æ
 #define SCROLL_FRAMES 40
 
