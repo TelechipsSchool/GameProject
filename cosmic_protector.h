@@ -19,13 +19,16 @@
 #define SCREEN_HEIGHT 900
 #define ROCKET_SIZE 20
 #define BULLET_SPEED 5
-#define BULLET_SPEED_ALLEIN 2
+#define BULLET_SPEED_ALEIN 6
 #define MAX_BULLETS 1000
-#define MAX_BULLETS_ALLEIN 500
+#define MAX_BULLETS_ALEIN 500
 #define MAX_ASTEROIDS 5
 #define ASTEROID_HITS 5
+#define BLOOD_TIME 70
+#define ALIEN_HITS 10
 #define ROCKET_HITS 1
 #define ROCKET_INVISIBLE_TIME 2500
+#define BULLET_INTERVAL_ALEIN 60
 #define PI 3.1415926535897
 #define DEBUG_MSG(msg) printf("[DEBUG]: %s\n", msg)
 
@@ -45,6 +48,7 @@ typedef struct {
 typedef struct {
     float x, y, dx, dy;
     bool active;
+    float angle;
 } Bullet;
 
 typedef struct {
@@ -58,7 +62,7 @@ typedef struct {
     int hits;
     float angle;
     bool active;
-    Bullet bullets[MAX_BULLETS_ALLEIN];
+    Bullet bullets[MAX_BULLETS_ALEIN];
     int counts;
 } Alien;
 
@@ -79,3 +83,9 @@ void alien_create();
 void alien_update();
 void alien_bullets();
 void alien_update_bullets();
+void check_alien_collisions();
+void check_die_because_alien();
+void check_die_because_alien_bullet();
+void alien2_create();
+void alien2_die();
+void check_die_because_alien2();
