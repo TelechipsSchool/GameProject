@@ -53,7 +53,7 @@ double tt;
 int life = 7;
 int heart_x_pos;
 
-void game2(int score, int high_score) {
+void game2(char* username, int score, int high_score) {
     game_start_time = time(NULL);
 
     
@@ -128,6 +128,9 @@ void game2(int score, int high_score) {
             draw_scene();
             // 하트 표시
             heart_x_pos = 1300;
+            if (heart <= 0) {
+                // 패배
+            }
             for (int i = life; i > 0; --i) {
                 al_draw_bitmap(heart, heart_x_pos, 40, 0);
                 heart_x_pos += 40;
@@ -205,6 +208,9 @@ void destroyBitmap() {
     al_destroy_bitmap(blood2);
     al_destroy_bitmap(alien2_withoutUF0);
     al_destroy_bitmap(alien2IMG);
+
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(empty_heart);
 }
 
 double getRadian(int num) {
@@ -463,6 +469,8 @@ void check_die() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
+
+                life--;
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -485,6 +493,8 @@ void check_die_because_alien_bullet() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
+
+                life--;
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -505,6 +515,8 @@ void check_die_because_alien() {
             rocket.active = false;
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
+
+            life--;
         }
     }
     if (rocket.invisible_timer > 0) {
@@ -523,6 +535,8 @@ void check_die_because_alien2() {
             rocket.active = false;
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
+
+            life--;
         }
     }
     if (rocket.invisible_timer > 0) {
