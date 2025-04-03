@@ -55,6 +55,7 @@ typedef struct {
     float x, y, dx, dy;
     int hits;
     bool active;
+    int hit_with_rocket;
 } Asteroid;
 
 typedef struct {
@@ -89,3 +90,4 @@ void check_die_because_alien_bullet();
 void alien2_create();
 void alien2_die();
 void check_die_because_alien2();
+void check_life(Asteroid);

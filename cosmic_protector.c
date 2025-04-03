@@ -14,6 +14,7 @@ ALLEGRO_TIMER* timer = 0;
 int blood_timer = BLOOD_TIME;
 int blood_flag = 0;
 float limit_time = 0;
+int life_flag = 0;
 
 ALLEGRO_BITMAP* background = NULL;
 ALLEGRO_BITMAP* ship = NULL;
@@ -118,6 +119,7 @@ void game2(char* username, int score, int high_score) {
             alien2_create();
             alien2_die();
             check_die_because_alien2();
+            //check_life();
             if (bullet_interval > 0) bullet_interval--;
             redraw = true;
         }
@@ -267,7 +269,7 @@ void alien_create() {
     // 게임 시작 후 일정 시간 지나야 1단계 외계인이 출몰하도록 설정
     alien_start_time = time(NULL);
     double tt = alien_start_time - game_start_time;
-    if (!alien1.active && rand() % 100 >= 95 && tt > 0) {   //  tt> 35 원래는 tt > 35로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien1.active && rand() % 100 >= 95 && tt > 35) {   //  tt> 35 원래는 tt > 35로 해놔야 함. 지금 디버깅하느라 0로 해둠
         alien1.x = 0;
         alien1.y = rand() % SCREEN_HEIGHT;
         alien1.dx = 2;
@@ -352,7 +354,7 @@ void alien_update_bullets() {
 void alien2_create() {
     alien_start_time2 = time(NULL);
     double tt = alien_start_time2 - game_start_time;
-    if (!alien2.active && rand() % 100 >= 95 && tt > 0) {   //  tt> 70? 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien2.active && rand() % 100 >= 95 && tt > 70) {   //  tt> 70? 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
         alien2.x = rand() % SCREEN_WIDTH;
         alien2.y = rand() % SCREEN_HEIGHT;
         alien2.active = true;
@@ -465,8 +467,8 @@ void check_die() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
-
-                life--;
+                asteroids[i].hit_with_rocket++;
+                check_life(asteroids[i]);
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -474,6 +476,13 @@ void check_die() {
             if (rocket.invisible_timer == 0) rocket.active = true;
         }
     }
+}
+
+void check_life(Asteroid tmp) {
+    if (tmp.hit_with_rocket == 1 && rocket.active == false) {
+        life--;
+    }
+    
 }
 
 
