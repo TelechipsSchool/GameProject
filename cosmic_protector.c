@@ -205,6 +205,9 @@ void destroyBitmap() {
     al_destroy_bitmap(blood2);
     al_destroy_bitmap(alien2_withoutUF0);
     al_destroy_bitmap(alien2IMG);
+
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(empty_heart);
 }
 
 double getRadian(int num) {
