@@ -42,11 +42,13 @@ double tt;
 
 
 void game2(int score, int high_score) {
+    /* 추가 */
     // 나중에 최적화를 위해 이 부분 init.c와 합치기
     //al_init();
     //al_install_keyboard();
     //al_init_primitives_addon();
     //al_init_image_addon();
+    /* 추가 끝*/
     game_start_time = time(NULL);
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60);
@@ -67,8 +69,10 @@ void game2(int score, int high_score) {
     alien1.counts = 0;
     alien1.angle = 0.0;
 
-    int life = 4;
+    /* 추가 */
+    int life = 3;
     int heart_x_pos = 60;
+    /* 추가 끝 */
 
     while (running) {
         al_wait_for_event(event_queue, &event);
@@ -111,6 +115,10 @@ void game2(int score, int high_score) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
             draw_scene();
+
+
+            /* 추가 */
+
             // 하트 표시
             heart_x_pos = 60;
             for (int i = life; i > 0; --i) {
@@ -127,6 +135,9 @@ void game2(int score, int high_score) {
             al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");
             al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (score > high_score) ? score : high_score);
             al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
+
+            /* 추가 끝*/
+
             al_flip_display();
         }
         trail_flag = false;
@@ -153,8 +164,10 @@ void loadBitmap() {
     alien1_withUFO = load_bitmap_resized("gfx/alien2.png", 120, 120);
     alien1IMG = load_bitmap_resized("gfx/alien_effect.jpg", 225, 225);
     alien_bullet = al_load_bitmap("gfx/small_bullet.png");
+    /* 추가 */
     heart = load_bitmap_resized("images/heart.png", 60, 60);
     empty_heart = load_bitmap_resized("images/empty_heart.png", 60, 60);
+    /* 추가 끝 */
 
     ALLEGRO_BITMAP* arr[] = { background, ship, explosion_large, explosion_small, bulletIMG, 
         asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, alien1IMG, alien_bullet };
