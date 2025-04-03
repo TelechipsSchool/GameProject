@@ -19,8 +19,9 @@ typedef struct {
     float angularVelocity;  // 각속도
 } Planet;
 
-extern Planet* planet_list[MAX_PLANET];
-extern int planet_num;// 행성 갯수, 첫번째 행성 0부터시작.
+Planet* planet_list[MAX_PLANET] = { 0 };
+int planet_num = 0;
+
 extern int score;
 
 int get_radius(int type);

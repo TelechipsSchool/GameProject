@@ -1,7 +1,5 @@
 #include "planet.h"
 
-Planet* planet_list[MAX_PLANET] = { 0 };
-int planet_num = 0;
 int score = 0;
 
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
