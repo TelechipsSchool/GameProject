@@ -40,6 +40,8 @@ double game_start_time;
 double alien_start_time;
 double tt;
 
+/* 추가 */
+int life = 7;
 
 void game2(int score, int high_score) {
     /* 추가 */
@@ -70,8 +72,7 @@ void game2(int score, int high_score) {
     alien1.angle = 0.0;
 
     /* 추가 */
-    int life = 3;
-    int heart_x_pos = 60;
+    int heart_x_pos;
     /* 추가 끝 */
 
     while (running) {
@@ -120,14 +121,14 @@ void game2(int score, int high_score) {
             /* 추가 */
 
             // 하트 표시
-            heart_x_pos = 60;
+            heart_x_pos = 1300;
             for (int i = life; i > 0; --i) {
-                al_draw_bitmap(heart, heart_x_pos, 60, 0);
-                heart_x_pos += 60;
+                al_draw_bitmap(heart, heart_x_pos, 40, 0);
+                heart_x_pos += 40;
             }
-            for (int i = 5 - life; i > 0; --i) {
-                al_draw_bitmap(empty_heart, heart_x_pos, 60, 0);
-                heart_x_pos += 60;
+            for (int i = 7 - life; i > 0; --i) {
+                al_draw_bitmap(empty_heart, heart_x_pos, 40, 0);
+                heart_x_pos += 40;
             }
             // 점수 표시
             al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
@@ -165,8 +166,8 @@ void loadBitmap() {
     alien1IMG = load_bitmap_resized("gfx/alien_effect.jpg", 225, 225);
     alien_bullet = al_load_bitmap("gfx/small_bullet.png");
     /* 추가 */
-    heart = load_bitmap_resized("images/heart.png", 60, 60);
-    empty_heart = load_bitmap_resized("images/empty_heart.png", 60, 60);
+    heart = load_bitmap_resized("images/heart.png", 40, 40);
+    empty_heart = load_bitmap_resized("images/empty_heart.png", 40, 40);
     /* 추가 끝 */
 
     ALLEGRO_BITMAP* arr[] = { background, ship, explosion_large, explosion_small, bulletIMG, 
@@ -314,6 +315,7 @@ void check_die() {
             dy = rocket.y - asteroids[i].y;
             if (sqrt(dx * dx + dy * dy) < 26 && rocket.active) {
                 rocket.active = false;
+                life--;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
             }
