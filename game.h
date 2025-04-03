@@ -11,6 +11,7 @@
 #include "audio.h"
 #include "story.h"
 #include "image.h"
+#include "resource.h"
 
 // 유도선 설정
 float line_length = 0.15f;
@@ -19,8 +20,6 @@ float line_length = 0.15f;
 #define init_x 300
 #define init_y SCREEN_H / 2
 
-//배경
-#define SCROLL_FRAMES 40
 
 //배경 전용 타이머
 float background_timer = 0.0f;
