@@ -163,9 +163,9 @@ void story2() {
     y_position += 100;
     wait_or_skip(2.0);
 
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 소행성을 부수고, 행성을 지켜야 해! 이건 우리에게 중요한 전투야!");
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"화살표로 비행기를 조종하면서, Space Bar를 눌러 총을 발사할 수 있어.");
     y_position += 100;
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"소행성을 맞추고 파괴해야 해! 우리 모두 힘을 합쳐야 해!");
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"소행성과 충돌하면 생명이 줄어드니 조심해!");
     play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
@@ -210,17 +210,17 @@ void story3() {
 
     // 텍스트 시작
     al_rest(2.0);
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계 적들이 나타났어!");
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계인들이 나타났어!");
     y_position += 100;
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이들은 우리가 행성을 지키는 걸 방해하려고 하는 놈들이야.");
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"우리가 행성을 지키는 걸 방해하려고 하는 놈들이야.");
     play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
     wait_or_skip(2.0);
 
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리가 외계 적들과 싸워야 할 시간이야.");
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"외계인들은 우주선을 타고 움직이며 총알을 발사하니 조심해!");
     y_position += 100;
-    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"공격을 피하고, 그들을 물리쳐야 해!");
+    //al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"");
     play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
