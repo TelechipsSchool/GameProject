@@ -14,7 +14,6 @@ void wait_or_skip(double duration) {
     }
 }
 
-
 void story1() {
     // 게임 시작 시 스토리
 
@@ -22,7 +21,7 @@ void story1() {
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
     if (!story_screen || !display) {
         DEBUG_MSG(story_screen - 화면 로드 실패);
-        return 0;
+        return;
     }
     al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
     
@@ -30,12 +29,12 @@ void story1() {
     ALLEGRO_BITMAP* a_play = load_bitmap_resized("images/astronaut/play.png", 300, 300);
     if (!a_play) {
         DEBUG_MSG(a_play - 화면 로드 실패);
-        return 0;
+        return;
     }
     ALLEGRO_BITMAP* a_holdingplanet = load_bitmap_resized("images/astronaut/holdingplanet.png", 300, 300);
     if (!a_holdingplanet) {
         DEBUG_MSG(a_holdingplanet - 화면 로드 실패);
-        return 0;
+        return;
     }
 
     int y_position = 100;
@@ -123,10 +122,10 @@ void story1() {
     }
 
     // 게임 진행
-    game2(username);
+    game1(username);
 }
 
-void story2(int score) {
+void story2() {
     // 소행성 게임 시작 전 스토리
 
     // 배경 화면 생성
@@ -183,10 +182,7 @@ void story2(int score) {
             enter_pressed = true;
         }
         al_flip_display();
-    }
-
-    // 게임 진행
-    void game2(score);
+    }    
 }
 
 void story3() {

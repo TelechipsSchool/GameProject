@@ -2,6 +2,7 @@
 #include "init.h"
 #include "display.h"
 #include "vector.h"
+#include "font.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -62,7 +63,7 @@ typedef struct {
 } Alien;
 
 
-void game2(int score);
+void game2(int score, int high_score);
 void update_rocket();
 void update_bullets();
 void fire_bullet();

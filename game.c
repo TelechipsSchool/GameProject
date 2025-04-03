@@ -1,6 +1,6 @@
 ﻿#include "game.h"
 
-void game2(char* username) {
+void game1(char* username) {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* game_event_queue;
     ALLEGRO_SAMPLE* pull_sound;
@@ -190,8 +190,7 @@ void game2(char* username) {
 
             // 발사하고 5초 뒤에 생성
             if (al_get_time() - last_shot_time > 5.0 && isFired) {
-                // 발사 생성하기 전에 태양 있는지 확인
-                // 승리 조건
+                // 승리조건 - 발사 생성하기 전에 태양 있는지 확인
                 for (int i = 0; i < planet_num; ++i) {
                     Planet* p = planet_list[i];
                     if (p->type >= PLANET_TYPES) {
@@ -204,7 +203,8 @@ void game2(char* username) {
                         for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
                         planet_num = 0;
                         playing = false;
-                        story2(score);
+                        story2();
+                        game2(score, high_score);
                     }
                 }
                 if (planet_num < MAX_PLANET) {

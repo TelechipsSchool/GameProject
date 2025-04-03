@@ -39,15 +39,13 @@ double alien_start_time;
 double tt;
 
 
-void game2(int score) {
+void game2(int score, int high_score) {
     // 나중에 최적화를 위해 이 부분 init.c와 합치기
     //al_init();
     //al_install_keyboard();
     //al_init_primitives_addon();
     //al_init_image_addon();
     game_start_time = time(NULL);
-
-    ALLEGRO_DISPLAY* display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / 60);
     ALLEGRO_EVENT event;
@@ -108,6 +106,7 @@ void game2(int score) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
             draw_scene();
+            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (score > high_score) ? score : high_score);
             al_flip_display();
         }
         trail_flag = false;
@@ -390,5 +389,4 @@ void draw_scene() {
 
         }
     }
-
 }

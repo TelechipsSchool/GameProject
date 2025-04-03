@@ -48,4 +48,4 @@ const float gravityStrength = 1400000.0f;   // 이 부분으로 휘는 정도
 
 int score = 0;
 
-void game2(char* username);
+void game1(char* username);
