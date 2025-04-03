@@ -128,6 +128,9 @@ void game2(char* username, int score, int high_score) {
             draw_scene();
             // 하트 표시
             heart_x_pos = 1300;
+            if (heart <= 0) {
+                // 패배
+            }
             for (int i = life; i > 0; --i) {
                 al_draw_bitmap(heart, heart_x_pos, 40, 0);
                 heart_x_pos += 40;
