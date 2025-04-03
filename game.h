@@ -1,10 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include "init.h"
 #include "menu.h"
 #include "display.h"
-#include "vector.h"
 #include "rank.h"
 #include "setting.h"
 #include "font.h"
@@ -36,7 +35,6 @@ float background_interval = 0.3f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
-double centerCoefficient = 0.03f;
 double RESTITUTION = 0.3f;      // 탄성 계수
 double dragForce = 150.0f;      // 당기는 힘
 double maxForce = 200.0f;      // 최대 당기는 힘

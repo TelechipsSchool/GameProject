@@ -246,7 +246,7 @@ void start_game(char* username) {
                 }
                 if (p->isFlying) {
                     // 중력 계산
-                    CalcGravity(p, gravityCenter, centerCoefficient, deltaTime);
+                    CalcGravity(p, gravityCenter, deltaTime);
                     p->position = Vector2_Add(p->position, Vector2_Scale(p->velocity, deltaTime));
                     p->rotation += p->angularVelocity * deltaTime;
                     ++i;
