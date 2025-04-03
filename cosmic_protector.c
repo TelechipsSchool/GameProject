@@ -106,7 +106,12 @@ void game2(int score, int high_score) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
             draw_scene();
+            // 점수 표시
+            al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
+            al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
+            al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");
             al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (score > high_score) ? score : high_score);
+            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
             al_flip_display();
         }
         trail_flag = false;
