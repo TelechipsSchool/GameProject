@@ -462,6 +462,8 @@ void check_die() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
+
+                life--;
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -483,6 +485,8 @@ void check_die_because_alien_bullet() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
+
+                life--;
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -502,6 +506,8 @@ void check_die_because_alien() {
             rocket.active = false;
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
+
+            life--;
         }
     }
     if (rocket.invisible_timer > 0) {
@@ -520,6 +526,8 @@ void check_die_because_alien2() {
             rocket.active = false;
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
+
+            life--;
         }
     }
     if (rocket.invisible_timer > 0) {
