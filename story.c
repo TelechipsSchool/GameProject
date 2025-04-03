@@ -123,7 +123,7 @@ void story1() {
     }
 
     // 게임 진행
-    start_game(username);
+    game2(username);
 }
 
 void story2(int score) {
@@ -186,7 +186,7 @@ void story2(int score) {
     }
 
     // 게임 진행
-    // 소행성 부수는 게임 실행
+    void game2(score);
 }
 
 void story3() {

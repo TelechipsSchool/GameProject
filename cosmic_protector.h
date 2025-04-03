@@ -62,6 +62,7 @@ typedef struct {
 } Alien;
 
 
+void game2(int score);
 void update_rocket();
 void update_bullets();
 void fire_bullet();

@@ -1,6 +1,6 @@
 ﻿#include "game.h"
 
-void start_game(char* username) {
+void game2(char* username) {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* game_event_queue;
     ALLEGRO_SAMPLE* pull_sound;
@@ -45,9 +45,10 @@ void start_game(char* username) {
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 al_set_sample_instance_playing(game_bgm, false);
-                save_score(username, score);
+                //save_score(username, score);
                 reset_planets();
                 playing = false;
+                score = 0;
                 play_music("audio/cancel.ogg");
                 menu();
                 return;
@@ -194,9 +195,6 @@ void start_game(char* username) {
                 for (int i = 0; i < planet_num; ++i) {
                     Planet* p = planet_list[i];
                     if (p->type >= PLANET_TYPES) {
-                        // 점수 저장
-                        save_score(username, score);
-
                         // 해제 먼저!
                         for (int i = 0; i < planet_num; ++i) {
                             Destroy_Planet(planet_list, &planet_num, i);
@@ -206,7 +204,6 @@ void start_game(char* username) {
                         for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
                         planet_num = 0;
                         playing = false;
-                        score = 0;
                         story2(score);
                     }
                 }

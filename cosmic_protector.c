@@ -39,12 +39,12 @@ double alien_start_time;
 double tt;
 
 
-int main() {
+void game2(int score) {
     // 나중에 최적화를 위해 이 부분 init.c와 합치기
-    al_init();
-    al_install_keyboard();
-    al_init_primitives_addon();
-    al_init_image_addon();
+    //al_init();
+    //al_install_keyboard();
+    //al_init_primitives_addon();
+    //al_init_image_addon();
     game_start_time = time(NULL);
 
     ALLEGRO_DISPLAY* display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -117,7 +117,6 @@ int main() {
     al_destroy_timer(timer);
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
-    return 0;
 }
 
 
