@@ -67,7 +67,7 @@ typedef struct {
 } Alien;
 
 
-void game2(int score, int high_score);
+void game2(char* username, int score, int high_score);
 void update_rocket();
 void update_bullets();
 void fire_bullet();

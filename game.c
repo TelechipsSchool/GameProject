@@ -204,7 +204,7 @@ void game1(char* username) {
                         planet_num = 0;
                         playing = false;
                         story2();
-                        game2(score, high_score);
+                        game2(username, score, high_score);
                     }
                 }
                 if (planet_num < MAX_PLANET) {

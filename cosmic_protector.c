@@ -53,7 +53,7 @@ double tt;
 int life = 7;
 int heart_x_pos;
 
-void game2(int score, int high_score) {
+void game2(char* username, int score, int high_score) {
     game_start_time = time(NULL);
 
     ALLEGRO_DISPLAY* display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
