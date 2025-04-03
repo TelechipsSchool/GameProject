@@ -60,6 +60,12 @@
     <ClCompile Include="resourc.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="physics.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="planet.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="display.h">
@@ -99,6 +105,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="planet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
