@@ -350,17 +350,7 @@ void start_game(char* username) {
 
     // 해제
     reset_planets();
-
-    // 해제
-    destroy_planet_images(planet_images);
-    al_destroy_bitmap(center);
-    al_destroy_bitmap(gravityfield);
-    al_destroy_bitmap(startpoint);
-    for (int i = 0; i < SCROLL_FRAMES; ++i) {
-        if (scroll_frames[i]) al_destroy_bitmap(scroll_frames[i]);
-    }
-    al_destroy_event_queue(game_event_queue);
-    al_destroy_timer(timer);
+    destroy_game_resources(center, gravityfield, startpoint, scroll_frames, game_event_queue, timer);
 
     return;
 }

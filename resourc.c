@@ -25,3 +25,28 @@ void load_scroll_background(ALLEGRO_BITMAP* scroll_frames[]) {
         if (!scroll_frames[i]) DEBUG_MSG(scroll_frames - 로드 실패);
     }
 }
+
+void destroy_game_resources(
+    ALLEGRO_BITMAP* center,
+    ALLEGRO_BITMAP* gravityfield,
+    ALLEGRO_BITMAP* startpoint,
+    ALLEGRO_BITMAP* scroll_frames[],
+    ALLEGRO_EVENT_QUEUE* queue,
+    ALLEGRO_TIMER* timer
+) {
+    destroy_planet_images(planet_images);
+
+    al_destroy_bitmap(center);
+    al_destroy_bitmap(gravityfield);
+    al_destroy_bitmap(startpoint);
+
+    for (int i = 0; i < SCROLL_FRAMES; ++i) {
+        if (scroll_frames[i]) {
+            al_destroy_bitmap(scroll_frames[i]);
+            scroll_frames[i] = NULL;
+        }
+    }
+
+    al_destroy_event_queue(queue);
+    al_destroy_timer(timer);
+}
