@@ -155,6 +155,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="menu.c" />
+    <ClCompile Include="planet.c" />
     <ClCompile Include="rank.c" />
     <ClCompile Include="resourc.c" />
     <ClCompile Include="setting.c" />
@@ -170,6 +171,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="init.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="planet.h" />
     <ClInclude Include="rank.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="setting.h" />

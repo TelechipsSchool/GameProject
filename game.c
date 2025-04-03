@@ -87,8 +87,7 @@ void start_game(char* username) {
 
     while (playing) {
         ALLEGRO_EVENT event;
-        al_wait_for_event(game_event_queue, &event);
-        
+        al_wait_for_event(game_event_queue, &event);        
         
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -221,6 +220,7 @@ void start_game(char* username) {
                         q->position.x, q->position.y, q->radius)) {
 
                         if (p->type == q->type) {
+                            score += p->radius + q->radius;
                             merge_planets(p, q);
                             Destroy_Planet(planet_list, &planet_num, j);
                             if (j < i)i--;//인덱스 조정
@@ -297,7 +297,7 @@ void start_game(char* username) {
             if (!display) {
                 return 0;
             }
-            //al_clear_to_color(al_map_rgb(20, 20, 20));
+            
             //배경
             al_draw_scaled_bitmap(scroll_frames[current_scroll_frame],
                 0, 0,
@@ -384,10 +384,6 @@ void start_game(char* username) {
                     Vector2 gravity = Vector2_Scale(gravityDir, gravityForce);
 
 
-                    //printf("velocity: (%f, %f)\n", velocity.x, velocity.y);        /위치 디버깅용
-                    //printf("gravity: (%f, %f)\n", gravity.x, gravity.y);
-
-
                     velocity = Vector2_Add(velocity, Vector2_Scale(gravity, predict_delta_time));
                     position = Vector2_Add(position, Vector2_Scale(velocity, predict_delta_time));
 
@@ -451,93 +447,3 @@ void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float delt
 
     rb->velocity = Vector2_Add(Vector2_Add(parallelVel, perpendicularVel), Vector2_Scale(gravity, deltaTime));
 }
-
-Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
-    Planet* p = (Planet*)calloc(1,sizeof(Planet));
-    if (!p) {
-        DEBUG_MSG(Create_Planet - 메모리 부족);
-        return 0;
-    }
-    p->position = pos;
-    p->velocity = vel;
-    p->type = type;
-    p->radius = get_radius(type);
-    p->isFlying = false;
-    p->wasInGravityZone = false;
-    p->isLeavingGravityZone = false;
-    p->rotation = 0.0f;
-    p->angularVelocity = ((float)(rand() % 200) - 100) / 100.0f;
-    return p;    
-}
-
-void Destroy_Planet(Planet** planet_list, int* count, int index) {
-    if (!planet_list[index]) return;//0이면 없는 상태.
-    free(planet_list[index]);
-    planet_list[index] = NULL;
-    //뒤 행성들을 앞으로 당겨서 빈칸 없애기.
-    for (int i = index; i < (*count) - 1; ++i) {
-        planet_list[i] = planet_list[i + 1];
-    }
-    planet_list[*count - 1] =NULL;
-    (*count)--;
-}
-
-int get_radius(int type) {
-    switch (type) {
-    case 1: return 15; break;
-    case 2: return 20; break;
-    case 3: return 30; break;
-    case 4: return 45; break;
-    case 5: return 60; break;
-    case 6: return 80; break;
-    case 7: return 150; break;
-    }
-}
-
-void merge_planets(Planet* a, Planet* b) {
-    play_music("audio/enter.ogg");
-    a->type += 1;
-    a->radius = get_radius(a->type);
-    a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
-
-    b->isFlying = false;
-    b->type = 0;
-    b->velocity = (Vector2){ 0,0 };
-
-    // 행성 크기만큼 점수 추가
-    score += a->radius;
-}
-
-//void win() {
-//    // 태양 이미지 로드 (이미지 크기에 맞게 조정)
-//    ALLEGRO_BITMAP* sun_img = load_bitmap_resized("images/planet_7.png", 150, 150);
-//
-//    // 화면을 검은색으로 클리어
-//    al_clear_to_color(al_map_rgb(0, 0, 0));
-//
-//    // 태양 이미지 중앙에 그리기
-//    al_draw_bitmap(sun_img, SCREEN_W / 2 - al_get_bitmap_width(sun_img) / 2, SCREEN_H / 2 - al_get_bitmap_height(sun_img) / 2, 0);
-//
-//    // "You Win!" 텍스트 중앙에 그리기
-//    al_draw_text(win_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + al_get_bitmap_height(sun_img) / 2 + 20, ALLEGRO_ALIGN_CENTER, "You Win!");
-//
-//    // 화면 갱신
-//    al_flip_display();
-//
-//    // 잠시 대기 후, 메인 메뉴로 돌아가기
-//    al_rest(5.0);  // 5초간 대기
-//
-//    al_stop_samples();
-//    // 해제 먼저!
-//    for (int i = 0; i < planet_num; ++i) {
-//        Destroy_Planet(planet_list, &planet_num, i);
-//    }
-//
-//    // 안전 초기화
-//    for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
-//    planet_num = 0;
-//    score = 0;
-//
-//    // 게임 종료 후 메뉴 화면으로 전환
-//    menu();
-//}
