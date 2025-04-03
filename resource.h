@@ -11,3 +11,11 @@
 void init_game_resources(ALLEGRO_TIMER** timer, ALLEGRO_EVENT_QUEUE** queue);
 void load_game_sounds(ALLEGRO_SAMPLE** pull, ALLEGRO_SAMPLE** release);
 void load_scroll_background(ALLEGRO_BITMAP* scroll_frames[]);
+void destroy_game_resources(
+    ALLEGRO_BITMAP* center,
+    ALLEGRO_BITMAP* gravityfield,
+    ALLEGRO_BITMAP* startpoint,
+    ALLEGRO_BITMAP* scroll_frames[],
+    ALLEGRO_EVENT_QUEUE* queue,
+    ALLEGRO_TIMER* timer
+);
