@@ -35,15 +35,8 @@ void start_game(char* username) {
     }
 
     // 행성 이미지
-    ALLEGRO_BITMAP* planet_img1 = load_bitmap_resized("images/planet_1.png", 30, 30);
-    ALLEGRO_BITMAP* planet_img2 = load_bitmap_resized("images/planet_2.png", 40, 40);
-    ALLEGRO_BITMAP* planet_img3 = load_bitmap_resized("images/planet_3.png", 60, 60);
-    ALLEGRO_BITMAP* planet_img4 = load_bitmap_resized("images/planet_4.png", 90, 90);
-    ALLEGRO_BITMAP* planet_img5 = load_bitmap_resized("images/planet_5.png", 120, 120);
-    ALLEGRO_BITMAP* planet_img6 = load_bitmap_resized("images/planet_6.png", 160, 160);
-    ALLEGRO_BITMAP* planet_img7 = load_bitmap_resized("images/planet_7.png", 300, 300);
-
-    
+    load_planet_images();
+        
 
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
@@ -329,24 +322,15 @@ void start_game(char* username) {
             for (int i = 0; i <= planet_num; ++i) {
                 Planet* p = planet_list[i];
                 if (!p) continue;
+                ALLEGRO_BITMAP* planet_img = planet_images[p->type];
 
-                ALLEGRO_BITMAP* planet_img = NULL;
-                switch (p->type) {
-                case 1: planet_img = planet_img1; break;
-                case 2: planet_img = planet_img2; break;
-                case 3: planet_img = planet_img3; break;
-                case 4: planet_img = planet_img4; break;
-                case 5: planet_img = planet_img5; break;
-                case 6: planet_img = planet_img6; break;
-                case 7: planet_img = planet_img7; break;
-                }
-
-                if (planet_img)
+                if (planet_img) {
                     al_draw_rotated_bitmap(planet_img,
                         p->radius, p->radius,               // 이미지 중심 (x, y)
                         p->position.x, p->position.y,       // 그릴 위치
                         p->rotation,                        // 회전 각도 (라디안)
                         0);                                 // 플래그
+                }
             }
             
             bool danger = false;
@@ -416,13 +400,7 @@ void start_game(char* username) {
     planet_num = 0;
 
     // 해제
-    al_destroy_bitmap(planet_img1);
-    al_destroy_bitmap(planet_img2);
-    al_destroy_bitmap(planet_img3);
-    al_destroy_bitmap(planet_img4);
-    al_destroy_bitmap(planet_img5);
-    al_destroy_bitmap(planet_img6);
-    al_destroy_bitmap(planet_img7);
+    destroy_planet_images(planet_images);
     al_destroy_bitmap(center);
     al_destroy_bitmap(gravityfield);
     al_destroy_bitmap(startpoint);

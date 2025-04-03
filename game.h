@@ -10,6 +10,7 @@
 #include "font.h"
 #include "audio.h"
 #include "story.h"
+#include "image.h"
 
 // 유도선 설정
 float line_length = 0.15f;
