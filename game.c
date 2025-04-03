@@ -20,9 +20,7 @@ void start_game(char* username) {
     Vector2 shootStart = { init_x, init_y };
     Vector2 waitPoint = { wait_x, wait_y };
     
-    int max_type = 3;
-
-    max_type = get_max_type_by_difficulty(current_difficulty);
+    int max_type = get_max_type_by_difficulty(current_difficulty);
     create_initial_planets(shootStart, waitPoint, max_type);
 
     // 중력, 시작점, 센터 생성
@@ -351,14 +349,7 @@ void start_game(char* username) {
     }
 
     // 해제
-    for (int i = 0; i < planet_num; ++i) {
-        if (planet_list[i]) free(planet_list[i]);//0만 false반환. 0아니면 true
-    }
-
-    for (int i = 0; i < MAX_PLANET; ++i) {
-        planet_list[i] = NULL;
-    }
-    planet_num = 0;
+    reset_planets();
 
     // 해제
     destroy_planet_images(planet_images);
