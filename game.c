@@ -13,21 +13,14 @@ void start_game(char* username) {
     load_game_sounds(&pull_sound, &release_sound);
     load_scroll_background(scroll_frames);
 
-
     // 행성 이미지
     load_planet_images();
         
-
     // 발사 지점
     Vector2 shootStart = { init_x, init_y };
     Vector2 waitPoint = { wait_x, wait_y };
     
     int max_type = 3;
-    switch (current_difficulty) {
-    case DIFFICULTY_EASY: printf("난이도: EASY\n"); max_type = 4; break;
-    case DIFFICULTY_MEDIUM:printf("난이도: NORMAL\n"); max_type = 3; break;
-    case DIFFICULTY_HARD: printf("난이도: HARD\n"); max_type = 2; break;
-    }
 
     max_type = get_max_type_by_difficulty(current_difficulty);
     create_initial_planets(shootStart, waitPoint, max_type);
@@ -68,7 +61,6 @@ void start_game(char* username) {
                 save_score(username, score);
                 reset_planets();
                 playing = false;
-              //  score = 0;
                 play_music("audio/cancel.ogg");
                 menu();
                 return;                
