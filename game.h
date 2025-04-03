@@ -15,7 +15,7 @@
 #include "resource.h"
 =======
 #include "planet.h"
->>>>>>> f96cc75e91f3148d662edfa82cc220769501ecb8
+#include "physics.h"
 
 // 유도선 설정
 float line_length = 0.15f;
@@ -38,15 +38,9 @@ float background_interval = 0.3f;
 #define center_y SCREEN_H / 2
 
 // 물리 계수 (수정 시 꼭 말하고 하기)
-double GRAVITY = 9.8f;  // 중력
 double centerCoefficient = 0.03f;
 double RESTITUTION = 0.3f;      // 탄성 계수
 double dragForce = 150.0f;      // 당기는 힘
 double maxForce = 200.0f;      // 최대 당기는 힘
 
-int get_radius(int type);
-
 void start_game(char* username);
-bool collision_check(int x1, int y1, int size1, int x2, int y2, int size2);
-// 핵심 중력 + 회전 보정 함수
-void CalcGravity(Planet* rb, Vector2 center, float centerCoefficient, float deltaTime);

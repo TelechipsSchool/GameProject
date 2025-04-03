@@ -18,6 +18,7 @@ typedef struct {
     float angularVelocity;  // °¢¼Óµµ
 } Planet;
 
+int get_radius(int type);
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type);
 void Destroy_Planet(Planet** planet_list, int* count, int index);
 void merge_planets(Planet* a, Planet* b);

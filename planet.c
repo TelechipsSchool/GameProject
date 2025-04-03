@@ -50,5 +50,5 @@ void merge_planets(Planet* a, Planet* b) {
 
     b->isFlying = false;
     b->type = 0;
-    b->velocity = (Vector2){ 0,0 };d
+    b->velocity = (Vector2){ 0,0 };
 }
