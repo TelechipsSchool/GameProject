@@ -158,7 +158,7 @@
     <ClCompile Include="physics.c" />
     <ClCompile Include="planet.c" />
     <ClCompile Include="rank.c" />
-    <ClCompile Include="resourc.c" />
+    <ClCompile Include="resource.c" />
     <ClCompile Include="setting.c" />
     <ClCompile Include="story.c" />
     <ClCompile Include="vector.c" />
