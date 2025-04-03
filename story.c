@@ -126,7 +126,7 @@ void story1() {
     start_game(username);
 }
 
-void story2() {
+void story2(int score) {
     // 소행성 게임 시작 전 스토리
 
     // 배경 화면 생성

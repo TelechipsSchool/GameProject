@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio.c" />
+    <ClCompile Include="cosmic_protector.c" />
     <ClCompile Include="display.c" />
     <ClCompile Include="font.c" />
     <ClCompile Include="help.c" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
+    <ClInclude Include="cosmic_protector.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />

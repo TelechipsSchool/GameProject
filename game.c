@@ -207,7 +207,7 @@ void start_game(char* username) {
                         planet_num = 0;
                         playing = false;
                         score = 0;
-                        story2();
+                        story2(score);
                     }
                 }
                 if (planet_num < MAX_PLANET) {
