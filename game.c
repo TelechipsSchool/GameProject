@@ -1,6 +1,5 @@
 ﻿#include "game.h"
 
-
 void start_game(char* username) {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* game_event_queue;
@@ -44,28 +43,25 @@ void start_game(char* username) {
         
         // ESC 키를 눌렀을 때 게임 종료
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {               
-
+            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 al_set_sample_instance_playing(game_bgm, false);
-
                 save_score(username, score);
                 reset_planets();
                 playing = false;
                 play_music("audio/cancel.ogg");
                 menu();
-                return;                
+                return;
             }
             else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
                 play_music("audio/switch.ogg");
                 paused = !paused;  // true <-> false 토글
-                al_set_sample_instance_playing(game_bgm, !paused);
-  
+                al_set_sample_instance_playing(game_bgm, !paused);  
             }
         }
 
         // 화면 새로고침 주기
         else if (event.type == ALLEGRO_EVENT_TIMER) {
-            redraw = 1;
+            redraw = true;
         }
 
         ALLEGRO_MOUSE_STATE mouse;
@@ -118,7 +114,6 @@ void start_game(char* username) {
                 }
 
                 if (!p->isFlying || p->type == 0) { ++i; continue; }
-
 
                 // 중앙 원과 충돌 시
                 if (collision_check(p->position.x, p->position.y, p->radius, center_x, center_y, 15)) {
@@ -183,7 +178,6 @@ void start_game(char* username) {
                         q->velocity = Vector2_Sub(q->velocity, Vector2_Scale(Vector2_Project(q->velocity, normal), (1 + RESTITUTION)));
                     }
                 }
-
                 if (p->isFlying) {
                     // 중력 계산
                     CalcGravity(p, gravityCenter, deltaTime);
@@ -216,7 +210,6 @@ void start_game(char* username) {
                         story2();
                     }
                 }
-
                 if (planet_num < MAX_PLANET) {
                     planet_list[planet_num - 1]->position = shootStart;
                     planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % max_type + 1);
@@ -266,8 +259,7 @@ void start_game(char* username) {
             al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
             al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");      
             al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (score > high_score) ? score : high_score);
-            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
-            
+            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);            
 
             // 행성들 그리기
             for (int i = 0; i <= planet_num; ++i) {
@@ -306,23 +298,18 @@ void start_game(char* username) {
                 Vector2 forceVec = Vector2_Clamp(Vector2_Scale(Vector2_Sub(dragEnd, dragStart), -line_length * 0.5f), maxForce);
 
                 Vector2 position = shootStart;
-                Vector2 velocity = forceVec;
+                Vector2 velocity = forceVec;                 
+                Vector2 gravityCenter = { center_x, center_y }; // 중력 중간 위치
 
-                int dotCount = 12; //점 12개
-                float predict_delta_time = 0.8f;   //점간의 간격 받아오는 시간 계산
-                float gravityStrength = 1400000.0f;   //이 부분으로 휘는 정도 
-                Vector2 gravityCenter = { center_x, center_y }; //중력 중간 위치
-
-                for (int i = 0; i < dotCount; ++i) {  //포물선 계산
+                for (int i = 0; i < dotCount; ++i) {  // 포물선 계산
                     Vector2 toCenter = Vector2_Sub(gravityCenter, position);
                     float distance = Vector2_Length(toCenter);
 
-                    if (distance == 0) break; // divide by zero 방지
+                    if (distance == 0) break; // zero division 방지
 
                     Vector2 gravityDir = Vector2_Normalize(toCenter);
-                    float gravityForce = gravityStrength / (distance * distance + 100.0f);  //100더한게 값 뜨는거 방지
+                    float gravityForce = gravityStrength / (distance * distance + 100.0f);  // 100더한게 값 뜨는거 방지
                     Vector2 gravity = Vector2_Scale(gravityDir, gravityForce);
-
 
                     velocity = Vector2_Add(velocity, Vector2_Scale(gravity, predict_delta_time));
                     position = Vector2_Add(position, Vector2_Scale(velocity, predict_delta_time));
@@ -330,7 +317,6 @@ void start_game(char* username) {
                     al_draw_filled_circle(position.x, position.y, 2, al_map_rgb(255, 255, 255));
                 }
             }
-
             // 화면 갱신
             al_flip_display();
         }

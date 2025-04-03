@@ -41,6 +41,9 @@ const double dragForce = 150.0f;      // 당기는 힘
 const double maxForce = 200.0f;      // 최대 당기는 힘
 
 // 유도선 설정
-float line_length = 0.15f;
+const float line_length = 0.15f;			// 선 길이
+const int dotCount = 12;					// 점 개수
+const float predict_delta_time = 0.8f;		// 점간의 간격 받아오는 시간 계산
+const float gravityStrength = 1400000.0f;   // 이 부분으로 휘는 정도
 
 void start_game(char* username);
