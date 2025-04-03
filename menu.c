@@ -9,7 +9,6 @@ Button menu_buttons[MENU_COUNT] = {
 };
 
 void menu() {
-
     // 이미지 포인터 선언
     ALLEGRO_BITMAP* main_screen = NULL, * title = NULL;
     ALLEGRO_BITMAP* a_hi = NULL, * a_laptop = NULL, * a_superman = NULL;
@@ -27,7 +26,6 @@ void menu() {
     if (!load_image_assets(assets, sizeof(assets) / sizeof(assets[0]))) {
         return; // 하나라도 로드 실패 시 조기 종료
     }
-
 
     ALLEGRO_SAMPLE_ID menu_bgm_id;
     ALLEGRO_SAMPLE* menu_bgm = al_load_sample("audio/menu.ogg");
@@ -86,8 +84,6 @@ void menu() {
             }
         }
 
-
-
         if (main_screen != NULL && display != NULL) {
 
             al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
@@ -105,7 +101,6 @@ void menu() {
         al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
 
         // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
-
         al_draw_text(menu_font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
             SCREEN_W / 2, 550, ALLEGRO_ALIGN_CENTER, "START");
         al_draw_text(menu_font, (selected == MENU_RANK) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),

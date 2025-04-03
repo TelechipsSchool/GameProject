@@ -46,4 +46,6 @@ const int dotCount = 12;					// 점 개수
 const float predict_delta_time = 0.8f;		// 점간의 간격 받아오는 시간 계산
 const float gravityStrength = 1400000.0f;   // 이 부분으로 휘는 정도
 
+int score = 0;
+
 void start_game(char* username);

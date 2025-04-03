@@ -228,7 +228,7 @@ void start_game(char* username) {
                 }
             }
             if (!display) {
-                return 0;
+                return;
             }
             
             //배경

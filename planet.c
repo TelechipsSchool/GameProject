@@ -1,6 +1,7 @@
 #include "planet.h"
 
-int score = 0;
+Planet* planet_list[MAX_PLANET] = { 0 };
+int planet_num = 0;
 
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type) {
     Planet* p = (Planet*)calloc(1, sizeof(Planet));
@@ -63,7 +64,6 @@ void reset_planets() {
         planet_list[i] = NULL;
     }
     planet_num = 0;
-    score = 0;
 }
 
 void create_initial_planets(Vector2 shootStart, Vector2 waitPoint, int max_type) {

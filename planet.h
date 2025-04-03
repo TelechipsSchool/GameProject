@@ -2,6 +2,7 @@
 #include "init.h"
 #include "vector.h"
 #include "setting.h"
+#include "audio.h"
 
 // 최대 행성 개수
 #define MAX_PLANET 100
@@ -19,10 +20,8 @@ typedef struct {
     float angularVelocity;  // 각속도
 } Planet;
 
-Planet* planet_list[MAX_PLANET] = { 0 };
-int planet_num = 0;
-
-extern int score;
+extern Planet* planet_list[MAX_PLANET];
+extern int planet_num;// 행성 갯수, 첫번째 행성 0부터시작.
 
 int get_radius(int type);
 Planet* Create_Planet(Vector2 pos, Vector2 vel, int type);
