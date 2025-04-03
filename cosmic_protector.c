@@ -25,6 +25,8 @@ ALLEGRO_BITMAP* logo = NULL;
 ALLEGRO_BITMAP* alien1_withUFO = NULL;
 ALLEGRO_BITMAP* alien1IMG = NULL;
 ALLEGRO_BITMAP* alien_bullet = NULL;
+ALLEGRO_BITMAP* heart = NULL;
+ALLEGRO_BITMAP* empty_heart = NULL;
 
 
 // 화면 흔들림 효과
@@ -64,6 +66,9 @@ void game2(int score, int high_score) {
     alien1.active = false;
     alien1.counts = 0;
     alien1.angle = 0.0;
+
+    int life = 4;
+    int heart_x_pos = 60;
 
     while (running) {
         al_wait_for_event(event_queue, &event);
@@ -106,6 +111,16 @@ void game2(int score, int high_score) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0, 0, 0));
             draw_scene();
+            // 하트 표시
+            heart_x_pos = 60;
+            for (int i = life; i > 0; --i) {
+                al_draw_bitmap(heart, heart_x_pos, 60, 0);
+                heart_x_pos += 60;
+            }
+            for (int i = 5 - life; i > 0; --i) {
+                al_draw_bitmap(empty_heart, heart_x_pos, 60, 0);
+                heart_x_pos += 60;
+            }
             // 점수 표시
             al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
             al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
@@ -138,6 +153,8 @@ void loadBitmap() {
     alien1_withUFO = load_bitmap_resized("gfx/alien2.png", 120, 120);
     alien1IMG = load_bitmap_resized("gfx/alien_effect.jpg", 225, 225);
     alien_bullet = al_load_bitmap("gfx/small_bullet.png");
+    heart = load_bitmap_resized("images/heart.png", 60, 60);
+    empty_heart = load_bitmap_resized("images/empty_heart.png", 60, 60);
 
     ALLEGRO_BITMAP* arr[] = { background, ship, explosion_large, explosion_small, bulletIMG, 
         asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, alien1IMG, alien_bullet };
