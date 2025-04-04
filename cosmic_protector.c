@@ -70,6 +70,10 @@ void game2(char* username, int score, int high_score) {
     timer = al_create_timer(1.0 / 60);
     ALLEGRO_EVENT event;
 
+    ALLEGRO_SAMPLE* bgm = al_load_sample("sfx/game2_bg.ogg");
+    ALLEGRO_SAMPLE* bgm2 = al_load_sample("sfx/game2_bg2.ogg");
+    al_play_sample(bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+
     loadBitmap();
 
     al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -132,7 +136,9 @@ void game2(char* username, int score, int high_score) {
                 alien2_die();
                 check_die_because_alien2();
                 if (alien_start_time - game_start_time > 35 && play_once) {
+                    al_stop_samples();
                     story3();
+                    al_play_sample(bgm2, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
                     play_once = false;                                      
                 }
             }
@@ -144,7 +150,8 @@ void game2(char* username, int score, int high_score) {
 
             if (life <= 0) {
                 // ÆÐ¹è
-                save_score(username, Score);             
+                al_stop_samples();
+                save_score(username, Score);      
                 story5();
                 running = false;
                 life = 7;
