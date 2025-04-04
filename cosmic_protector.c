@@ -59,8 +59,10 @@ double tt;
 /* 추가 */
 int life = 7;
 int heart_x_pos;
+int Score;
 
 void game2(char* username, int score, int high_score) {
+    Score = score;
     game_start_time = time(NULL);
 
     
@@ -83,6 +85,8 @@ void game2(char* username, int score, int high_score) {
     alien2.active = false;
     alien1.counts = 0;
     alien1.angle = 0.0;
+
+    bool play_once = true;
 
     while (running) {
         al_wait_for_event(event_queue, &event);
@@ -127,12 +131,25 @@ void game2(char* username, int score, int high_score) {
                 alien2_create();
                 alien2_die();
                 check_die_because_alien2();
+                if (tt > 35 && play_once) {
+                    play_once = false;
+                    story3();                    
+                }
             }
-            /*boss_create();
-            boss_update();*/
+            boss_create();
+            boss_update();
             //check_life();
             if (bullet_interval > 0) bullet_interval--;
             redraw = true;
+
+            if (life <= 6) {
+                // 패배
+                save_score(username, Score);             
+                story5();
+                running = false;
+                life = 7;
+                menu();
+            }
         }
 
         if (redraw && al_is_event_queue_empty(event_queue)) {
@@ -140,12 +157,7 @@ void game2(char* username, int score, int high_score) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             draw_scene();
             // 하트 표시
-            heart_x_pos = 1300;
-            if (life <= 0) {
-                // 패배
-                save_score(username, score);
-                story5();
-            }
+            heart_x_pos = 1300;            
             for (int i = life; i > 0; --i) {
                 al_draw_bitmap(heart, heart_x_pos, 40, 0);
                 heart_x_pos += 40;
@@ -158,8 +170,8 @@ void game2(char* username, int score, int high_score) {
             al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
             al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
             al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");
-            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (score > high_score) ? score : high_score);
-            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", score);
+            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (Score > high_score) ? Score : high_score);
+            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", Score);
             al_flip_display();
         }
         trail_flag = false;
@@ -375,7 +387,7 @@ void alien_update_bullets() {
 void alien2_create() {
     alien_start_time2 = time(NULL);
     double tt = alien_start_time2 - game_start_time;
-    if (!alien2.active && rand() % 100 >= 95 && tt > 0) {   //  tt> 70 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien2.active && rand() % 100 >= 95 && tt > 70) {   //  tt> 70 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
         alien2.x = rand() % SCREEN_WIDTH;
         alien2.y = rand() % SCREEN_HEIGHT;
         alien2.active = true;
@@ -408,7 +420,7 @@ void alien2_die() {
 void boss_create() {
     alien_start_time3 = time(NULL);
     double tt = alien_start_time3 - game_start_time;
-    if (!alien3.active && tt > 0) {   //  tt> 120  원래는 tt > 120로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien3.active && tt > 120) {   //  tt> 120  원래는 tt > 120로 해놔야 함. 지금 디버깅하느라 0로 해둠
         alien3.x = SCREEN_WIDTH / 2 - 150;
         alien3.y = 0;
         alien3.active = true;
@@ -465,6 +477,7 @@ void check_collisions() {
                         asteroids[j].hits++;
                         if (asteroids[j].hits >= ASTEROID_HITS) {
                             asteroids[j].active = false;
+                            Score += 50;
                             play_music_effect("sfx/big_explosion.ogg");  //운석파괴 소리
                         }
                     }
@@ -488,6 +501,7 @@ void check_alien_collisions() {
                     alien1.hits++;
                     if (alien1.hits >= ALIEN_HITS) {
                         alien1.active = false;
+                        Score += 100;
                         play_music_effect("sfx/powerup.ogg"); //외계인1 죽이는 소리
                     }
                 }
