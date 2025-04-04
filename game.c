@@ -203,7 +203,7 @@ void game1(char* username) {
                         for (int i = 0; i < MAX_PLANET; ++i) planet_list[i] = NULL;
                         planet_num = 0;
                         playing = false;
-                        al_stop_samples();
+                        al_set_sample_instance_playing(game_bgm, false);
                         story2();
                         game2(username, score, high_score);
                     }

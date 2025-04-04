@@ -79,6 +79,7 @@ void game2(char* username, int score, int high_score) {
     timer = al_create_timer(1.0 / 60);
     ALLEGRO_EVENT event;
 
+    al_stop_samples();
     ALLEGRO_SAMPLE* bgm = al_load_sample("sfx/game2_bg.ogg");
     ALLEGRO_SAMPLE* bgm2 = al_load_sample("sfx/game2_bg2.ogg");
     al_play_sample(bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
@@ -167,7 +168,7 @@ void game2(char* username, int score, int high_score) {
             if (life <= 0) {
                 // ÆÐ¹è
                 al_stop_samples();
-                save_score(username, Score);      
+                save_score(username, Score);
                 story5();
                 running = false;                
                 menu();

@@ -266,7 +266,7 @@ void story4(char* username) {
     int y_position = 100;
 
     // 텍스트 시작
-    play_music("sfx/ending_bgm");
+    play_music("sfx/ending_bgm.ogg");
     al_rest(2.0);
     al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
     y_position += 100;
