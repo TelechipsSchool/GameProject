@@ -142,7 +142,7 @@ void game2(char* username, int score, int high_score) {
             if (bullet_interval > 0) bullet_interval--;
             redraw = true;
 
-            if (life <= 6) {
+            if (life <= 0) {
                 // ÆÐ¹è
                 save_score(username, Score);             
                 story5();
