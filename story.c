@@ -206,7 +206,7 @@ void story3() {
     int y_position = 100;
 
     // 텍스트 시작
-    al_rest(2.0);
+    al_rest(0.2);
     al_draw_bitmap(a_weapon, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계인들이 나타났어!");
     y_position += 100;
@@ -335,7 +335,7 @@ void story5() {
     int y_position = 100;
 
     // 텍스트 시작
-    al_rest(2.0);
+    al_rest(0.2);
     al_draw_bitmap(a_defeat, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안 돼... 결국 우리가 실패하고 말았어.");
     y_position += 100;
@@ -363,7 +363,6 @@ void story5() {
         if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
             play_music("audio/enter.ogg");
             enter_pressed = true;
-            menu();
         }
         al_flip_display();
     }

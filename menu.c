@@ -55,13 +55,13 @@ void menu() {
                     break;
                 case ALLEGRO_KEY_DOWN:
                     play_music("audio/switch.ogg");
-                    selected = (selected + 1) % MENU_COUNT;  
+                    selected = (selected + 1) % MENU_COUNT;
                     break;
                 case ALLEGRO_KEY_ENTER:
                     al_stop_samples();
                     play_music("audio/enter.ogg");
                     if (selected == MENU_START) {
-                        game2();
+                        game2("", 0, 9102);
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {
