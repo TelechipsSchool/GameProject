@@ -243,6 +243,7 @@ void story3() {
 
 void story4(char* username) {
     // 게임 승리 시 스토리
+    
 
     // 배경 화면 생성
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
@@ -266,6 +267,7 @@ void story4(char* username) {
     int y_position = 100;
 
     // 텍스트 시작
+    play_music("sfx/ending_bgm");
     al_rest(2.0);
     al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
     y_position += 100;

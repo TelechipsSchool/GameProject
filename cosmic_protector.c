@@ -478,7 +478,7 @@ void check_boss_collisions() {
                         alien3.active = false;
                         screen_shake_timer += 80;
                         al_stop_samples();
-                        play_music_effect("sfx/boss.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
+                        play_music_effect("sfx/boss_die.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
                         // 여기에 이어서 바로 게임 승리 음향 추가하고
                         // 게임 종료 스토리로 넘어가면 될 듯
                         // 패배
@@ -880,7 +880,8 @@ void draw_scene() {
         }
         al_draw_bitmap(alien3IMG, alien3.x, alien3.y, 0);
         if (alien3.counts <= 130) {
-            al_draw_bitmap(warning_alien3, shake_offset_x + 500, shake_offset_y + 100, 0);   // [원준] - 보스 외계인 출몰 구간
+            al_draw_bitmap(warning_alien3, shake_offset_x + 500, shake_offset_y + 100, 0);   
+            play_music("sfx/monsterrat");
         }
     }
 
