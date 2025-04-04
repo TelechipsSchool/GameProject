@@ -146,6 +146,7 @@ void story2() {
 
     // 텍스트 시작
     al_rest(2.0);
+    al_draw_bitmap(a_flight, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"좋아! 드디어 태양을 만들었어.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
@@ -182,7 +183,7 @@ void story2() {
             enter_pressed = true;
         }
         al_flip_display();
-    }    
+    }
 }
 
 void story3() {
@@ -206,6 +207,7 @@ void story3() {
 
     // 텍스트 시작
     al_rest(2.0);
+    al_draw_bitmap(a_weapon, 1200, 400, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"뭐야? 외계인들이 나타났어!");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"우리가 행성을 지키는 걸 방해하려고 하는 놈들이야.");
@@ -240,7 +242,7 @@ void story3() {
 }
 
 void story4(char* username) {
-    // 게임 종료 후 스토리
+    // 게임 승리 시 스토리
 
     // 배경 화면 생성
     ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
@@ -265,7 +267,8 @@ void story4(char* username) {
 
     // 텍스트 시작
     al_rest(2.0);
-    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
+    al_draw_bitmap(a_rocket, 1200, 400, 0);
+    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s! 소행성도, 외계 적들도 모두 물리쳤어!", username);
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
     play_music("audio/story.ogg");
@@ -299,6 +302,59 @@ void story4(char* username) {
     wait_or_skip(2.0);
 
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 게임 종료  >>");
+    al_flip_display();
+
+    ALLEGRO_KEYBOARD_STATE key_state;
+    bool enter_pressed = false;
+    while (!enter_pressed) {
+        al_get_keyboard_state(&key_state);
+        if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
+            play_music("audio/enter.ogg");
+            enter_pressed = true;
+        }
+        al_flip_display();
+    }
+}
+
+void story5() {
+    // 패배 시 스토리
+
+    // 배경 화면 생성
+    ALLEGRO_BITMAP* story_screen = load_bitmap_resized("images/setting.png", SCREEN_W, SCREEN_H);
+    if (!story_screen) {
+        DEBUG_MSG(story_screen - 화면 로드 실패);
+        return 0;
+    }
+    // 캐릭터 생성
+    ALLEGRO_BITMAP* a_defeat = load_bitmap_resized("images/astronaut/defeat.png", 300, 300);
+    if (!a_defeat) {
+        DEBUG_MSG(a_defeat - 화면 로드 실패);
+        return 0;
+    }
+    al_draw_scaled_bitmap(story_screen, 0, 0, al_get_bitmap_width(story_screen), al_get_bitmap_height(story_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+
+    int y_position = 100;
+
+    // 텍스트 시작
+    al_rest(2.0);
+    al_draw_bitmap(a_defeat, 1200, 400, 0);
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안 돼... 결국 우리가 실패하고 말았어.");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"소행성도, 외계인도... 우리가 감당하기엔 너무 강했어.");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    wait_or_skip(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이번엔 졌지만, 다음엔 반드시 승리할 거야!");
+    y_position += 100;
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"다시 도전할 준비가 됐을 때 돌아와 줘!");
+    play_music("audio/story.ogg");
+    al_flip_display();
+    y_position += 100;
+    wait_or_skip(2.0);
+
+    al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 메뉴로 돌아가기   >>");
     al_flip_display();
 
     ALLEGRO_KEYBOARD_STATE key_state;
