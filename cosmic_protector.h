@@ -3,6 +3,8 @@
 #include "display.h"
 #include "vector.h"
 #include "font.h"
+#include "rank.h"
+#include "story.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>

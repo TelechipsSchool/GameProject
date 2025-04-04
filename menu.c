@@ -61,7 +61,7 @@ void menu() {
                     al_stop_samples();
                     play_music("audio/enter.ogg");
                     if (selected == MENU_START) {
-                        story5();
+                        game2("dd", 50);
                     }
                     else if (selected == MENU_RANK) display_ranks();
                     else if (selected == MENU_SETTING) {

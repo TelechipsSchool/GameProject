@@ -128,8 +128,8 @@ void game2(char* username, int score, int high_score) {
                 alien2_die();
                 check_die_because_alien2();
             }
-            boss_create();
-            boss_update();
+            /*boss_create();
+            boss_update();*/
             //check_life();
             if (bullet_interval > 0) bullet_interval--;
             redraw = true;
@@ -141,8 +141,10 @@ void game2(char* username, int score, int high_score) {
             draw_scene();
             // 하트 표시
             heart_x_pos = 1300;
-            if (heart <= 0) {
+            if (life <= 0) {
                 // 패배
+                save_score(username, score);
+                story5();
             }
             for (int i = life; i > 0; --i) {
                 al_draw_bitmap(heart, heart_x_pos, 40, 0);
