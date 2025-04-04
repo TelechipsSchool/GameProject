@@ -363,6 +363,7 @@ void story5() {
         if (al_key_down(&key_state, ALLEGRO_KEY_ENTER)) {
             play_music("audio/enter.ogg");
             enter_pressed = true;
+            menu();
         }
         al_flip_display();
     }
