@@ -5,12 +5,13 @@ Bullet bullets[MAX_BULLETS] = { 0 };
 Asteroid asteroids[MAX_ASTEROIDS] = { 0 };  // 큐로 바꿔서 메모리 공간 낭비 없애기
 Alien alien1 = { 0 };
 Alien alien2 = { 0 };
-
+Alien alien3 = { 0 };
 
 bool key_state[ALLEGRO_KEY_MAX] = { false };
 bool trail_flag = false; 
 
 ALLEGRO_TIMER* timer = 0;
+int warning_sign_timer = WARNING_TIME;
 int blood_timer = BLOOD_TIME;
 int blood_flag = 0;
 float limit_time = 0;
@@ -33,6 +34,10 @@ ALLEGRO_BITMAP* alien1_die = NULL;
 ALLEGRO_BITMAP* blood2 = NULL;
 ALLEGRO_BITMAP* alien2IMG = NULL;
 ALLEGRO_BITMAP* alien2_withoutUF0 = NULL;
+ALLEGRO_BITMAP* alien3IMG = NULL;
+ALLEGRO_BITMAP* warning_alien3 = NULL;
+
+
 
 ALLEGRO_BITMAP* heart = NULL;
 ALLEGRO_BITMAP* empty_heart = NULL;
@@ -48,6 +53,7 @@ int bullet_interval = 0;
 double game_start_time;
 double alien_start_time;
 double alien_start_time2;
+double alien_start_time3;
 double tt;
 
 /* 추가 */
@@ -104,21 +110,26 @@ void game2(char* username, int score, int high_score) {
             if (key_state[ALLEGRO_KEY_RIGHT]) {
                 rocket.angle += getRadian(5.7);
             }
-            update_bullets();
-            update_asteroids();
-            check_collisions();
-            spawn_asteroids();
-            check_die();
-            alien_create();
-            alien_update();
-            alien_bullets();
-            alien_update_bullets();
-            check_alien_collisions();
-            check_die_because_alien();
-            check_die_because_alien_bullet();
-            alien2_create();
-            alien2_die();
-            check_die_because_alien2();
+
+            if (!alien3.active) {
+                update_bullets();
+                update_asteroids();
+                check_collisions();
+                spawn_asteroids();
+                check_die();
+                alien_create();
+                alien_update();
+                alien_bullets();
+                alien_update_bullets();
+                check_alien_collisions();
+                check_die_because_alien();
+                check_die_because_alien_bullet();
+                alien2_create();
+                alien2_die();
+                check_die_because_alien2();
+            }
+            boss_create();
+            boss_update();
             //check_life();
             if (bullet_interval > 0) bullet_interval--;
             redraw = true;
@@ -172,20 +183,22 @@ void loadBitmap() {
     trail = al_load_bitmap("gfx/trail.png");
     logo = al_load_bitmap("gfx/logo.png");
     alien1_withUFO = load_bitmap_resized("gfx/alien2.png", 120, 120);
-    warning = load_bitmap_resized("gfx/warning3.png", 300, 80);
+    warning = load_bitmap_resized("gfx/warning3.png", 310, 100);
     //warning = load_bitmap_resized("gfx/warning2.png", 300, 100);
-
     //warning = load_bitmap_resized("gfx/alien2.png", 130, 130);
     alien_bullet = load_bitmap_resized("gfx/small_bullet.png", 10, 10);
     alien1_die = load_bitmap_resized("gfx/blood1.png", 250, 250);
     blood2 = load_bitmap_resized("gfx/blood5.png", 200, 200);
     //alien2_withoutUF0 = load_bitmap_resized("gfx/alien6_withoutUFO.png", 170, 170);
-    alien2_withoutUF0 = load_bitmap_resized("gfx/alien_snail.png", 100, 100);
+    //alien2_withoutUF0 = load_bitmap_resized("gfx/alien_snail.png", 100, 100);
+    alien2_withoutUF0 = load_bitmap_resized("gfx/alien_withoutUFO2.png", 130, 130);
     //alien2IMG = load_bitmap_resized("gfx/alien_effect6.jpg", 270, 225);
     alien2IMG = load_bitmap_resized("gfx/alien6_withoutUFO.png", 130, 130);
+    alien3IMG = load_bitmap_resized("gfx/boss7.png", 320, 200);
+    warning_alien3 = load_bitmap_resized("gfx/warning_alien3_2.png", 620, 100);
 
     ALLEGRO_BITMAP* arr[] = { background, ship, explosion_large, explosion_small, bulletIMG,
-        asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, warning, alien_bullet, alien1_die, blood2, alien2_withoutUF0, alien2IMG };
+        asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, warning, alien_bullet, alien1_die, blood2, alien2_withoutUF0, alien2IMG, alien3IMG, warning_alien3 };
     for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
         if (arr[i] == NULL) DEBUG_MSG("%s bitmap is NULL\n", arr[i]);
     /* 추가 */
@@ -195,14 +208,21 @@ void loadBitmap() {
 }
 
 void destroyBitmap() {
+    destroy_bitmap_stage3();
     al_destroy_bitmap(background);
     al_destroy_bitmap(ship);
     al_destroy_bitmap(explosion_large);
     al_destroy_bitmap(explosion_small);
+    al_destroy_bitmap(invisible_ship);
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(empty_heart);
+}
+
+void destroy_bitmap_stage3() {
     al_destroy_bitmap(asteroidIMG_large);
     al_destroy_bitmap(asteroidIMG_small);
-    al_destroy_bitmap(invisible_ship);
     al_destroy_bitmap(logo);
+    al_destroy_bitmap(asteroidIMG_small);
     al_destroy_bitmap(alien1_withUFO);
     al_destroy_bitmap(warning);
     al_destroy_bitmap(alien_bullet);
@@ -210,10 +230,8 @@ void destroyBitmap() {
     al_destroy_bitmap(blood2);
     al_destroy_bitmap(alien2_withoutUF0);
     al_destroy_bitmap(alien2IMG);
-
-    al_destroy_bitmap(heart);
-    al_destroy_bitmap(empty_heart);
 }
+
 
 double getRadian(int num) {
     return num * (PI / 180);
@@ -355,7 +373,7 @@ void alien_update_bullets() {
 void alien2_create() {
     alien_start_time2 = time(NULL);
     double tt = alien_start_time2 - game_start_time;
-    if (!alien2.active && rand() % 100 >= 95 && tt > 70) {   //  tt> 70? 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien2.active && rand() % 100 >= 95 && tt > 0) {   //  tt> 70 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
         alien2.x = rand() % SCREEN_WIDTH;
         alien2.y = rand() % SCREEN_HEIGHT;
         alien2.active = true;
@@ -383,6 +401,25 @@ void alien2_die() {
     if (limit_time <= 0) alien2.active = false;
 }
 
+
+// 마지막 최종 보스 출현
+void boss_create() {
+    alien_start_time3 = time(NULL);
+    double tt = alien_start_time3 - game_start_time;
+    if (!alien3.active && tt > 0) {   //  tt> 120  원래는 tt > 120로 해놔야 함. 지금 디버깅하느라 0로 해둠
+        alien3.x = SCREEN_WIDTH / 2 - 150;
+        alien3.y = 0;
+        alien3.active = true;
+        alien3.counts++;
+        alien3.hits = 0;
+        screen_shake_timer = 50;
+        //limit_time = rand() % 700;
+    }
+}
+
+void boss_update() {
+    alien3.counts++;
+}
 
 
 // 소행성 랜덤 생성
@@ -458,7 +495,6 @@ void check_alien_collisions() {
 }
 
 
-
 // 로켓과 소행성 감지 
 void check_die() {
     float dx, dy;
@@ -471,8 +507,9 @@ void check_die() {
                 rocket.active = false;
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
+                //life--;
                 asteroids[i].hit_with_rocket++;
-                check_life(asteroids[i]);
+                check_life(&asteroids[i], 1);
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -481,11 +518,24 @@ void check_die() {
         }
     }
 }
+// 로켓 생명 감소
+void check_life(void* tmp, int flag) {
+	switch (flag) {
+	    case 1: {  // 로켓과 소행성 충돌 시 생명 가감.
+		    if (((Asteroid*)tmp)->hit_with_rocket == 1 && !rocket.active) life--;
+		    if (rocket.active) ((Asteroid*)tmp)->hit_with_rocket = 0;
+	    }break;
+	    case 2: {  // 로켓과 외계인 총알 충돌 시 생명 가감.
+		    if (((Bullet*)tmp)->hit_with_rocket == 1 && !rocket.active) life--;
+		    if (rocket.active) ((Bullet*)tmp)->hit_with_rocket = 0;
+	    }break;
+        case 3: {  // 로켓과 외계인 충돌 시 생명 가감.
+            if (((Alien*)tmp)->hit_with_rocket == 1 && !rocket.active) life--;
+            if (rocket.active) ((Alien*)tmp)->hit_with_rocket = 0;
 
-void check_life(Asteroid tmp) {
-    if (tmp.hit_with_rocket == 1 && rocket.active == false) {
-        life--;
-    }
+        }break;
+        default: break;
+	}
     
 }
 
@@ -503,7 +553,9 @@ void check_die_because_alien_bullet() {
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
 
-                life--;
+                //life--;
+                alien1.bullets[i].hit_with_rocket++;
+                check_life(&(alien1.bullets[i]), 2);
             }
         }
         if (rocket.invisible_timer > 0) {
@@ -525,7 +577,9 @@ void check_die_because_alien() {
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
 
-            life--;
+            //life--;
+            alien1.hit_with_rocket++;
+            check_life(&alien1, 3);
         }
     }
     if (rocket.invisible_timer > 0) {
@@ -545,7 +599,9 @@ void check_die_because_alien2() {
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
 
-            life--;
+            //life--;
+            alien2.hit_with_rocket++;
+            check_life(&alien2, 3);
         }
     }
     if (rocket.invisible_timer > 0) {
@@ -553,7 +609,6 @@ void check_die_because_alien2() {
         if (rocket.invisible_timer == 0) rocket.active = true;
     }
 }
-
 
 
 // display
@@ -572,25 +627,19 @@ void draw_scene() {
     al_draw_bitmap(background, shake_offset_x, shake_offset_y, 0);
 
     // STAGE 2 - 외계인 출몰 및 STAGE2 시작 효과
-    if (alien1.active || alien2.active) {
-        if (alien1.x < SCREEN_WIDTH / 4 || alien2.y < SCREEN_HEIGHT / 2) {
-            al_draw_bitmap(warning, shake_offset_x, shake_offset_y + 40, 0);
-        }
-
+    if ((alien1.active || alien2.active) && warning_sign_timer > 0 && !alien3.active) {
+        al_draw_bitmap(warning, shake_offset_x, shake_offset_y + 40, 0);
+        warning_sign_timer--;
     }
-    // STAGE 3
-    //if (alien2.counts >= 1) {
-    //    //if(alien2.counts == 1) 
-    //    //al_draw_bitmap(alien2IMG, shake_offset_x + 230, shake_offset_y - 10, 0);
-    //    //al_draw_bitmap(alien2IMG, 230, SCREEN_HEIGHT - 900, 0);
-    //}
+    if (warning_sign_timer <= 0) warning_sign_timer = WARNING_TIME;
+
 
     // 로고 display
-    if (init_logo_timer > 0) {
+    if (init_logo_timer > 0 && !alien3.active) {
         al_draw_bitmap(logo, SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 80, 0);
         init_logo_timer--;
     }
-    else al_draw_bitmap(logo, shake_offset_x, shake_offset_y, 0);
+    else if(!alien3.active)al_draw_bitmap(logo, shake_offset_x, shake_offset_y, 0);
 
     // 로켓 불꽃 - 앞으로 전진 시 display
     if (trail_flag) {
@@ -599,19 +648,19 @@ void draw_scene() {
     }
 
     // 로켓 display
-    if (rocket.invisible_timer > 0) {
+    if (!rocket.active || rocket.invisible_timer > 0) {
         al_draw_rotated_bitmap(invisible_ship, 10, 10, rocket.x, rocket.y, rocket.angle, 0);
     }
     else al_draw_rotated_bitmap(ship, 10, 10, rocket.x, rocket.y, rocket.angle, 0);
 
     // 총알, 소행성 display
     for (int i = 0; i < MAX_BULLETS; i++) {
-        if (bullets[i].active) {
+        if (bullets[i].active && !alien3.active) {
             al_draw_rotated_bitmap(bulletIMG, 10, 10, bullets[i].x + 0.1, bullets[i].y + 0.1, bullets[i].angle, 0);
         }
     }
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
-        if (asteroids[i].active) {
+        if (asteroids[i].active && !alien3.active) {
             if (!i % 3) al_draw_bitmap(asteroidIMG_large, asteroids[i].x, asteroids[i].y, 0);
             else al_draw_bitmap(asteroidIMG_small, asteroids[i].x, asteroids[i].y, 0);
 
@@ -623,7 +672,7 @@ void draw_scene() {
     }
 
     // alien, alien bullets display
-    if (alien1.active) {
+    if (alien1.active && !alien3.active) {
         al_draw_bitmap(alien1_withUFO, alien1.x, alien1.y, 0);
         for (int i = 0; i < MAX_BULLETS_ALEIN; i++) {
             if (alien1.bullets[i].active) al_draw_bitmap(alien_bullet, alien1.bullets[i].x + 0.1, alien1.bullets[i].y + 0.1, 0);
@@ -642,10 +691,19 @@ void draw_scene() {
         //if (blood_flag >= 1) al_draw_bitmap(blood2, 0, 0, 0);
     }
 
-
     // alien2 display
-    if (alien2.active) {
+    if (alien2.active && !alien3.active) {
         al_draw_bitmap(alien2_withoutUF0, alien2.x, alien2.y, 0);
+    }
+
+    // alien3 보스 display
+    // 보스가 나타나면 화면에 모든 객체들은 사라짐(소행성, 외계인1,2)
+    if (alien3.active) {
+        if (alien3.counts <= 100) {
+            al_draw_bitmap(warning_alien3, shake_offset_x + 500, shake_offset_y + 100, 0);
+        }
+        // 모든 객체 clear
+        al_draw_bitmap(alien3IMG, alien3.x, alien3.y, 0);
     }
 
 }

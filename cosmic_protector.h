@@ -25,6 +25,7 @@
 #define MAX_ASTEROIDS 5
 #define ASTEROID_HITS 5
 #define BLOOD_TIME 70
+#define WARNING_TIME 5
 #define ALIEN_HITS 10
 #define ROCKET_HITS 1
 #define ROCKET_INVISIBLE_TIME 2500
@@ -49,6 +50,7 @@ typedef struct {
     float x, y, dx, dy;
     bool active;
     float angle;
+    int hit_with_rocket;
 } Bullet;
 
 typedef struct {
@@ -65,6 +67,7 @@ typedef struct {
     bool active;
     Bullet bullets[MAX_BULLETS_ALEIN];
     int counts;
+    int hit_with_rocket;
 } Alien;
 
 
@@ -90,4 +93,7 @@ void check_die_because_alien_bullet();
 void alien2_create();
 void alien2_die();
 void check_die_because_alien2();
-void check_life(Asteroid);
+void check_life(void*, int);
+void destroy_bitmap_stage3();
+void boss_create();
+void boss_update();
