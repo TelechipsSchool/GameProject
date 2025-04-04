@@ -2,12 +2,10 @@
 
 Rocket rocket = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0 };
 Bullet bullets[MAX_BULLETS] = { 0 };
-Asteroid asteroids[MAX_ASTEROIDS] = { 0 };  // 큐로 바꿔서 메모리 공간 낭비 없애기
+Asteroid asteroids[MAX_ASTEROIDS] = { 0 };  
 Alien alien1 = { 0 };
 Alien alien2 = { 0 };
 Alien alien3 = { 0 };
-
-
 
 bool key_state[ALLEGRO_KEY_MAX] = { false };
 bool trail_flag = false; 
@@ -41,8 +39,6 @@ ALLEGRO_BITMAP* alien3IMG = NULL;
 ALLEGRO_BITMAP* warning_alien3 = NULL;
 ALLEGRO_BITMAP* boss_explosion = NULL;
 ALLEGRO_BITMAP* boss_bullet = NULL;
-
-
 ALLEGRO_BITMAP* heart = NULL;
 ALLEGRO_BITMAP* empty_heart = NULL;
 
@@ -82,7 +78,6 @@ void game2(char* username, int score, int high_score) {
     loadBitmap();
 
     al_register_event_source(event_queue, al_get_keyboard_event_source());
-    
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
     bool running = true;
@@ -324,7 +319,7 @@ void alien_create() {
     // 게임 시작 후 일정 시간 지나야 1단계 외계인이 출몰하도록 설정
     alien_start_time = time(NULL);
     double tt = alien_start_time - game_start_time;
-    if (!alien1.active && rand() % 100 >= 95 && tt > 35) {   //  tt> 35 원래는 tt > 35로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien1.active && rand() % 100 >= 95 && tt > 35) {  
         alien1.x = 0;
         alien1.y = rand() % SCREEN_HEIGHT;
         alien1.dx = 2;
@@ -333,7 +328,6 @@ void alien_create() {
         alien1.hits = 0;
         screen_shake_timer = 30;
         screen_shake_timer = 0;
-
     }
 }
 // alien1 외계인 오른쪽 이동
@@ -341,7 +335,6 @@ void alien_update() {
     if (alien1.active) {
         alien1.x += alien1.dx;
 
-        //alien1.angle -= getRadian(0.7); // 이것도 화면 중심으로 쏘려면 조건 달아서 각도 조정해줘야 할듯.
         if (alien1.x >= SCREEN_WIDTH) {
             alien1.active = false;
             screen_shake_timer = 0;
@@ -385,7 +378,6 @@ void alien_bullets() {
             }
         }
     }
-
 }
 
 // alien1 외계인 총알 이동
@@ -404,12 +396,11 @@ void alien_update_bullets() {
     }
 }
 
-
 // alien 2 외계인 생성
 void alien2_create() {
     alien_start_time2 = time(NULL);
     double tt = alien_start_time2 - game_start_time;
-    if (!alien2.active && rand() % 100 >= 95 && tt > 70) {   //  tt> 70 원래는 tt > 70로 해놔야 함. 지금 디버깅하느라 0로 해둠
+    if (!alien2.active && rand() % 100 >= 95 && tt > 70) {  
         alien2.x = rand() % SCREEN_WIDTH;
         alien2.y = rand() % SCREEN_HEIGHT;
         alien2.active = true;
@@ -420,7 +411,7 @@ void alien2_create() {
         limit_time = rand() % 700;
     }
 }
-// 일정시간 지나면 사라짐
+// 일정시간 지나면 alien2 사라짐
 void alien2_die() {
     if (alien2.active && limit_time > 0) {
         limit_time--;
@@ -432,7 +423,6 @@ void alien2_die() {
             alien2.x -= 15;
             alien2.y += 1;
         }
-
     }
     if (limit_time <= 0) alien2.active = false;
 }
@@ -463,7 +453,6 @@ void boss_update() {
         else {
             alien3.x -= alien3.dx;
         }
-        
         if (alien3.x <= 100) alien3_direction_flag = true;
         else if (alien3.x > SCREEN_WIDTH - 450) alien3_direction_flag = false;
     }
@@ -483,7 +472,7 @@ void check_boss_collisions() {
                     if (alien3.hits >= BOSS_HITS) {
                         alien3.active = false;
                         screen_shake_timer += 80;
-                        play_music_effect("sfx/powerup.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
+                        play_music_effect("sfx/powerup.ogg"); 
                         // 여기에 이어서 바로 게임 승리 음향 추가하고
                         // 게임 종료 스토리로 넘어가면 될 듯
                     }
@@ -494,13 +483,8 @@ void check_boss_collisions() {
 }
 
 
-
 // 보스 총알 생성
 void boss_bullets() {
-    float target_x, target_y;
-    float dir_x, dir_y;
-    float length;
-
     float start_angle;
     float angle_step;
     float angle;
@@ -514,8 +498,8 @@ void boss_bullets() {
                 angle = start_angle + (i * angle_step);  // -90 ~ 90도 범위
 
                 // 총알 초기 설정
-                alien3.bullets[i].x = alien3.x + 50;
-                alien3.bullets[i].y = alien3.y + 40;
+                alien3.bullets[i].x = alien3.x + 100;
+                alien3.bullets[i].y = alien3.y + 100;
                 alien3.bullets[i].angle = angle;
                 // 총알 방향
                 alien3.bullets[i].dx = cos(angle) * BULLET_SPEED_ALEIN;
@@ -876,13 +860,13 @@ void draw_scene() {
     // 보스가 나타나면 화면에 모든 객체들은 사라짐(소행성, 외계인1,2)
     if (alien3.hits >= BOSS_HITS) al_draw_bitmap(boss_explosion, alien3.x, alien3.y, 0);
     if (alien3.active) {
-        al_draw_bitmap(alien3IMG, alien3.x, alien3.y, 0);
-        if (alien3.counts <= 100) {
-            al_draw_bitmap(warning_alien3, shake_offset_x + 500, shake_offset_y + 100, 0);
-        }
         // alien3 보스 총알
         for (int i = 0; i < MAX_BULLETS_BOSS; i++) {
             if (alien3.bullets[i].active) al_draw_bitmap(boss_bullet, alien3.bullets[i].x + 0.1, alien3.bullets[i].y + 0.1, 0);
+        }
+        al_draw_bitmap(alien3IMG, alien3.x, alien3.y, 0);
+        if (alien3.counts <= 100) {
+            al_draw_bitmap(warning_alien3, shake_offset_x + 500, shake_offset_y + 100, 0);
         }
     }
 

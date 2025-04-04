@@ -39,11 +39,6 @@
 #define PI 3.1415926535897
 #define DEBUG_MSG(msg) printf("[DEBUG]: %s\n", msg)
 
-//typedef struct {
-//    float x, y;
-//    float dx, dy;
-//}Vector2;
-
 typedef struct {
     float x, y, dx, dy;
     float angle;
