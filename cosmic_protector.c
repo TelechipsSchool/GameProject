@@ -131,9 +131,9 @@ void game2(char* username, int score, int high_score) {
                 alien2_create();
                 alien2_die();
                 check_die_because_alien2();
-                if (tt > 35 && play_once) {
-                    play_once = false;
-                    story3();                    
+                if (alien_start_time - game_start_time > 35 && play_once) {
+                    story3();
+                    play_once = false;                                      
                 }
             }
             boss_create();
