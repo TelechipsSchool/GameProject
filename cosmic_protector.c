@@ -478,7 +478,7 @@ void check_boss_collisions() {
                         alien3.active = false;
                         screen_shake_timer += 80;
                         al_stop_samples();
-                        play_music_effect("sfx/boss.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
+                        play_music_effect("sfx/boss_die.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
                         // 여기에 이어서 바로 게임 승리 음향 추가하고
                         // 게임 종료 스토리로 넘어가면 될 듯
                         // 패배
