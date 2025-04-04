@@ -22,14 +22,18 @@
 #define BULLET_SPEED_ALEIN 6
 #define MAX_BULLETS 1000
 #define MAX_BULLETS_ALEIN 500
+#define MAX_BULLETS_BOSS 500
+#define BULLETS_BOSS_STEP 8
 #define MAX_ASTEROIDS 5
 #define ASTEROID_HITS 5
 #define BLOOD_TIME 70
 #define WARNING_TIME 5
 #define ALIEN_HITS 10
+#define BOSS_HITS 15
 #define ROCKET_HITS 1
 #define ROCKET_INVISIBLE_TIME 2500
 #define BULLET_INTERVAL_ALEIN 60
+#define BULLET_INTERVAL_BOSS 60
 #define PI 3.1415926535897
 #define DEBUG_MSG(msg) printf("[DEBUG]: %s\n", msg)
 
@@ -97,3 +101,8 @@ void check_life(void*, int);
 void destroy_bitmap_stage3();
 void boss_create();
 void boss_update();
+void check_boss_collisions();
+void boss_update_bullets();
+void boss_bullets();
+void check_die_because_boss_bullet();
+void check_die_because_boss();
