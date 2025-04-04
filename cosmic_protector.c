@@ -65,8 +65,11 @@ double tt;
 int life = 7;
 int heart_x_pos;
 int Score;
+char* Username;
 
 void game2(char* username, int score, int high_score) {
+    life = 7;
+    Username = username;
     Score = score;
     game_start_time = time(NULL);
 
@@ -166,8 +169,7 @@ void game2(char* username, int score, int high_score) {
                 al_stop_samples();
                 save_score(username, Score);      
                 story5();
-                running = false;
-                life = 7;
+                running = false;                
                 menu();
             }
         }
@@ -483,9 +485,14 @@ void check_boss_collisions() {
                     if (alien3.hits >= BOSS_HITS) {
                         alien3.active = false;
                         screen_shake_timer += 80;
+                        al_stop_samples();
                         play_music_effect("sfx/powerup.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
                         // 여기에 이어서 바로 게임 승리 음향 추가하고
                         // 게임 종료 스토리로 넘어가면 될 듯
+                        // 패배
+                        save_score(Username, Score);
+                        story4(Username);
+                        menu();
                     }
                 }
             }
