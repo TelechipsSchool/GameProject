@@ -41,7 +41,7 @@ void story1() {
 
     // 텍스트 시작
     al_rest(2.0);
-    al_draw_bitmap(a_play, 1200, 400, 0);
+    al_draw_bitmap(a_play, 1200, 600, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"안녕, 난 암스트롱이야");
     play_music("audio/story.ogg");
     al_flip_display();
@@ -146,7 +146,7 @@ void story2() {
 
     // 텍스트 시작
     al_rest(2.0);
-    al_draw_bitmap(a_flight, 1200, 400, 0);
+    al_draw_bitmap(a_flight, 1200, 650, 0);
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"좋아! 드디어 태양을 만들었어.");
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
@@ -267,8 +267,7 @@ void story4(char* username) {
 
     // 텍스트 시작
     al_rest(2.0);
-    al_draw_bitmap(a_rocket, 1200, 400, 0);
-    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s! 소행성도, 외계 적들도 모두 물리쳤어!", username);
+    al_draw_textf(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"해냈어, %s 소행성도, 외계 적들도 모두 물리쳤어!", username);
     y_position += 100;
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"이제 우리는 그 행성에서 살아갈 수 있어!");
     play_music("audio/story.ogg");
