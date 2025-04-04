@@ -11,4 +11,5 @@ void story1();
 void story2();
 void story3();
 void story4(char* username);
+void story5();
 char* getUserName();
