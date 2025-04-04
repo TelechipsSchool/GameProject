@@ -213,7 +213,7 @@ void story3() {
     play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
-    wait_or_skip(2.0);
+    wait_or_skip(1.0);
 
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, y_position, ALLEGRO_ALIGN_CENTER, u8"외계인들은 우주선을 타고 움직이며 총알을 발사하니 조심해!");
     y_position += 100;
@@ -221,7 +221,7 @@ void story3() {
     play_music("audio/story.ogg");
     al_flip_display();
     y_position += 100;
-    wait_or_skip(2.0);
+    wait_or_skip(1.0);
 
     al_draw_text(story_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 100, ALLEGRO_ALIGN_CENTER, u8"<<   Enter를 눌러서 게임 재개  >>");
     al_flip_display();
