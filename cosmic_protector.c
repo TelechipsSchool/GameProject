@@ -69,6 +69,9 @@ void game2(char* username, int score, int high_score) {
     life = 7;
     Username = username;
     Score = score;
+    alien_start_time = 0;
+    alien_start_time2 = 0;
+    alien_start_time3 = 0;
     game_start_time = time(NULL);
 
     
