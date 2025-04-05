@@ -31,6 +31,7 @@ void game2(char* username, int score, int high_score) {
             if (!alien3.active) {
                 normal();
             }
+            boss();
             if (bullet_interval > 0) bullet_interval--;
             if (boss_bullet_interval > 0) boss_bullet_interval--;
             redraw = true;
