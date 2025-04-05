@@ -57,13 +57,16 @@
     <ClCompile Include="image.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="resourc.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="physics.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="planet.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cosmic_protector.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="resource.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -111,6 +114,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="planet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cosmic_protector.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,209 +1,49 @@
 #include "cosmic_protector.h"
 
-Rocket rocket = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0 };
-Bullet bullets[MAX_BULLETS] = { 0 };
-Asteroid asteroids[MAX_ASTEROIDS] = { 0 };  
-Alien alien1 = { 0 };
-Alien alien2 = { 0 };
-Alien alien3 = { 0 };
-
-bool key_state[ALLEGRO_KEY_MAX] = { false };
-bool trail_flag = false; 
-
-ALLEGRO_TIMER* timer = 0;
-int warning_sign_timer = WARNING_TIME;
-int blood_timer = BLOOD_TIME;
-int blood_flag = 0;
-float limit_time = 0;
-int life_flag = 0;
-int boss_timer = 20;
-bool alien3_direction_flag = true;
-bool boss_die_flag = false;
-
-ALLEGRO_BITMAP* background = NULL;
-ALLEGRO_BITMAP* ship = NULL;
-ALLEGRO_BITMAP* explosion_large = NULL;
-ALLEGRO_BITMAP* explosion_small = NULL;
-ALLEGRO_BITMAP* bulletIMG = NULL;
-ALLEGRO_BITMAP* asteroidIMG_large = NULL;
-ALLEGRO_BITMAP* asteroidIMG_small = NULL;
-ALLEGRO_BITMAP* invisible_ship = NULL;
-ALLEGRO_BITMAP* trail = NULL;
-ALLEGRO_BITMAP* logo = NULL;
-ALLEGRO_BITMAP* alien1_withUFO = NULL;
-ALLEGRO_BITMAP* warning = NULL;
-ALLEGRO_BITMAP* alien_bullet = NULL;
-ALLEGRO_BITMAP* alien1_die = NULL;
-ALLEGRO_BITMAP* blood2 = NULL;
-ALLEGRO_BITMAP* alien2IMG = NULL;
-ALLEGRO_BITMAP* alien2_withoutUF0 = NULL;
-ALLEGRO_BITMAP* alien3IMG = NULL;
-ALLEGRO_BITMAP* warning_alien3 = NULL;
-ALLEGRO_BITMAP* boss_explosion = NULL;
-ALLEGRO_BITMAP* boss_bullet = NULL;
-ALLEGRO_BITMAP* heart = NULL;
-ALLEGRO_BITMAP* empty_heart = NULL;
-
-// 화면 흔들림 효과
-int screen_shake_timer = 0;
-float shake_offset_x = 0;
-float shake_offset_y = 0;
-
-float init_logo_timer = 600;
-int bullet_interval = 0;
-int boss_bullet_interval = 0;
-
-double game_start_time;
-double alien_start_time;
-double alien_start_time2;
-double alien_start_time3;
-double tt;
-
-/* 추가 */
-int life = 7;
-int heart_x_pos;
-int Score;
-char* Username;
-
 void game2(char* username, int score, int high_score) {
-    life = 7;
-    Username = username;
-    Score = score;
-    alien_start_time = 0;
-    alien_start_time2 = 0;
-    alien_start_time3 = 0;
-    game_start_time = time(NULL);
-
-    
-    ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
-    timer = al_create_timer(1.0 / 60);
-    ALLEGRO_EVENT event;
-
-    al_stop_samples();
-    ALLEGRO_SAMPLE* bgm = al_load_sample("sfx/game2_bg.ogg");
-    ALLEGRO_SAMPLE* bgm2 = al_load_sample("sfx/game2_bg2.ogg");
-    al_play_sample(bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
-
+    game2_init(username, score);
     loadBitmap();
-
-    al_register_event_source(event_queue, al_get_keyboard_event_source());
-    al_register_event_source(event_queue, al_get_timer_event_source(timer));
-
-    bool running = true;
-    bool redraw = true;
-    al_start_timer(timer);
-    rocket.active = true;
-    rocket.invisible_timer = 0;
-    alien1.active = false;
-    alien2.active = false;
-    alien1.counts = 0;
-    alien1.angle = 0.0;
-    alien3.hits = 0;
-
-    bool play_once = true;
 
     while (running) {
         al_wait_for_event(event_queue, &event);
-
-        // switch 문으로 바꿔야 할수도
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
         }
         else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             key_state[event.keyboard.keycode] = true;
-            // 총알 나가는 건 스페이스 계속 누르고 있어도 한 번만 나가도록 설정.
             if (key_state[ALLEGRO_KEY_SPACE]) fire_bullet();
         }
         else if (event.type == ALLEGRO_EVENT_KEY_UP) {
             key_state[event.keyboard.keycode] = false;
         }
         else if (event.type == ALLEGRO_EVENT_TIMER) {
-            // 로켓 앞으로 전진
             if (key_state[ALLEGRO_KEY_UP]) {
                 update_rocket();
-            }// 기울기 10% 이동. y값 증가 0.1
+            }
             if (key_state[ALLEGRO_KEY_LEFT]) {
                 rocket.angle -= getRadian(5.7);
-            }// 기울기 10% 이동. y값 감소 0.1
+            }
             if (key_state[ALLEGRO_KEY_RIGHT]) {
                 rocket.angle += getRadian(5.7);
             }
-
             update_bullets();
             check_boss_collisions();
             if (!alien3.active) {
-                update_asteroids();
-                check_collisions();
-                spawn_asteroids();
-                check_die();
-                alien_create();
-                alien_update();
-                alien_bullets();
-                alien_update_bullets();
-                check_alien_collisions();
-                check_die_because_alien();
-                check_die_because_alien_bullet();
-                alien2_create();
-                alien2_die();
-                check_die_because_alien2();
-                if (alien_start_time - game_start_time > 35 && play_once) {
-                    al_stop_samples();
-                    story3();
-                    al_play_sample(bgm2, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
-                    play_once = false;                                      
-                }
+                normal();
             }
-            boss_create();
-            boss_update();
-            boss_update_bullets();
-            boss_bullets();
-            check_die_because_boss_bullet();
-            check_die_because_boss();
-            
-            //check_life();
             if (bullet_interval > 0) bullet_interval--;
             if (boss_bullet_interval > 0) boss_bullet_interval--;
             redraw = true;
 
             if (life <= 0) {
-                // 패배
-                al_stop_samples();
                 save_score(username, Score);
-                story5();
-                running = false;                
-                menu();
+                game_over();
             }
         }
-
-        if (redraw && al_is_event_queue_empty(event_queue)) {
-            redraw = false;
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            draw_scene();
-            // 하트 표시
-            heart_x_pos = 1300;            
-            for (int i = life; i > 0; --i) {
-                al_draw_bitmap(heart, heart_x_pos, 40, 0);
-                heart_x_pos += 40;
-            }
-            for (int i = 7 - life; i > 0; --i) {
-                al_draw_bitmap(empty_heart, heart_x_pos, 40, 0);
-                heart_x_pos += 40;
-            }
-            // 점수 표시
-            al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
-            al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
-            al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");
-            al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (Score > high_score) ? Score : high_score);
-            al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", Score);
-            al_flip_display();
-        }
+        if (redraw && al_is_event_queue_empty(event_queue)) heart_display(high_score);
         trail_flag = false;
     }
-
-    destroyBitmap();
-    al_destroy_timer(timer);
-    al_destroy_event_queue(event_queue);
-    al_destroy_display(display);
+    clear();
     return 0;
 }
 
@@ -221,15 +61,10 @@ void loadBitmap() {
     logo = al_load_bitmap("gfx/logo.png");
     alien1_withUFO = load_bitmap_resized("gfx/alien2.png", 120, 120);
     warning = load_bitmap_resized("gfx/warning3.png", 310, 100);
-    //warning = load_bitmap_resized("gfx/warning2.png", 300, 100);
-    //warning = load_bitmap_resized("gfx/alien2.png", 130, 130);
     alien_bullet = load_bitmap_resized("gfx/small_bullet.png", 10, 10);
     alien1_die = load_bitmap_resized("gfx/blood1.png", 250, 250);
     blood2 = load_bitmap_resized("gfx/blood5.png", 200, 200);
-    //alien2_withoutUF0 = load_bitmap_resized("gfx/alien6_withoutUFO.png", 170, 170);
-    //alien2_withoutUF0 = load_bitmap_resized("gfx/alien_snail.png", 100, 100);
     alien2_withoutUF0 = load_bitmap_resized("gfx/alien_withoutUFO2.png", 130, 130);
-    //alien2IMG = load_bitmap_resized("gfx/alien_effect6.jpg", 270, 225);
     alien2IMG = load_bitmap_resized("gfx/alien6_withoutUFO.png", 130, 130);
     alien3IMG = load_bitmap_resized("gfx/boss7.png", 320, 200);
     warning_alien3 = load_bitmap_resized("gfx/warning_alien3_2.png", 620, 100);
@@ -240,24 +75,12 @@ void loadBitmap() {
         asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, warning, alien_bullet, alien1_die, blood2, alien2_withoutUF0, alien2IMG, alien3IMG, warning_alien3 , boss_explosion };
     for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
         if (arr[i] == NULL) DEBUG_MSG("%s bitmap is NULL\n", arr[i]);
-    /* 추가 */
+
     heart = load_bitmap_resized("images/heart.png", 40, 40);
     empty_heart = load_bitmap_resized("images/empty_heart.png", 40, 40);
-    /* 추가 끝 */
 }
 
 void destroyBitmap() {
-    destroy_bitmap_stage3();
-    al_destroy_bitmap(background);
-    al_destroy_bitmap(ship);
-    al_destroy_bitmap(explosion_large);
-    al_destroy_bitmap(explosion_small);
-    al_destroy_bitmap(invisible_ship);
-    al_destroy_bitmap(heart);
-    al_destroy_bitmap(empty_heart);
-}
-
-void destroy_bitmap_stage3() {
     al_destroy_bitmap(asteroidIMG_large);
     al_destroy_bitmap(asteroidIMG_small);
     al_destroy_bitmap(logo);
@@ -269,11 +92,119 @@ void destroy_bitmap_stage3() {
     al_destroy_bitmap(blood2);
     al_destroy_bitmap(alien2_withoutUF0);
     al_destroy_bitmap(alien2IMG);
+    al_destroy_bitmap(background);
+    al_destroy_bitmap(ship);
+    al_destroy_bitmap(explosion_large);
+    al_destroy_bitmap(explosion_small);
+    al_destroy_bitmap(invisible_ship);
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(empty_heart);
 }
-
 
 double getRadian(int num) {
     return num * (PI / 180);
+}
+
+void game2_init(char* username, int score) {
+    rocket.active = true;
+    rocket.invisible_timer = 0;
+    alien1.active = false;
+    alien2.active = false;
+    alien1.counts = 0;
+    alien1.angle = 0.0;
+    alien3.hits = 0;
+    life = 7;
+
+    alien_start_time = 0;
+    alien_start_time2 = 0;
+    alien_start_time3 = 0;
+    game_start_time = time(NULL);
+
+    Username = username;
+    Score = score;
+
+    event_queue = al_create_event_queue();
+    al_load_sample("sfx/game2_bg.ogg");
+    al_load_sample("sfx/game2_bg2.ogg");
+    timer = al_create_timer(1.0 / 60);
+
+    al_stop_samples();
+    al_play_sample(bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    al_start_timer(timer);
+}
+
+void clear() {
+    destroyBitmap();
+    al_destroy_timer(timer);
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+}
+
+void get_score(int high_score) {
+    al_draw_filled_rectangle(40, 750, 200, 850, al_map_rgb(100, 100, 100));
+    al_draw_filled_rectangle(50, 760, 190, 840, al_map_rgb(50, 50, 50));
+    al_draw_text(score_text_font, al_map_rgb(255, 255, 255), 120, 850, ALLEGRO_ALIGN_CENTER, "SCORE");
+    al_draw_textf(score_best_font, al_map_rgb(255, 255, 255), 120, 815, ALLEGRO_ALIGN_CENTER, "BEST: %d", (Score > high_score) ? Score : high_score);
+    al_draw_textf(score_font, al_map_rgb(255, 255, 255), 120, 770, ALLEGRO_ALIGN_CENTER, "%d", Score);
+    al_flip_display();
+}
+
+void heart_display(int high_score) {
+    redraw = false;
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    draw_scene();
+    // 하트 표시
+    heart_x_pos = 1300;
+    for (int i = life; i > 0; --i) {
+        al_draw_bitmap(heart, heart_x_pos, 40, 0);
+        heart_x_pos += 40;
+    }
+    for (int i = 7 - life; i > 0; --i) {
+        al_draw_bitmap(empty_heart, heart_x_pos, 40, 0);
+        heart_x_pos += 40;
+    }
+    get_score(high_score);
+}
+
+void game_over() {
+    al_stop_samples();
+    story5();
+    running = false;
+    menu();
+}
+
+void normal() {
+    update_asteroids();
+    check_collisions();
+    spawn_asteroids();
+    check_die();
+    alien_create();
+    alien_update();
+    alien_bullets();
+    alien_update_bullets();
+    check_alien_collisions();
+    check_die_because_alien();
+    check_die_because_alien_bullet();
+    alien2_create();
+    alien2_die();
+    check_die_because_alien2();
+    if (alien_start_time - game_start_time > 35 && play_once) {
+        al_stop_samples();
+        story3();
+        al_play_sample(bgm2, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+        play_once = false;
+    }
+}
+
+void boss() {
+    boss_create();
+    boss_update();
+    boss_update_bullets();
+    boss_bullets();
+    check_die_because_boss_bullet();
+    check_die_because_boss();
 }
 
 // 로켓 앞으로 이동
@@ -287,7 +218,7 @@ void update_rocket() {
 
     }
     else {
-        rocket.x -= sin(-rocket.angle) * 3;  // 1.5
+        rocket.x -= sin(-rocket.angle) * 3; 
         rocket.y -= cos(-rocket.angle) * 3;
     }
 }
@@ -322,8 +253,6 @@ void update_bullets() {
 
 // alien 1 외계인 생성
 void alien_create() {
-    // 진짜 난수 생성을 위한 시드 변경 추가 - 추가했더니 다른 로직도 다 틀어짐. (일단 보류)
-    //srand((unsigned)time(NULL));
     // 게임 시작 후 일정 시간 지나야 1단계 외계인이 출몰하도록 설정
     alien_start_time = time(NULL);
     double tt = alien_start_time - game_start_time;
@@ -338,7 +267,7 @@ void alien_create() {
         screen_shake_timer = 0;
     }
 }
-// alien1 외계인 오른쪽 이동
+// alien 1 외계인 오른쪽 이동
 void alien_update() {
     if (alien1.active) {
         alien1.x += alien1.dx;
@@ -388,7 +317,7 @@ void alien_bullets() {
     }
 }
 
-// alien1 외계인 총알 이동
+// alien 1 외계인 총알 이동
 void alien_update_bullets() {
     for (int i = 0; i < MAX_BULLETS_ALEIN; i++) {
         if (alien1.bullets[i].active) {
@@ -443,7 +372,7 @@ void boss_create() {
     if (!alien3.active && tt > 120 && !alien3.hits) {   
         alien3.x = SCREEN_WIDTH / 2 - 150;
         alien3.y = 0;
-        alien3.dx = 3;  // 속도 조절
+        alien3.dx = 3; 
         alien3.active = true;
         alien3.counts++;
         alien3.hits = 0;
@@ -467,7 +396,7 @@ void boss_update() {
     }
 }
 
-// 총알과 외계인3=보스 충돌 감지 (15번 맞으면 보스 사라지는 것으로 설정)
+// 총알과 보스 충돌 감지 (15번 맞으면 보스 사라지는 것으로 설정)
 void check_boss_collisions() {
     float dx, dy;
     for (int i = 0; i < MAX_BULLETS; i++) {
@@ -482,10 +411,7 @@ void check_boss_collisions() {
                         alien3.active = false;
                         screen_shake_timer += 80;
                         al_stop_samples();
-                        play_music_effect("sfx/boss_die.ogg"); //외계인1 죽이는 소리 -> 보스 죽는 소리로 변경 필요 [원준]
-                        // 여기에 이어서 바로 게임 승리 음향 추가하고
-                        // 게임 종료 스토리로 넘어가면 될 듯
-                        // 패배
+                        play_music_effect("sfx/boss_die.ogg"); 
                     }
                 }
             }
@@ -497,7 +423,6 @@ void check_boss_collisions() {
         menu();
     }
 }
-
 
 // 보스 총알 생성
 void boss_bullets() {
@@ -559,7 +484,6 @@ void check_die_because_boss_bullet() {
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
 
-                //life--;
                 alien3.bullets[i].hit_with_rocket++;
                 check_life(&(alien3.bullets[i]), 2);
             }
@@ -583,7 +507,6 @@ void check_die_because_boss() {
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
 
-            //life--;
             alien3.hit_with_rocket++;
             check_life(&alien3, 3);
         }
@@ -593,8 +516,6 @@ void check_die_because_boss() {
         if (rocket.invisible_timer == 0) rocket.active = true;
     }
 }
-
-
 
 // 소행성 랜덤 생성
 void spawn_asteroids() {
@@ -647,7 +568,6 @@ void check_collisions() {
     }
 }
 
-
 // 총알과 외계인 충돌 감지 (10번 맞으면 외계인 사라지는 것으로 설정)
 void check_alien_collisions() {
     float dx, dy;
@@ -662,14 +582,13 @@ void check_alien_collisions() {
                     if (alien1.hits >= ALIEN_HITS) {
                         alien1.active = false;
                         Score += 100;
-                        play_music_effect("sfx/powerup.ogg"); //외계인1 죽이는 소리
+                        play_music_effect("sfx/powerup.ogg"); 
                     }
                 }
             }
         }
     }
 }
-
 
 // 로켓과 소행성 감지 
 void check_die() {
@@ -728,7 +647,6 @@ void check_die_because_alien_bullet() {
                 rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
                 screen_shake_timer = 45;
 
-                //life--;
                 alien1.bullets[i].hit_with_rocket++;
                 check_life(&(alien1.bullets[i]), 2);
             }
@@ -752,7 +670,6 @@ void check_die_because_alien() {
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
 
-            //life--;
             alien1.hit_with_rocket++;
             check_life(&alien1, 3);
         }
@@ -774,7 +691,6 @@ void check_die_because_alien2() {
             rocket.invisible_timer = ROCKET_INVISIBLE_TIME;
             screen_shake_timer = 45;
 
-            //life--;
             alien2.hit_with_rocket++;
             check_life(&alien2, 3);
         }
@@ -808,7 +724,6 @@ void draw_scene() {
     }
     if (warning_sign_timer <= 0) warning_sign_timer = WARNING_TIME;
 
-
     // 로고 display
     if (init_logo_timer > 0 && boss_timer == BOSS_FLAG) {
         al_draw_bitmap(logo, SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 80, 0);
@@ -838,14 +753,12 @@ void draw_scene() {
         if (asteroids[i].active && boss_timer == BOSS_FLAG) {
             if (!i % 3) al_draw_bitmap(asteroidIMG_large, asteroids[i].x, asteroids[i].y, 0);
             else al_draw_bitmap(asteroidIMG_small, asteroids[i].x, asteroids[i].y, 0);
-
         }
         else if (asteroids[i].hits >= ASTEROID_HITS) {
             if (!i % 2) al_draw_bitmap(explosion_large, asteroids[i].x - 20, asteroids[i].y - 20, 0);
             else al_draw_bitmap(explosion_small, asteroids[i].x - 20, asteroids[i].y - 20, 0);
         }
     }
-
 
     // alien, alien bullets display
     if (alien1.active && boss_timer == BOSS_FLAG) {
@@ -861,9 +774,6 @@ void draw_scene() {
         if (blood_timer <= 0) {
             blood_timer = BLOOD_TIME;
         }
-    }
-    if (blood_flag > 0) {
-        //if (blood_flag >= 1) al_draw_bitmap(blood2, 0, 0, 0);
     }
 
     // alien2 display
