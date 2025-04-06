@@ -50,10 +50,6 @@ void merge_planets(Planet* a, Planet* b) {
     a->type += 1;
     a->radius = get_radius(a->type);
     a->velocity = Vector2_Scale(Vector2_Add(a->velocity, b->velocity), 0.5f);
-
-   // b->isFlying = false;
-   // b->type = 0;
-   // b->velocity = (Vector2){ 0,0 };
 }
 
 void reset_planets() {

@@ -15,11 +15,11 @@ void menu() {
 
     // 이미지 정보 배열
     ImageAsset assets[] = {
-        {"images/menu.png", SCREEN_W, SCREEN_H, &main_screen},
-        {"images/title.png", 600, 120, &title},
-        {"images/astronaut/hi.png", 100, 100, &a_hi},
-        {"images/astronaut/laptop.png", 200, 200, &a_laptop},
-        {"images/astronaut/superman.png", 200, 200, &a_superman}
+        {"images/menu.png", SCREEN_W, SCREEN_H, true ,&main_screen},
+        {"images/title.png", 600, 120, true ,&title},
+        {"images/astronaut/hi.png", 100, 100,true, &a_hi},
+        {"images/astronaut/laptop.png", 200, 200, true ,&a_laptop},
+        {"images/astronaut/superman.png", 200, 200, true ,&a_superman}
     };
 
     // 이미지 로딩

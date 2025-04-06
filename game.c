@@ -208,7 +208,7 @@ void game1(char* username) {
                         game2(username, score, high_score);
                     }
                 }
-                if (planet_num < MAX_PLANET) {
+                if (planet_num > 0 &&  planet_num < MAX_PLANET) {
                     planet_list[planet_num - 1]->position = shootStart;
                     planet_list[planet_num++] = Create_Planet(waitPoint, (Vector2) { 0, 0 }, rand() % max_type + 1);
                 }

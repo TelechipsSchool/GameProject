@@ -1,6 +1,10 @@
 #include "help.h"
 
 void help_menu() {
+    if (!display) {
+        DEBUG_MSG("help_menu - display NULL");
+        exit(0);
+    }
     ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
     ALLEGRO_BITMAP* help_screen2 = al_load_bitmap("images/help2.png");
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");

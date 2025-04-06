@@ -2,8 +2,10 @@
 
 void game2(char* username, int score, int high_score) {
     game2_init(username, score);
-    loadBitmap();
-
+    if (!load_game2_bitmaps()) {
+        DEBUG_MSG("game2 비트맵 로딩 실패");
+        return;
+    }
     while (running) {
         al_wait_for_event(event_queue, &event);
         if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -49,37 +51,6 @@ void game2(char* username, int score, int high_score) {
 }
 
 
-void loadBitmap() {
-    background = al_load_bitmap("gfx/background5.png");
-    ship = al_load_bitmap("gfx/ship.png");
-    explosion_large = al_load_bitmap("gfx/large_explosion_2.png");
-    explosion_small = al_load_bitmap("gfx/large_explosion_0.png");
-    bulletIMG = al_load_bitmap("gfx/large_bullet.png");
-    asteroidIMG_large = al_load_bitmap("gfx/large_asteroid.png");
-    asteroidIMG_small = al_load_bitmap("gfx/medium_asteroid.png");
-    invisible_ship = al_load_bitmap("gfx/ship_invisible7.png");
-    trail = al_load_bitmap("gfx/trail.png");
-    logo = al_load_bitmap("gfx/logo.png");
-    alien1_withUFO = load_bitmap_resized("gfx/alien2.png", 120, 120);
-    warning = load_bitmap_resized("gfx/warning3.png", 310, 100);
-    alien_bullet = load_bitmap_resized("gfx/small_bullet.png", 10, 10);
-    alien1_die = load_bitmap_resized("gfx/blood1.png", 250, 250);
-    blood2 = load_bitmap_resized("gfx/blood5.png", 200, 200);
-    alien2_withoutUF0 = load_bitmap_resized("gfx/alien_withoutUFO2.png", 130, 130);
-    alien2IMG = load_bitmap_resized("gfx/alien6_withoutUFO.png", 130, 130);
-    alien3IMG = load_bitmap_resized("gfx/boss7.png", 320, 200);
-    warning_alien3 = load_bitmap_resized("gfx/warning_alien3_2.png", 620, 100);
-    boss_explosion = load_bitmap_resized("gfx/large_explosion_1.png", 200, 200);
-    boss_bullet = load_bitmap_resized("gfx/bullet3.png", 20, 20);
-
-    ALLEGRO_BITMAP* arr[] = { background, ship, explosion_large, explosion_small, bulletIMG,
-        asteroidIMG_large, asteroidIMG_small, invisible_ship, trail, logo, alien1_withUFO, warning, alien_bullet, alien1_die, blood2, alien2_withoutUF0, alien2IMG, alien3IMG, warning_alien3 , boss_explosion };
-    for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
-        if (arr[i] == NULL) DEBUG_MSG("%s bitmap is NULL\n", arr[i]);
-
-    heart = load_bitmap_resized("images/heart.png", 40, 40);
-    empty_heart = load_bitmap_resized("images/empty_heart.png", 40, 40);
-}
 
 void destroyBitmap() {
     al_destroy_bitmap(asteroidIMG_large);

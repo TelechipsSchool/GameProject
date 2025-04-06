@@ -33,9 +33,15 @@ void destroy_planet_images(ALLEGRO_BITMAP** planet_images) {
 }
 
 //menu.c 이미지 로드
+
 bool load_image_assets(const ImageAsset* assets, int count) {
     for (int i = 0; i < count; ++i) {
-        *(assets[i].target) = load_bitmap_resized(assets[i].path, assets[i].width, assets[i].height);
+        if (assets[i].resize) {
+            *(assets[i].target) = load_bitmap_resized(assets[i].path, assets[i].width, assets[i].height);
+        } else {
+            *(assets[i].target) = al_load_bitmap(assets[i].path);
+        }
+
         if (*(assets[i].target) == NULL) {
             DEBUG_MSG(이미지 로드 실패);
             return false;
@@ -43,6 +49,7 @@ bool load_image_assets(const ImageAsset* assets, int count) {
     }
     return true;
 }
+
 
 
 
@@ -71,4 +78,37 @@ ALLEGRO_BITMAP* load_bitmap_resized(const char* filename, int w, int h) {
     al_destroy_bitmap(loaded_bmp);
 
     return resized_bmp;
+}
+
+
+
+//game2 images-----------------------------------------------------------------------//
+bool load_game2_bitmaps() {
+    ImageAsset assets[] = {
+        {"gfx/background5.png", 0, 0, false, &background},//true:resize여부
+        {"gfx/ship.png", 0, 0, false, &ship},
+        {"gfx/large_explosion_2.png", 0, 0, false, &explosion_large},
+        {"gfx/large_explosion_0.png", 0, 0, false, &explosion_small},
+        {"gfx/large_bullet.png", 0, 0, false, &bulletIMG},
+        {"gfx/large_asteroid.png", 0, 0, false, &asteroidIMG_large},
+        {"gfx/medium_asteroid.png", 0, 0, false, &asteroidIMG_small},
+        {"gfx/ship_invisible7.png", 0, 0, false, &invisible_ship},
+        {"gfx/trail.png", 0, 0, false, &trail},
+        {"gfx/logo.png", 0, 0, false, &logo},
+        {"gfx/alien2.png", 120, 120, true, &alien1_withUFO},
+        {"gfx/warning3.png", 310, 100, true, &warning},
+        {"gfx/small_bullet.png", 10, 10, true, &alien_bullet},
+        {"gfx/blood1.png", 250, 250, true, &alien1_die},
+        {"gfx/blood5.png", 200, 200, true, &blood2},
+        {"gfx/alien_withoutUFO2.png", 130, 130, true, &alien2_withoutUF0},
+        {"gfx/alien6_withoutUFO.png", 130, 130, true, &alien2IMG},
+        {"gfx/boss7.png", 320, 200, true, &alien3IMG},
+        {"gfx/warning_alien3_2.png", 620, 100, true, &warning_alien3},
+        {"gfx/large_explosion_1.png", 200, 200, true, &boss_explosion},
+        {"gfx/bullet3.png", 20, 20, true, &boss_bullet},
+        {"images/heart.png", 40, 40, true, &heart},
+        {"images/empty_heart.png", 40, 40, true, &empty_heart}
+    };
+
+    return load_image_assets(assets, sizeof(assets) / sizeof(assets[0]));
 }
