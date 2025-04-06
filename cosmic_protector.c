@@ -88,7 +88,10 @@ void clear() {
     destroy_game2_bitmaps();
     al_destroy_timer(timer);
     al_destroy_event_queue(event_queue);
-    al_destroy_display(display);
+    if (display) {
+        al_destroy_display(display);
+        display = NULL;
+    }
 }
 
 void get_score(int high_score) {

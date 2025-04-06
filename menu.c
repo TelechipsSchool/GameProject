@@ -41,6 +41,7 @@ void menu() {
     al_play_sample(menu_bgm, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
     MenuOption selected = MENU_START;
     bool running = true;
+    bool flag = false;
 
     while (running) {
         ALLEGRO_EVENT event;
@@ -51,7 +52,7 @@ void menu() {
                 switch (event.keyboard.keycode) {
                 case ALLEGRO_KEY_UP:
                     play_music("audio/switch.ogg");
-                    selected = (selected - 1 + MENU_COUNT) % MENU_COUNT;                    
+                    selected = (selected - 1 + MENU_COUNT) % MENU_COUNT;
                     break;
                 case ALLEGRO_KEY_DOWN:
                     play_music("audio/switch.ogg");
@@ -77,48 +78,48 @@ void menu() {
                 case ALLEGRO_KEY_ESCAPE:
                     running = false;
                     play_music("audio/cancel.ogg");
-                    
-                    //return;
+
                     break;
                 }
             }
         }
+     
+            if (main_screen != NULL && display != NULL) {
 
-        if (main_screen != NULL && display != NULL) {
+                al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+            }
+            else {
+                DEBUG_MSG(main screen - 로드 실패);
+                return 0;
+            }
+            // 화면 그리기
+            al_draw_bitmap(a_laptop, 1100, 300, 0);
+            al_draw_bitmap(a_superman, 400, 100, 0);
+            al_draw_bitmap(a_hi, SCREEN_W / 2 - 200, 525 + 70 * selected, 0);
 
-            al_draw_scaled_bitmap(main_screen, 0, 0, al_get_bitmap_width(main_screen), al_get_bitmap_height(main_screen), 0, 0, SCREEN_W, SCREEN_H, 0);
+            /*al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");*/
+            al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
+
+            // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
+            al_draw_text(menu_font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+                SCREEN_W / 2, 550, ALLEGRO_ALIGN_CENTER, "START");
+            al_draw_text(menu_font, (selected == MENU_RANK) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+                SCREEN_W / 2, 620, ALLEGRO_ALIGN_CENTER, "RANK");
+            al_draw_text(menu_font, (selected == MENU_SETTING) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+                SCREEN_W / 2, 690, ALLEGRO_ALIGN_CENTER, "SETTING");
+            al_draw_text(menu_font, (selected == MENU_HELP) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
+                SCREEN_W / 2, 780, ALLEGRO_ALIGN_CENTER, "HELP");
+
+            al_flip_display();
         }
-        else {
-            DEBUG_MSG(main screen - 로드 실패);
-            return 0;
-        }
-        // 화면 그리기
-        al_draw_bitmap(a_laptop, 1100, 300, 0);
-        al_draw_bitmap(a_superman, 400, 100, 0);
-        al_draw_bitmap(a_hi, SCREEN_W / 2 - 200, 525 + 70 * selected, 0);
-        
-        /*al_draw_text(title_font, al_map_rgb(250, 237, 125), SCREEN_W / 2, 300, ALLEGRO_ALIGN_CENTER, "SUPERNOVA");*/
-        al_draw_bitmap(title, SCREEN_W / 2 - 300, 300, 0);
-
-        // 메뉴 옵션 출력(선택된 메뉴는 노란색, 나머지는 흰색)
-        al_draw_text(menu_font, (selected == MENU_START) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 550, ALLEGRO_ALIGN_CENTER, "START");
-        al_draw_text(menu_font, (selected == MENU_RANK) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 620, ALLEGRO_ALIGN_CENTER, "RANK");
-        al_draw_text(menu_font, (selected == MENU_SETTING) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 690, ALLEGRO_ALIGN_CENTER, "SETTING");
-        al_draw_text(menu_font, (selected == MENU_HELP) ? al_map_rgb(255, 255, 0) : al_map_rgb(255, 255, 255),
-            SCREEN_W / 2, 780, ALLEGRO_ALIGN_CENTER, "HELP");
-        
-        al_flip_display();
-    }
+    
 
 // 리소스 해제
     al_destroy_bitmap(main_screen);
     al_destroy_bitmap(a_hi); 
     if (display) {
         al_destroy_display(display);
-        display = NULL;  // ❗ NULL 설정으로 이중 해제 방지
+        display = NULL; 
     }
     //al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
