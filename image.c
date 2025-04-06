@@ -112,3 +112,29 @@ bool load_game2_bitmaps() {
 
     return load_image_assets(assets, sizeof(assets) / sizeof(assets[0]));
 }
+
+void destroy_game2_bitmaps() {
+    al_destroy_bitmap(background);
+    al_destroy_bitmap(ship);
+    al_destroy_bitmap(explosion_large);
+    al_destroy_bitmap(explosion_small);
+    al_destroy_bitmap(bulletIMG);
+    al_destroy_bitmap(asteroidIMG_large);
+    al_destroy_bitmap(asteroidIMG_small);
+    al_destroy_bitmap(invisible_ship);
+    al_destroy_bitmap(trail);
+    al_destroy_bitmap(logo);
+    al_destroy_bitmap(alien1_withUFO);
+    al_destroy_bitmap(warning);
+    al_destroy_bitmap(alien_bullet);
+    al_destroy_bitmap(alien1_die);
+    al_destroy_bitmap(blood2);
+    al_destroy_bitmap(alien2_withoutUF0);
+    al_destroy_bitmap(alien2IMG);
+    al_destroy_bitmap(alien3IMG);
+    al_destroy_bitmap(warning_alien3);
+    al_destroy_bitmap(boss_explosion);
+    al_destroy_bitmap(boss_bullet);
+    al_destroy_bitmap(heart);
+    al_destroy_bitmap(empty_heart);
+}

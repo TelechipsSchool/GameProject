@@ -7,7 +7,12 @@ void help_menu() {
     }
     ALLEGRO_BITMAP* help_screen = al_load_bitmap("images/help.png");
     ALLEGRO_BITMAP* help_screen2 = al_load_bitmap("images/help2.png");
+    if (!help_screen || !help_screen2) {
+        DEBUG_MSG(help_screen - help.png 로딩 실패);
+        exit(0);
+    }
     ALLEGRO_SAMPLE* sample = al_load_sample("audio/help.ogg");
+   
 
     // 이벤트 큐 생성
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -19,10 +24,7 @@ void help_menu() {
     }
     al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 
-    if (!help_screen) {
-        DEBUG_MSG(help_screen - help.png 로딩 실패);
-        return;
-    }
+    
     al_draw_scaled_bitmap(help_screen, 0, 0,
         al_get_bitmap_width(help_screen), al_get_bitmap_height(help_screen),
         0, 0, SCREEN_W, SCREEN_H, 0);

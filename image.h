@@ -22,6 +22,7 @@ ALLEGRO_BITMAP* load_bitmap_resized(const char* filename, int w, int h);
 
 //game2 images-----------------------------------------------------------------------//
 bool load_game2_bitmaps(void);
+void destroy_game2_bitmaps();
 
 extern ALLEGRO_BITMAP* background, * ship, * explosion_large, * explosion_small;
 extern ALLEGRO_BITMAP* bulletIMG, * asteroidIMG_large, * asteroidIMG_small;

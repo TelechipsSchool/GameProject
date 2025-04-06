@@ -50,28 +50,6 @@ void game2(char* username, int score, int high_score) {
     return 0;
 }
 
-
-
-void destroyBitmap() {
-    al_destroy_bitmap(asteroidIMG_large);
-    al_destroy_bitmap(asteroidIMG_small);
-    al_destroy_bitmap(logo);
-    al_destroy_bitmap(alien1_withUFO);
-    al_destroy_bitmap(warning);
-    al_destroy_bitmap(alien_bullet);
-    al_destroy_bitmap(alien1_die);
-    al_destroy_bitmap(blood2);
-    al_destroy_bitmap(alien2_withoutUF0);
-    al_destroy_bitmap(alien2IMG);
-    al_destroy_bitmap(background);
-    al_destroy_bitmap(ship);
-    al_destroy_bitmap(explosion_large);
-    al_destroy_bitmap(explosion_small);
-    al_destroy_bitmap(invisible_ship);
-    al_destroy_bitmap(heart);
-    al_destroy_bitmap(empty_heart);
-}
-
 double getRadian(int num) {
     return num * (PI / 180);
 }
@@ -107,7 +85,7 @@ void game2_init(char* username, int score) {
 }
 
 void clear() {
-    destroyBitmap();
+    destroy_game2_bitmaps();
     al_destroy_timer(timer);
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
