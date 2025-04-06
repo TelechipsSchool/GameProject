@@ -78,7 +78,7 @@ void menu() {
                     running = false;
                     play_music("audio/cancel.ogg");
                     
-                   // return;
+                    //return;
                     break;
                 }
             }
@@ -115,8 +115,12 @@ void menu() {
 
 // 리소스 해제
     al_destroy_bitmap(main_screen);
-    al_destroy_bitmap(a_hi);
-    al_destroy_display(display); display = NULL;
+    al_destroy_bitmap(a_hi); 
+    if (display) {
+        al_destroy_display(display);
+        display = NULL;  // ❗ NULL 설정으로 이중 해제 방지
+    }
+    //al_destroy_display(display); display = NULL;
     al_destroy_sample(menu_bgm); menu_bgm = NULL;
     al_destroy_event_queue(event_queue);    
 }

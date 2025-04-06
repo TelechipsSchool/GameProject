@@ -85,7 +85,6 @@ void destroyBitmap() {
     al_destroy_bitmap(asteroidIMG_large);
     al_destroy_bitmap(asteroidIMG_small);
     al_destroy_bitmap(logo);
-    al_destroy_bitmap(asteroidIMG_small);
     al_destroy_bitmap(alien1_withUFO);
     al_destroy_bitmap(warning);
     al_destroy_bitmap(alien_bullet);

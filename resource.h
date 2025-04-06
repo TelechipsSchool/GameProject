@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma once
 #include "init.h"
-#include "display.h"
+#include "image.h"
 #include "audio.h"
 #include "image.h"
 

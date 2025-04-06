@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "init.h"
 #include "menu.h"
-#include "display.h"
 #include "rank.h"
 #include "setting.h"
 #include "font.h"

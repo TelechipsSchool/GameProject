@@ -1,6 +1,6 @@
 #pragma once
 #include "init.h"
-#include "display.h"
+#include "image.h"
 #include "font.h"
 #include "rank.h"
 #include "setting.h"

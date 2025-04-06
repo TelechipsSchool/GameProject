@@ -21,9 +21,6 @@
     <ClCompile Include="main.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="display.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="init.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -71,9 +68,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="display.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="init.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>

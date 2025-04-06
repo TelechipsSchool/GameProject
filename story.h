@@ -1,7 +1,7 @@
 #pragma once
 #include "init.h"
 #include "font.h"
-#include "display.h"
+#include "image.h"
 #include "audio.h"
 
 // 유저 이름 최대 길이

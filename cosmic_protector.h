@@ -2,7 +2,7 @@
 #define COSMIC_PROTECTOR_H
 
 #include "init.h"
-#include "display.h"
+#include "image.h"
 #include "vector.h"
 #include "font.h"
 #include "rank.h"
