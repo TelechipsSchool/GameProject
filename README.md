@@ -1,4 +1,11 @@
 # GameProject
+## 메인 화면
+![image](https://github.com/user-attachments/assets/43467f15-31b2-4262-abd5-f55c49576f09)
+## Game1 - 행성 만들기
+![제목 없는 디자인](https://github.com/user-attachments/assets/ba57eaca-09c4-4ee3-8d9c-0a2723b833f2)
+## Game2 - 소행성 피하기
+![제목 없는 디자인 (1)](https://github.com/user-attachments/assets/94234133-2cec-40be-8ad7-91617d819a6d)
+
 # Cosmic Protector Game - Module & API Documentation
 
 ## 1. `main.c`
@@ -203,13 +210,27 @@
 - 충돌 감지 및 중력 계산 함수 제공
 
 ---
-
 ## 참고
 - 개발 언어: C (Allegro 5)
 - 주요 렌더링 방식: `al_draw_bitmap`, `al_draw_rotated_bitmap`
 - 오디오 처리: `al_load_sample`, `al_play_sample`
 - 물리 엔진: 사용자 정의 중력, 충돌 로직 적용
-
+- 개발 언어: <img src="https://img.shields.io/badge/C-A8B9CC?style=flat&logo=C&logoColor=white">
+- 협업 툴:
+<a href = "https://github.com/TelechipsSchool/GameProject.git"><img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/>
+</a> <a href = "">
+<img alt="Notion" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/></a> 
+---
+## 팀원
+   <table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/Hyykk"><img src="https://avatars.githubusercontent.com/Hyykk" width="100px;" alt=""/><br /><sub><b> 홍윤교 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/argan719"><img src="https://avatars.githubusercontent.com/argan719" width="100px;" alt=""/><br /><sub><b> 전지현 </b></sub></a><br /></td>
+<td align="center"><a href="https://github.com/inbangCert"><img src="https://avatars.githubusercontent.com/inbangCert" width="100px;" alt=""/><br /><sub><b> 이원준 </b></sub></a><br /></td>
+<td align="center"><a href="https://github.com/Skylarvv"><img src="https://avatars.githubusercontent.com/Skylarvv" width="100px;" alt=""/><br /><sub><b> 홍예주 </b></sub></a><br /></td>
+  </tbody>
+</table>
 ---
 
 > 이 문서는 추후 GitHub README.md 또는 Doxygen 기반 문서화에 활용 가능합니다.
