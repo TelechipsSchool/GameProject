@@ -233,5 +233,3 @@
 </table>
 ---
 
-> 이 문서는 추후 GitHub README.md 또는 Doxygen 기반 문서화에 활용 가능합니다.
-
