@@ -55,7 +55,6 @@
 **포함 파일**:
 ```c
 #include "init.h"
-#include "display.h"
 #include "font.h"
 #include "rank.h"
 #include "setting.h"
@@ -81,7 +80,7 @@
 ```c
 #include "init.h"
 #include "font.h"
-#include "display.h"
+#include "image.h"
 #include "audio.h"
 ```
 
@@ -96,7 +95,7 @@
 ```c
 #include "init.h"
 #include "font.h"
-#include "display.h"
+#include "image.h"
 #include "audio.h"
 ```
 
@@ -144,7 +143,6 @@
 ```c
 #include "init.h"
 #include "menu.h"
-#include "display.h"
 #include "rank.h"
 #include "setting.h"
 #include "font.h"
@@ -161,24 +159,59 @@
 ## 9. `game2.c` (cosmic_protector.c)
 
 ### 주요 함수
-- `void loadBitmap(void)`
-- `void destroyBitmap(void)`
+- `void game2(char* username, int score, int high_score)`
 - `double getRadian(int num)`
+- `void game2_init(char* username, int score)`
+- `void clear(void)`
+- `void get_score(int high_score)`
+- `void heart_display(int high_score)`
+- `void game_over(void)`
+- `void normal(void)`
+- `void boss(void)`
 - `void update_rocket(void)`
 - `void fire_bullet(void)`
 - `void update_bullets(void)`
-- `void alien_bullets(void)`
+- `void alien_create(void)`
+- `void alien_update(void)`
+- `void alien_bullets()`
 - `void alien_update_bullets(void)`
+- `void alien2_create(void)`
+- `void alien2_die(void)`
+- `void boss_create(void)`'
+- `void boss_update(void)`
+- `void check_boss_collisions(void)`
+- `void boss_bullets(void)`
+- `void boss_update_bullets(void)`
+- `void check_die_because_boss_bullet(void)`
+- `void check_die_because_boss(void)`
 - `void spawn_asteroids(void)`
 - `void update_asteroids(void)`
 - `void check_collisions(void)`
-- `void check_die(void)`
-- `void alien_create(void)`
-- `void alien_update(void)`
+- `void check_alien_collisions(void)`
+- `void check_die_because_alien_bullet(void)`
+- `void check_die_because_alien()`
+- `void check_die_because_alien2()`
 - `void draw_scene(void)`
 
 **역할**: 우주선, 외계인, 소행성 중심의 슈팅 게임 루프와 렌더링 처리
+**포함 파일**:
+```c
+#include "init.h"
+#include "image.h"
+#include "vector.h"
+#include "font.h"
+#include "rank.h"
+#include "story.h"
 
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+```
 ---
 
 ## 10. `resource.c`, `image.c`, `audio.c`, `font.c`
@@ -187,7 +220,7 @@
 - 타이머, 이벤트 큐 초기화 및 해제
 - 이미지 및 사운드 리소스 초기화
 
-### `image.c`, `display.c`
+### `image.c`
 - 이미지 로드, 크기 조절, 전역 포인터 관리
 
 ### `audio.c`
