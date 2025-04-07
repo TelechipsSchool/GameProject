@@ -231,5 +231,4 @@
 <td align="center"><a href="https://github.com/Skylarvv"><img src="https://avatars.githubusercontent.com/Skylarvv" width="100px;" alt=""/><br /><sub><b> 홍예주 </b></sub></a><br /></td>
   </tbody>
 </table>
----
 
