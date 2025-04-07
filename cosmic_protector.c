@@ -208,7 +208,7 @@ void alien_create() {
     // 게임 시작 후 일정 시간 지나야 1단계 외계인이 출몰하도록 설정
     alien_start_time = time(NULL);
     double tt = alien_start_time - game_start_time;
-    if (!alien1.active && rand() % 100 >= 95 && tt > 35) {  
+    if (!alien1.active && rand() % 100 >= 95 && tt > 40) {  
         alien1.x = 0;
         alien1.y = rand() % SCREEN_HEIGHT;
         alien1.dx = 2;
