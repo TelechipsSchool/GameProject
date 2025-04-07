@@ -117,10 +117,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\workspace\GameProject\packages\Allegro.5.2.10\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\workspace\GameProject\packages\Allegro.5.2.10\build\native\v143\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,7 +146,39 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio.c" />
+    <ClCompile Include="cosmic_protector.c" />
+    <ClCompile Include="font.c" />
+    <ClCompile Include="help.c" />
+    <ClCompile Include="image.c" />
+    <ClCompile Include="init.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="game.c" />
+    <ClCompile Include="menu.c" />
+    <ClCompile Include="physics.c" />
+    <ClCompile Include="planet.c" />
+    <ClCompile Include="rank.c" />
+    <ClCompile Include="resource.c" />
+    <ClCompile Include="setting.c" />
+    <ClCompile Include="story.c" />
+    <ClCompile Include="vector.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="audio.h" />
+    <ClInclude Include="cosmic_protector.h" />
+    <ClInclude Include="font.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="help.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="init.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="physics.h" />
+    <ClInclude Include="planet.h" />
+    <ClInclude Include="rank.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="setting.h" />
+    <ClInclude Include="story.h" />
+    <ClInclude Include="vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
